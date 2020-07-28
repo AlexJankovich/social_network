@@ -1,0 +1,19 @@
+.nav {
+    background-color: chocolate;
+    grid-area: n;
+    padding: 10px;
+}
+
+.item {
+    margin-left: 15px;
+    color: white;
+    margin-top: 5px;
+
+}
+.item a.active{
+    color: chartreuse;
+}
+.item a {
+    color: white;
+    text-decoration: none;
+}
