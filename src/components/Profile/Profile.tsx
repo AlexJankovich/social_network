@@ -1,14 +1,12 @@
 import React from "react";
 import {MyPosts,} from "./Myposts/MyPosts";
 import {ProfileInfo} from "./Myposts/Profileinfo/ProfileInfo";
-import {AddPostActionType, postDataType, WritePost} from "../../Redux/state";
+import {ActionType, postDataType} from "../../Redux/state";
 
 type ProfileType = {
     postData: Array<postDataType>
-    // addPost: () => void
-    // writePost: (newText: string) => void
     newMessageData: string
-    dispatch:(action: AddPostActionType | WritePost)=>void
+    dispatch:(action: ActionType)=>void
 }
 
 export const Profile = (props: ProfileType) => {

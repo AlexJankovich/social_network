@@ -18,27 +18,39 @@ export type stateType = {
     dialogsData: Array<dialogsDataType>
     messageData: Array<messageDataType>
     newMessageData: string
+    onChangeMessageData: string
 }
 
 export  type StoreType = {
     _state: stateType
     getState: () => stateType,
     _rerenderDom: () => void
-    // addPost: () => void
-    // writePost: (newText: string) => void
     subscribe: (observer: () => void) => void
-    dispatch:(action:AddPostActionType | WritePost)=>void
+    dispatch: (action: ActionType) => void
 }
 
-export type AddPostActionType={
-    type:'ADD-POST'
+export type AddPostActionType = {
+    type: 'ADD-POST'
 }
-export type WritePost={
-    type:'WRITE-POST'
+export type WritePostActionType = {
+    type: 'WRITE-POST'
     newText: string
 }
+export type OnChangeMassageHandlerActionType ={
+    type: 'ON-CHANGE-MASSAGE'
+    massage: string
+}
+export type AddMessageActionType ={
+    type:'ADD-MESSAGE'
+}
+export type ActionType = AddPostActionType |
+    WritePostActionType |
+    OnChangeMassageHandlerActionType |
+    AddMessageActionType;
+
 let store: StoreType = {
     _state: {
+        onChangeMessageData:'',
         newMessageData: '',
         postData: [
             {
@@ -101,34 +113,74 @@ let store: StoreType = {
         return this._state
     },
 
-    // addPost() {
-    //
-    // },
-    // writePost(newText) {
-    //
-    // },
     subscribe(observer) {
         this._rerenderDom = observer
     },
 
-    dispatch(action){
-            if(action.type==='ADD-POST'){
-                let NewPost = {
-                    id: '6',
-                    name: 'someName',
-                    message: this._state.newMessageData,
-                    time: new Date().toTimeString().slice(0, 5),
-                    isRead: false
-                };
-                this._state.postData.push(NewPost)
-                this._state.newMessageData = ''
-                this._rerenderDom()
-            }else if (action.type==='WRITE-POST'){
-                this._state.newMessageData = action.newText
-                this._rerenderDom()
+    dispatch(action) {
+        // switch (action.type){
+        //     case "ADD-POST": {
+        //         let NewPost = {
+        //             id: '6',
+        //             name: 'someName',
+        //             message: this._state.newMessageData,
+        //             time: new Date().toTimeString().slice(0, 5),
+        //             isRead: false
+        //         };
+        //         this._state.postData.push(NewPost)
+        //         this._state.newMessageData = ''
+        //         this._rerenderDom()
+        //     }
+        //     case "WRITE-POST": {
+        //         this._state.newMessageData = action.newText
+        //         this._rerenderDom()
+        //     }
+        //     default: throw new Error()
+        // }
+
+        if (action.type === 'ADD-POST') {
+            const NewPost = {
+                id: '6',
+                name: 'someName',
+                message: this._state.newMessageData,
+                time: new Date().toTimeString().slice(0, 5),
+                isRead: false
+            };
+            this._state.postData.push(NewPost)
+            this._state.newMessageData = ''
+            this._rerenderDom()
+        } else if (action.type === 'WRITE-POST') {
+
+            this._state.newMessageData = action.newText
+            this._rerenderDom()
+        } else if (action.type === 'ADD-MESSAGE'){
+            const NewMessage = {
+                id: '8',
+                message: this._state.onChangeMessageData
             }
+            this._state.messageData.push(NewMessage)
+            this._state.onChangeMessageData=''
+            this._rerenderDom()
+        } else if (action.type === "ON-CHANGE-MASSAGE"){
+
+            this._state.onChangeMessageData=action.massage
+            this._rerenderDom()
+        }
     }
 }
 
 
+
+
+export const AddPostAC = (): AddPostActionType => {
+    return {type: "ADD-POST"}
+}
+export const WritePostAC = (newText:string): WritePostActionType => {
+    return {type: "WRITE-POST", newText:newText}
+}
+export const AddMessageAC = ():AddMessageActionType=>{
+    return {type: "ADD-MESSAGE"}
+}
+export const OnChangeMessageAC =(message:string):OnChangeMassageHandlerActionType=>
+{return {type:"ON-CHANGE-MASSAGE", massage:message}}
 export default store;

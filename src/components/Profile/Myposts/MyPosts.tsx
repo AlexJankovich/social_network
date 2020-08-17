@@ -1,14 +1,12 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import Post from "./Posts/Post";
-import {AddPostActionType, postDataType, WritePost} from "../../../Redux/state";
+import {ActionType, AddPostAC, postDataType, WritePostAC} from "../../../Redux/state";
 
 type MyPostsType = {
     postData: Array<postDataType>
-    // addPost: () => void
-    // writePost: (newText: string) => void
     newMessageData: string
-    dispatch:(action: AddPostActionType | WritePost)=>void
+    dispatch:(action: ActionType)=>void
 }
 
 export const MyPosts = (props: MyPostsType) => {
@@ -21,12 +19,13 @@ export const MyPosts = (props: MyPostsType) => {
                      id={p.id}/>
     })
 
-    let addPost = () => {
-        // props.dispatch({type:'ADD-POST'})
-        props.dispatch({type:"ADD-POST"})
+    const addPost = () => {
+        debugger
+        props.dispatch(AddPostAC())
     }
-    let writePost = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch({type:"WRITE-POST", newText:(e.currentTarget.value)} )
+    const writePost = (e: ChangeEvent<HTMLTextAreaElement>) => {
+
+        props.dispatch(WritePostAC(e.currentTarget.value))
     }
 
     return (
@@ -36,7 +35,7 @@ export const MyPosts = (props: MyPostsType) => {
                     My posts
                 </div>
                 <div className={s.myPost}>
-                    <textarea value={props.newMessageData} onChange={writePost}></textarea>
+                    <textarea value={props.newMessageData} onChange={writePost}>x</textarea>
                     <div>
                         <button onClick={addPost}>Add post</button>
                         <button>Remove post</button>

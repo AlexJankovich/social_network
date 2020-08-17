@@ -8,10 +8,10 @@ import {BrowserRouter, Route} from "react-router-dom";
 import {StoreType} from "./Redux/state";
 
 type AppStoreType = {
-   store:StoreType
+    store: StoreType
 }
 
-const App:React.FC<AppStoreType> = (props) => {
+const App: React.FC<AppStoreType> = (props) => {
     let state = props.store.getState()
     return (
         <BrowserRouter>
@@ -20,17 +20,19 @@ const App:React.FC<AppStoreType> = (props) => {
                 <NavBar/>
                 <div className='appWrapperContent'>
                     <Route path='/Dialogs'
-                           render={()=>
+                           render={() =>
                                <Dialogs
-                                  dialogs={state.dialogsData}
-                                  messages={state.messageData}
+                                   onChangeMessageData={state.onChangeMessageData}
+                                   dispatch={props.store.dispatch.bind(props.store)}
+                                   dialogs={state.dialogsData}
+                                   messages={state.messageData}
                                />}/>
                     <Route path='/Profile'
-                           render={()=>
+                           render={() =>
                                <Profile
-                               postData={state.postData}
-                               dispatch={props.store.dispatch.bind(props.store)}
-                               newMessageData={state.newMessageData}
+                                   postData={state.postData}
+                                   dispatch={props.store.dispatch.bind(props.store)}
+                                   newMessageData={state.newMessageData}
                                />}/>
                 </div>
             </div>

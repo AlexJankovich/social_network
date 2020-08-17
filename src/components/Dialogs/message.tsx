@@ -1,25 +1,29 @@
 import s from "./message.module.css";
-import React from "react";
-import {messageDataType} from "../../Redux/state";
+import React, {ChangeEvent} from "react";
+import {ActionType, AddMessageAC, messageDataType, OnChangeMessageAC} from "../../Redux/state";
 
 type MessageType = {
     messageData: Array<messageDataType>
+    dispatch:(action: ActionType)=>void
+    onChangeMessageData:string
 }
 
 export const Message = (props: MessageType) => {
-    let addNewMessage = React.createRef<HTMLTextAreaElement>()
-    const AddMessage =() =>{
-        let text = addNewMessage.current?.value
-        alert (text)
+    const AddMessage = () =>{
+        props.dispatch(AddMessageAC())
     }
-    let mapMessages = props.messageData.map(m =>
+    const mapMessages = props.messageData.map(m =>
         <div key={m.id} className={s.message}>
             <span>{m.message}</span>
         </div>)
+    const onChangeMassageHandler=(e: ChangeEvent<HTMLTextAreaElement>)=>{
+
+        props.dispatch(OnChangeMessageAC(e.currentTarget.value))
+    }
 
     return <div>{mapMessages}
         <div>
-            <textarea ref={addNewMessage}></textarea>
+            <textarea  value={props.onChangeMessageData} onChange={onChangeMassageHandler}></textarea>
         </div>
         <button onClick={AddMessage}>add massage</button>
     </div>
