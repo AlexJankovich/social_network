@@ -1,6 +1,6 @@
-import {postReducer} from "./postData-reduser";
-import {messageReducer} from "./message-reduser";
-import {dialogsReducer} from "./dialogs-reduser";
+import {postReducer} from "./postData-reducer";
+import {messageReducer} from "./message-reducer";
+import {dialogsReducer} from "./dialogs-reducer";
 
 //action types
 export type AddPostActionType = {
@@ -23,8 +23,8 @@ export type AddMessageActionType = {
 //     ReturnType<typeof OnChangeMessageAC>  |
 //     ReturnType<typeof AddMessageAC> ;
 export type ActionType = AddPostActionType |
-    WritePostActionType  |
-    OnChangeMessageHandlerActionType  |
+    WritePostActionType |
+    OnChangeMessageHandlerActionType |
     AddMessageActionType ;
 //action types
 
@@ -38,7 +38,8 @@ export type postType = {
     isRead: boolean
 }
 export type messagesType = { id: string, message: string }
-export type dialogsDataType = { id: string, name: string }
+export type dialogsType = { id: string, name: string }
+export type dialogsDataType = { dialogs:Array<dialogsType> }
 export type messageDataType = {
     messages: Array<messagesType>
     onChangeMessageData: string
@@ -49,9 +50,8 @@ export type postDataType = {
 }
 export type stateType = {
     postData: postDataType
-    dialogsData: Array<dialogsDataType>
+    dialogsData: dialogsDataType
     messageData: messageDataType
-
 }
 
 export  type StoreType = {
@@ -66,7 +66,6 @@ export  type StoreType = {
 //store
 let store: StoreType = {
     _state: {
-
         postData: {
             post: [
                 {
@@ -107,14 +106,15 @@ let store: StoreType = {
             ],
             newMessageData: '',
         },
-        dialogsData: [
+        dialogsData: {
+            dialogs:[
             {id: '1', name: 'name1'},
             {id: '2', name: 'name2'},
             {id: '3', name: 'name3'},
             {id: '4', name: 'name4'},
             {id: '5', name: 'name5'},
             {id: '6', name: 'name6'},
-        ],
+        ]},
         messageData: {
             messages: [
                 {id: '1', message: 'message1'},
@@ -141,7 +141,7 @@ let store: StoreType = {
     dispatch(action) {
         this._state.postData = postReducer(this._state.postData, action)
         this._state.messageData = messageReducer(this._state.messageData, action)
-        dialogsReducer(this._state, action)
+        this._state.dialogsData = dialogsReducer(this._state.dialogsData, action)
         this._rerenderDom();
         // switch (action.type) {
         //     case "ADD-POST": {

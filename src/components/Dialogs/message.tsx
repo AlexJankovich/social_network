@@ -1,6 +1,6 @@
 import s from "./message.module.css";
 import React, {ChangeEvent} from "react";
-import {AddMessageAC, OnChangeMessageAC} from "../../Redux/message-reduser";
+import {AddMessageAC, OnChangeMessageAC} from "../../Redux/message-reducer";
 import {ActionType, messagesType} from "../../Redux/store";
 
 type MessageType = {

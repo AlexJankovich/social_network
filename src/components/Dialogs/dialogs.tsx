@@ -1,11 +1,11 @@
 import React from "react";
 import s from './dialogs.module.css';
 import {Message} from "./message";
-import {ActionType, dialogsDataType, messagesType} from "../../Redux/store";
+import {ActionType, dialogsType, messagesType} from "../../Redux/store";
 import {NavLink} from "react-router-dom";
 
 type DialogsType = {
-    dialogs: Array<dialogsDataType>
+    dialogs: Array<dialogsType>
     messages: Array<messagesType>
     dispatch:(action:ActionType)=>void
     onChangeMessageData:string

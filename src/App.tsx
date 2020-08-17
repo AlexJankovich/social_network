@@ -5,14 +5,16 @@ import {NavBar} from "./components/Navbar/Navbar";
 import {Profile} from "./components/Profile/Profile";
 import Dialogs from "./components/Dialogs/dialogs";
 import {BrowserRouter, Route} from "react-router-dom";
-import {StoreType} from "./Redux/store";
+// import {StoreType} from "./Redux/store";
 
 type AppStoreType = {
-    store: StoreType
+    store: any
 }
 
 const App: React.FC<AppStoreType> = (props) => {
     let state = props.store.getState()
+    debugger
+    debugger
     return (
         <BrowserRouter>
             <div className="app-wrapper">
@@ -24,7 +26,7 @@ const App: React.FC<AppStoreType> = (props) => {
                                <Dialogs
                                    onChangeMessageData={state.messageData.onChangeMessageData}
                                    dispatch={props.store.dispatch.bind(props.store)}
-                                   dialogs={state.dialogsData}
+                                   dialogs={state.dialogsData.dialogs}
                                    messages={state.messageData.messages}
                                />}
                     />

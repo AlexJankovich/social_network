@@ -2,7 +2,7 @@ import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import Post from "./Posts/Post";
 import {ActionType, postType} from "../../../Redux/store";
-import {AddPostAC, WritePostAC} from "../../../Redux/postData-reduser";
+import {AddPostAC, WritePostAC} from "../../../Redux/postData-reducer";
 
 type MyPostsType = {
     post: Array<postType>
