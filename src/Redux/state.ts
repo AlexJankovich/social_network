@@ -36,12 +36,12 @@ export type WritePostActionType = {
     type: 'WRITE-POST'
     newText: string
 }
-export type OnChangeMassageHandlerActionType ={
+export type OnChangeMassageHandlerActionType = {
     type: 'ON-CHANGE-MASSAGE'
     massage: string
 }
-export type AddMessageActionType ={
-    type:'ADD-MESSAGE'
+export type AddMessageActionType = {
+    type: 'ADD-MESSAGE'
 }
 export type ActionType = AddPostActionType |
     WritePostActionType |
@@ -50,7 +50,7 @@ export type ActionType = AddPostActionType |
 
 let store: StoreType = {
     _state: {
-        onChangeMessageData:'',
+        onChangeMessageData: '',
         newMessageData: '',
         postData: [
             {
@@ -118,69 +118,86 @@ let store: StoreType = {
     },
 
     dispatch(action) {
-        // switch (action.type){
-        //     case "ADD-POST": {
-        //         let NewPost = {
-        //             id: '6',
-        //             name: 'someName',
-        //             message: this._state.newMessageData,
-        //             time: new Date().toTimeString().slice(0, 5),
-        //             isRead: false
-        //         };
-        //         this._state.postData.push(NewPost)
-        //         this._state.newMessageData = ''
-        //         this._rerenderDom()
-        //     }
-        //     case "WRITE-POST": {
-        //         this._state.newMessageData = action.newText
-        //         this._rerenderDom()
-        //     }
-        //     default: throw new Error()
-        // }
-
-        if (action.type === 'ADD-POST') {
-            const NewPost = {
-                id: '6',
-                name: 'someName',
-                message: this._state.newMessageData,
-                time: new Date().toTimeString().slice(0, 5),
-                isRead: false
-            };
-            this._state.postData.push(NewPost)
-            this._state.newMessageData = ''
-            this._rerenderDom()
-        } else if (action.type === 'WRITE-POST') {
-
-            this._state.newMessageData = action.newText
-            this._rerenderDom()
-        } else if (action.type === 'ADD-MESSAGE'){
-            const NewMessage = {
-                id: '8',
-                message: this._state.onChangeMessageData
+        switch (action.type) {
+            case "ADD-POST": {
+                let NewPost = {
+                    id: '6',
+                    name: 'someName',
+                    message: this._state.newMessageData,
+                    time: new Date().toTimeString().slice(0, 5),
+                    isRead: false
+                };
+                this._state.postData.push(NewPost)
+                this._state.newMessageData = ''
+                this._rerenderDom();
             }
-            this._state.messageData.push(NewMessage)
-            this._state.onChangeMessageData=''
-            this._rerenderDom()
-        } else if (action.type === "ON-CHANGE-MASSAGE"){
-
-            this._state.onChangeMessageData=action.massage
-            this._rerenderDom()
+                break
+            case "WRITE-POST": {
+                this._state.newMessageData = action.newText
+                this._rerenderDom()
+            }
+                break
+            case "ADD-MESSAGE": {
+                const NewMessage = {
+                    id: '8',
+                    message: this._state.onChangeMessageData
+                }
+                this._state.messageData.push(NewMessage)
+                this._state.onChangeMessageData = ''
+                this._rerenderDom()
+            }
+                break
+            case "ON-CHANGE-MASSAGE": {
+                this._state.onChangeMessageData = action.massage
+                this._rerenderDom()
+            }
+                break
+            default:
+                throw new Error()
         }
+
+        // if (action.type === 'ADD-POST') {
+        //     const NewPost = {
+        //         id: '6',
+        //         name: 'someName',
+        //         message: this._state.newMessageData,
+        //         time: new Date().toTimeString().slice(0, 5),
+        //         isRead: false
+        //     };
+        //     this._state.postData.push(NewPost)
+        //     this._state.newMessageData = ''
+        //     this._rerenderDom()
+        // } else if (action.type === 'WRITE-POST') {
+        //
+        //     this._state.newMessageData = action.newText
+        //     this._rerenderDom()
+        // } else if (action.type === 'ADD-MESSAGE'){
+        //     const NewMessage = {
+        //         id: '8',
+        //         message: this._state.onChangeMessageData
+        //     }
+        //     this._state.messageData.push(NewMessage)
+        //     this._state.onChangeMessageData=''
+        //     this._rerenderDom()
+        // } else if (action.type === "ON-CHANGE-MASSAGE"){
+        //
+        //     this._state.onChangeMessageData=action.massage
+        //     this._rerenderDom()
+        // }
     }
 }
-
-
 
 
 export const AddPostAC = (): AddPostActionType => {
     return {type: "ADD-POST"}
 }
-export const WritePostAC = (newText:string): WritePostActionType => {
-    return {type: "WRITE-POST", newText:newText}
+export const WritePostAC = (newText: string): WritePostActionType => {
+    return {type: "WRITE-POST", newText: newText}
 }
-export const AddMessageAC = ():AddMessageActionType=>{
+export const AddMessageAC = (): AddMessageActionType => {
     return {type: "ADD-MESSAGE"}
 }
-export const OnChangeMessageAC =(message:string):OnChangeMassageHandlerActionType=>
-{return {type:"ON-CHANGE-MASSAGE", massage:message}}
+export const OnChangeMessageAC = (message: string): OnChangeMassageHandlerActionType => {
+    return {type: "ON-CHANGE-MASSAGE", massage: message}
+}
 export default store;
