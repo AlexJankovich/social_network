@@ -1,12 +1,12 @@
 import React from "react";
 import s from './dialogs.module.css';
 import {Message} from "./message";
-import {ActionType, dialogsDataType, messageDataType} from "../../Redux/state";
+import {ActionType, dialogsDataType, messagesType} from "../../Redux/store";
 import {NavLink} from "react-router-dom";
 
 type DialogsType = {
     dialogs: Array<dialogsDataType>
-    messages: Array<messageDataType>
+    messages: Array<messagesType>
     dispatch:(action:ActionType)=>void
     onChangeMessageData:string
 }
@@ -25,7 +25,7 @@ const Dialogs = (props: DialogsType) => {
             </div>
             <div className={s.messages}>
                 <Message onChangeMessageData={props.onChangeMessageData}
-                         messageData={props.messages}
+                         messages={props.messages}
                          dispatch={props.dispatch}/>
             </div>
         </div>

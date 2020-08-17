@@ -1,8 +1,8 @@
 import s from "./Post.module.css";
 import React from "react";
-import {postDataType} from "../../../../Redux/state";
+import {postType} from "../../../../Redux/store";
 
-const Post = (props:postDataType) => {
+const Post = (props:postType) => {
     return (
         <div key={props.id}
             className={props.isRead ? s.wrapper__inner : s.wrapper__inner_dark}>

@@ -1,5 +1,5 @@
 import * as serviceWorker from './serviceWorker';
-import store from "./Redux/state";
+import store from "./Redux/store";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";

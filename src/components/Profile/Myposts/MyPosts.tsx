@@ -1,16 +1,17 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import Post from "./Posts/Post";
-import {ActionType, AddPostAC, postDataType, WritePostAC} from "../../../Redux/state";
+import {ActionType, postType} from "../../../Redux/store";
+import {AddPostAC, WritePostAC} from "../../../Redux/postData-reduser";
 
 type MyPostsType = {
-    postData: Array<postDataType>
+    post: Array<postType>
     newMessageData: string
     dispatch:(action: ActionType)=>void
 }
 
 export const MyPosts = (props: MyPostsType) => {
-    let postItem = props.postData.map(p => {
+    let postItem = props.post.map(p => {
         return <Post key={p.id}
                      message={p.message}
                      name={p.name}
@@ -20,11 +21,10 @@ export const MyPosts = (props: MyPostsType) => {
     })
 
     const addPost = () => {
-        debugger
+        // debugger
         props.dispatch(AddPostAC())
     }
     const writePost = (e: ChangeEvent<HTMLTextAreaElement>) => {
-
         props.dispatch(WritePostAC(e.currentTarget.value))
     }
 
@@ -35,7 +35,8 @@ export const MyPosts = (props: MyPostsType) => {
                     My posts
                 </div>
                 <div className={s.myPost}>
-                    <textarea value={props.newMessageData} onChange={writePost}>x</textarea>
+                    <textarea value={props.newMessageData}
+                              onChange={writePost}>x</textarea>
                     <div>
                         <button onClick={addPost}>Add post</button>
                         <button>Remove post</button>
