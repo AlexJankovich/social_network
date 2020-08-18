@@ -1,13 +1,13 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import Post from "./Posts/Post";
-import {ActionType, postType} from "../../../Redux/store";
-import {AddPostAC, WritePostAC} from "../../../Redux/postData-reducer";
+import {postType} from "../../../Redux/store";
 
 type MyPostsType = {
     post: Array<postType>
     newMessageData: string
-    dispatch:(action: ActionType)=>void
+    addPost:()=>void
+    writePost:(message:string)=>void
 }
 
 export const MyPosts = (props: MyPostsType) => {
@@ -22,10 +22,10 @@ export const MyPosts = (props: MyPostsType) => {
 
     const addPost = () => {
         // debugger
-        props.dispatch(AddPostAC())
+        props.addPost()
     }
     const writePost = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch(WritePostAC(e.currentTarget.value))
+        props.writePost(e.currentTarget.value)
     }
 
     return (

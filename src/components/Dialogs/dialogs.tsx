@@ -1,17 +1,13 @@
 import React from "react";
 import s from './dialogs.module.css';
-import {Message} from "./message";
-import {ActionType, dialogsType, messagesType} from "../../Redux/store";
+import {dialogsType} from "../../Redux/store";
 import {NavLink} from "react-router-dom";
 
 type DialogsType = {
     dialogs: Array<dialogsType>
-    messages: Array<messagesType>
-    dispatch:(action:ActionType)=>void
-    onChangeMessageData:string
 }
 const Dialogs = (props: DialogsType) => {
-    let Dialog = props.dialogs.map((d)=>
+    let Dialog = props.dialogs.map((d) =>
         <div key={d.id} className={s.dialog + ' ' + s.active}>
             <NavLink to={'/dialogs/' + d.id}>
                 {d.name}
@@ -22,11 +18,6 @@ const Dialogs = (props: DialogsType) => {
         <div className={s.dialogs}>
             <div className={s.dialogsItem}>
                 {Dialog}
-            </div>
-            <div className={s.messages}>
-                <Message onChangeMessageData={props.onChangeMessageData}
-                         messages={props.messages}
-                         dispatch={props.dispatch}/>
             </div>
         </div>
     )

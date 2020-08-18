@@ -9,7 +9,7 @@ export const NavBar = () => {
                 <NavLink to="/Profile" activeClassName={s.active}>Profile</NavLink>
             </div>
             <div className={s.item}>
-                <NavLink to="/Dialogs" activeClassName={s.active}>Messages</NavLink>
+                <NavLink to="/components/Dialogs/dialogsContainer" activeClassName={s.active}>Messages</NavLink>
             </div>
             <div className={s.item}>
                 <NavLink to="#">Music</NavLink>

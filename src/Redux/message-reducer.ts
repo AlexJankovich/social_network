@@ -36,6 +36,6 @@ export const messageReducer = (state:messageDataType=initialState, action:Action
 export const AddMessageAC = ():AddMessageActionType => {
     return {type: "ADD-MESSAGE"}
 }
-export const OnChangeMessageAC = (message: string):OnChangeMessageHandlerActionType => {
+export let OnChangeMessageAC = (message: string):OnChangeMessageHandlerActionType => {
     return {type: "ON-CHANGE-MESSAGE", message: message}
 }
