@@ -1,6 +1,6 @@
 import s from "./message.module.css";
 import React, {ChangeEvent} from "react";
-import {messagesType} from "../../Redux/store";
+import {messagesType} from "../../Redux/message-reducer";
 
 type MessageType = {
     messages: Array<messagesType>
@@ -23,7 +23,10 @@ export const Message = (props: MessageType) => {
             <span>{m.message}</span>
         </div>)
 
-    return <div>{mapMessages}
+    return <div className={s.wrapperMessages}>
+        <div className={s.messages}>
+        {mapMessages}
+        </div>
         <div>
             <textarea value={props.onChangeMessageData}
                       onChange={onChangeMassageHandler}

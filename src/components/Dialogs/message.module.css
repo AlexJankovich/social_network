@@ -1,3 +1,13 @@
+.wrapperMessages {
+    border-right: 2px solid;
+    display: inline-block;
+    padding-right: 10px;
+}
+
 .message{
 
+}
+
+.messages {
+    padding: 10px;
 }

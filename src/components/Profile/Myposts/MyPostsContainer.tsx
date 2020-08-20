@@ -1,26 +1,29 @@
 import React from "react";
 import {AddPostAC, WritePostAC} from "../../../Redux/postData-reducer";
 import {MyPosts} from "./MyPosts";
+import {connect} from "react-redux";
 
-type MyPostsType = {
-    store:any
+const mapStateToProps = (state:any)=>{
+    return{
+        post: state.postData.post,
+        newMessageData: state.postData.newMessageData
+    }
 }
 
-export const MyPostsContainer = (props: MyPostsType) => {
+const mapDispatchToProps = (dispatch:any)=>{
+    return {
+        addPost:() => {
+            // debugger
+            dispatch(AddPostAC())
+        },
+        writePost : (message: string) => {
+            const action = dispatch(WritePostAC(message))
+            dispatch(action)
+        }
 
-    const addPost = () => {
-        // debugger
-        props.store.dispatch(AddPostAC())
     }
-    const writePost = (message:string) => {
-        props.store.dispatch(WritePostAC(message))
-    }
-
-    return <MyPosts post={props.store.getState().postData.post}
-                    newMessageData={props.store.getState().postData.newMessageData}
-                    addPost={addPost}
-                    writePost={writePost}
-    />
-
 }
+
+export const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
+
 

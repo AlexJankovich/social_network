@@ -1,6 +1,24 @@
-import {ActionType, postDataType, WritePostActionType} from "./store";
+type AddPostActionType = {
+    type: 'ADD-POST'
+}
+type WritePostActionType = {
+    type: 'WRITE-POST'
+    newText: string
+}
 
-let initialState = {
+export type ActionType = AddPostActionType|WritePostActionType
+export type postType = {
+    id: string,
+    name: string,
+    message: string,
+    time: string,
+    isRead: boolean
+}
+export type postDataType = {
+    post: Array<postType>
+    newMessageData: string
+}
+const initialState = {
     post: [
         {
             id: '1',

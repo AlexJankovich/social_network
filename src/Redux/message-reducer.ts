@@ -1,6 +1,9 @@
-import {ActionType, AddMessageActionType, messageDataType, OnChangeMessageHandlerActionType} from "./store";
+export type messagesType = { id: string, message: string }
+export type messageDataType = {
+    messages: Array<messagesType>
+    onChangeMessageData: string}
 
-let initialState = {
+const initialState = {
         messages: [
             {id: '1', message: 'message1'},
             {id: '2', message: 'message2'},
@@ -11,6 +14,15 @@ let initialState = {
         ],
         onChangeMessageData: '',
 }
+
+type OnChangeMessageHandlerActionType = {
+    type: 'ON-CHANGE-MESSAGE'
+    message: string
+}
+type AddMessageActionType = {
+    type: 'ADD-MESSAGE'
+}
+type ActionType = OnChangeMessageHandlerActionType | AddMessageActionType
 
 export const messageReducer = (state:messageDataType=initialState, action:ActionType)=>{
     switch (action.type) {

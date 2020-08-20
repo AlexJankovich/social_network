@@ -1,32 +1,35 @@
-import React, {ReactNode} from "react";
-import Dialogs from "./dialogs";
-import {AddMessageAC, OnChangeMessageAC} from "../../Redux/message-reducer";
-import {Message} from "./message";
 
-type DialogsContainerType = {
-    store:any
+import {connect} from "react-redux";
+import {AddMessageAC, OnChangeMessageAC} from "../../Redux/message-reducer";
+import { Message } from "./message";
+import Dialogs from "./dialogs";
+
+
+const mapStateToProps1 = (state: any) => {
+    return {
+        dialogs: state.dialogsData.dialogs
+    }
+}
+const mapStateToProps2 = (state: any) => {
+    return {
+        messages: state.messageData.messages,
+        onChangeMessageData: state.messageData.onChangeMessageData
+    }
+}
+const mapDispatchToProps = (dispatch:any) => {
+    return {
+        AddMessage: () => {
+            dispatch(AddMessageAC())
+        },
+        onChangeMassageHandler: (message: string) => {
+            const action = dispatch(OnChangeMessageAC(message))
+            dispatch(action)
+        }
+    }
 }
 
-export const DialogsContainer: React.FC<DialogsContainerType> = (props) => {
-    const AddMessage = () => {
-        props.store.dispatch(AddMessageAC())
-    }
-    let onChangeMassageHandler = (message: string) => {
-        props.store.dispatch(OnChangeMessageAC(message))
-    }
-
-        return (
-            <>
-                <Dialogs dialogs={props.store.getState().dialogsData.dialogs}/>
-                <Message messages={props.store.getState().messageData.messages}
-                         AddMessage={AddMessage}
-                         onChangeMassageHandler={onChangeMassageHandler}
-                         onChangeMessageData={props.store.getState().messageData.onChangeMessageData}/>
-            </>
-
-        )
-    }
-
+export const DialogContainer1 = connect(mapStateToProps1)(Dialogs)
+export const MessagesContainer2 = connect(mapStateToProps2, mapDispatchToProps)(Message)
 
 
 

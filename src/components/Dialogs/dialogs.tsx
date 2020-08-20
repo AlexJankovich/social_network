@@ -1,7 +1,8 @@
 import React from "react";
 import s from './dialogs.module.css';
-import {dialogsType} from "../../Redux/store";
+
 import {NavLink} from "react-router-dom";
+import {dialogsType} from "../../Redux/dialogs-reducer";
 
 type DialogsType = {
     dialogs: Array<dialogsType>
@@ -15,8 +16,8 @@ const Dialogs = (props: DialogsType) => {
         </div>)
 
     return (
-        <div className={s.dialogs}>
-            <div className={s.dialogsItem}>
+        <div>
+            <div >
                 {Dialog}
             </div>
         </div>

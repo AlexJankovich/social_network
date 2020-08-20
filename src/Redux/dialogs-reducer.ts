@@ -1,4 +1,6 @@
-import {ActionType, dialogsDataType} from "./store";
+export type dialogsDataType = { dialogs:Array<dialogsType> }
+export type dialogsType = { id: string, name: string }
+
 let initialState = {
     dialogs:[
         {id: '1', name: 'name1'},
@@ -10,6 +12,6 @@ let initialState = {
     ]
 }
 
-export const dialogsReducer = (state:dialogsDataType = initialState, action: ActionType)=>{
+export const dialogsReducer = (state:dialogsDataType = initialState)=>{
     return state
 }
