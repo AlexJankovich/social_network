@@ -27,19 +27,14 @@ type ActionType = OnChangeMessageHandlerActionType | AddMessageActionType
 export const messageReducer = (state:messageDataType=initialState, action:ActionType)=>{
     switch (action.type) {
         case "ADD-MESSAGE": {
-            const copyState = {...state}
             const NewMessage = {
                 id: '8',
-                message: copyState.onChangeMessageData
+                message: state.onChangeMessageData
             }
-            copyState.messages.push(NewMessage)
-            copyState.onChangeMessageData = ''
-            return copyState
+            return {...state,messages:[...state.messages,NewMessage],onChangeMessageData:''}
         }
         case "ON-CHANGE-MESSAGE": {
-            const copyState = {...state}
-            copyState.onChangeMessageData = action.message
-            return copyState
+            return {...state, onChangeMessageData: action.message}
         }
         default:
             return state

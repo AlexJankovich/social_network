@@ -1,9 +1,8 @@
-
 import {connect} from "react-redux";
 import {AddMessageAC, OnChangeMessageAC} from "../../Redux/message-reducer";
 import { Message } from "./message";
 import Dialogs from "./dialogs";
-
+import {Dispatch} from "redux";
 
 const mapStateToProps1 = (state: any) => {
     return {
@@ -16,7 +15,7 @@ const mapStateToProps2 = (state: any) => {
         onChangeMessageData: state.messageData.onChangeMessageData
     }
 }
-const mapDispatchToProps = (dispatch:any) => {
+const mapDispatchToProps = (dispatch:Dispatch) => {
     return {
         AddMessage: () => {
             dispatch(AddMessageAC())

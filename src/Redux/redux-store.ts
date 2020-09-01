@@ -2,16 +2,18 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {postReducer} from "./postData-reducer";
 import {messageReducer} from "./message-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
+import {UsersReducer} from "./users-reduser";
 
-let reducers = combineReducers({
+const reducers = combineReducers({
     postData:postReducer,
     messageData:messageReducer,
-    dialogsData:dialogsReducer
+    dialogsData:dialogsReducer,
+    usersData:UsersReducer
 });
 
-type reducersType = typeof reducers;
-export type AppStateType = ReturnType<reducersType>
+// type reducersType = typeof reducers;
+export type AppStateType = ReturnType<typeof reducers>
 
-let store = createStore(reducers, applyMiddleware());
+const store = createStore(reducers);
 
 export default store;

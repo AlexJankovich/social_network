@@ -61,23 +61,17 @@ const initialState = {
 export const postReducer = (state: postDataType = initialState, action: ActionType) => {
     switch (action.type) {
         case "ADD-POST": {
-            const copyState = {...state}
             let NewPost = {
                 id: '6',
                 name: 'someName',
-                message: copyState.newMessageData,
+                message: state.newMessageData,
                 time: new Date().toTimeString().slice(0, 5),
                 isRead: false
             };
-            copyState.post.push(NewPost)
-            copyState.newMessageData = ''
-
-            return copyState
+            return {...state, post:[...state.post, NewPost], newMessageData:''}
         }
         case "WRITE-POST":
-            const copyState = {...state}
-            copyState.newMessageData = action.newText
-            return copyState
+            return {...state,newMessageData: action.newText}
         default:
             return state
     }

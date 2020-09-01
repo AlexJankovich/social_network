@@ -9,8 +9,10 @@
 }
 
 .appWrapperContent {
-  background-color: aqua;
+  /*background-color: #9dab6a;*/
+  background-image: url("https://i.pinimg.com/736x/1c/d9/c5/1cd9c584f78937cae0e1fdb6e9460e59--old-paper-parchment-paper.jpg");
   grid-area: c;
   padding: 10px;
+  box-shadow: 0 0 10px;
 }
 

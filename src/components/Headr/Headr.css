@@ -1,9 +1,11 @@
 .header {
     grid-area: h;
-    background-color: chartreuse;
-
+    /*background-color: #e2db6c;*/
+    background-image: url("https://www.oko-ra.ru/wp-content/uploads/2016/12/pergament2.jpg");
+    box-shadow: 0 0 10px;
 }
 .header img {
-    border: 2px solid;
+    /*border: 2px solid;*/
     margin: 3px;
+    box-shadow: 0 0 10px;
 }
