@@ -14,5 +14,12 @@
   grid-area: c;
   padding: 10px;
   box-shadow: 0 0 10px;
+  z-index: 1;
 }
-
+.preloader {
+  position: absolute;
+  /*display: inline-block;*/
+  z-index: 2;
+  margin: 200px auto;
+  left: 50%;
+}

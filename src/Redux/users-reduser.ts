@@ -15,13 +15,15 @@ export type UserInfoType = {
     }
 }
 
-type UserDataType = {
+export type UserDataType = {
     users: Array<UserInfoType>
     pageSize: number
     totalUserCount: number
     currentPage: number
     pagesNumberCount: number
     startPagesCount: number
+    isFetching: boolean
+    inputPage: number | null | string
 }
 
 const initialState: UserDataType = {
@@ -29,8 +31,10 @@ const initialState: UserDataType = {
     pageSize: 5,
     totalUserCount: 18,
     currentPage: 1,
-    pagesNumberCount:10,
+    pagesNumberCount: 10,
     startPagesCount: 1,
+    isFetching: false,
+    inputPage: ''
 }
 
 type FollowACType = {
@@ -55,19 +59,29 @@ type setTotalUsersCountType = {
 }
 type changePageListUppType = {
     type: "CHANGE-PAGE-LIST-UPP"
-    pagesCount:number
+    pagesCount: number
 }
 type changePageListDownType = {
     type: "CHANGE-PAGE-LIST-DOWN"
 }
 type toAndPageType = {
     type: "TO-AND-PAGE"
-    pagesCount:number
+    pagesCount: number
 }
 type toStartPageType = {
     type: "TO-START-PAGE"
 }
-
+type toggleIsFetchingType = {
+    type: 'TOGGLE-IS-FETCHING'
+    isFetching: boolean
+}
+type toPageNumberType = {
+    type: 'TO-PAGE-NUMBER'
+}
+type changeInputValue = {
+    type: 'ON-CHANGE-VALUE'
+    value: number | string
+}
 export type UsersActionType =
     FollowACType
     | UnFollowACType
@@ -78,7 +92,9 @@ export type UsersActionType =
     | changePageListDownType
     | toAndPageType
     | toStartPageType
-
+    | toggleIsFetchingType
+    | toPageNumberType
+    | changeInputValue
 
 
 export const UsersReducer = (state: UserDataType = initialState, action: UsersActionType) => {
@@ -106,63 +122,90 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
         case "SET-USERS": {
             return {...state, users: action.users}
         }
-        case "SET-PAGE": {
-            return {...state, currentPage: action.page}
-        }
         case "SET-TOTAL-USERS-COUNT": {
             return {...state, totalUserCount: action.totalCount}
         }
-        case "CHANGE-PAGE-LIST-UPP":{
-            let newStartCount = state.startPagesCount+state.pagesNumberCount
-            if((newStartCount+state.pagesNumberCount)>=action.pagesCount){
-                newStartCount=action.pagesCount-state.pagesNumberCount
+        case "CHANGE-PAGE-LIST-UPP": {
+            debugger
+            let newStartCount = state.startPagesCount + state.pagesNumberCount
+            if ((newStartCount + state.pagesNumberCount) >= action.pagesCount) {
+                newStartCount = action.pagesCount - state.pagesNumberCount
             }
-            return {...state, startPagesCount:newStartCount }
+            return {...state, startPagesCount: newStartCount, currentPage: newStartCount}
         }
-        case "CHANGE-PAGE-LIST-DOWN":{
-            let newStartCount = state.startPagesCount-state.pagesNumberCount
-            if((newStartCount-state.pagesNumberCount)<=1){
-                newStartCount=1
+        case "CHANGE-PAGE-LIST-DOWN": {
+            let newStartCount = state.startPagesCount - state.pagesNumberCount
+            if ((newStartCount - state.pagesNumberCount) <= 1) {
+                newStartCount = 1
             }
-            return {...state, startPagesCount:newStartCount }
+            return {...state, startPagesCount: newStartCount, currentPage: newStartCount}
         }
-        case "TO-AND-PAGE":{
-            let newStartCount = action.pagesCount-state.pagesNumberCount
-            return {...state, startPagesCount:newStartCount }
+        case "TO-AND-PAGE": {
+            let newStartCount = action.pagesCount - state.pagesNumberCount
+            return {...state, startPagesCount: newStartCount}
         }
-        case "TO-START-PAGE":{
-            return {...state, startPagesCount:1, currentPage:1}
+        case "TO-START-PAGE": {
+            return {...state, startPagesCount: 1, currentPage: 1}
+        }
+        case "SET-PAGE": {
+            debugger
+            return {...state, currentPage: action.page}
+        }
+        case "TOGGLE-IS-FETCHING": {
+            return {...state, isFetching: action.isFetching}
+        }
+        case "TO-PAGE-NUMBER": {
+            return {
+                ...state,
+                currentPage: state.inputPage,
+                startPagesCount: state.inputPage,
+                inputPage: null
+            }
+        }
+        case "ON-CHANGE-VALUE": {
+            return {
+                ...state, inputPage: action.value
+            }
         }
         default:
             return state
     }
 }
-export const FollowAC = (userId: string): FollowACType => {
+export const follow = (userId: string): FollowACType => {
     return {type: "FOLLOW", userId}
 }
-export let UnFollowAC = (userId: string): UnFollowACType => {
+export let unfollow = (userId: string): UnFollowACType => {
     return {type: "UNFOLLOW", userId}
 }
-export const setUsersAC = (users: Array<UserInfoType>): setUsersAC => {
+export const setUsers = (users: Array<UserInfoType>): setUsersAC => {
     return {type: 'SET-USERS', users}
 }
-export const SetPageAC = (page: number): setPageType => {
+export const setPage = (page: number): setPageType => {
     return {type: "SET-PAGE", page}
 }
-export const setTotalUsersCountAC = (totalCount: number): setTotalUsersCountType => {
+export const setTotalUsersCount = (totalCount: number): setTotalUsersCountType => {
     return {type: "SET-TOTAL-USERS-COUNT", totalCount}
 }
-export const ChangePageListUppAC=(pagesCount:number):changePageListUppType=>{
-    return{type:'CHANGE-PAGE-LIST-UPP', pagesCount}
+export const changePageListUpp = (pagesCount: number): changePageListUppType => {
+    return {type: 'CHANGE-PAGE-LIST-UPP', pagesCount}
 }
-export const ChangePageListDownAC=():changePageListDownType=>{
-    return{type:'CHANGE-PAGE-LIST-DOWN'}
+export const changePageListDown = (): changePageListDownType => {
+    return {type: 'CHANGE-PAGE-LIST-DOWN'}
 }
-export const ToAndPageAC=(pagesCount:number):toAndPageType=>{
-    return{type:'TO-AND-PAGE', pagesCount}
+export const toAndPage = (pagesCount: number): toAndPageType => {
+    return {type: 'TO-AND-PAGE', pagesCount}
 }
-export const ToStartPageAC=():toStartPageType=>{
-    return{type:'TO-START-PAGE'}
+export const toStartPage = (): toStartPageType => {
+    return {type: 'TO-START-PAGE'}
+}
+export const toggleIsFetching = (isFetching: boolean): toggleIsFetchingType => {
+    return {type: 'TOGGLE-IS-FETCHING', isFetching}
+}
+export const toPageNumber = (): toPageNumberType => {
+    return {type: "TO-PAGE-NUMBER"}
+}
+export const onChangeInput = (value: number | string): changeInputValue => {
+    return {type: "ON-CHANGE-VALUE", value}
 }
 
 // export type usersDispatchTypes={

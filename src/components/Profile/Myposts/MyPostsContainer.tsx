@@ -1,4 +1,3 @@
-import React from "react";
 import {AddPostAC, WritePostAC} from "../../../Redux/postData-reducer";
 import {MyPosts} from "./MyPosts";
 import {connect} from "react-redux";

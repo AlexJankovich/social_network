@@ -1,113 +1,141 @@
-import React, {useState} from "react";
-import {UserInfoType} from "../../Redux/users-reduser";
-import styles from './users.module.css';
-import axios from 'axios';
-import avaDefault from '../../assets/images/avaSamuray.jpg'
+import React, {ChangeEvent, KeyboardEvent} from "react";
+import styles from "./users.module.css";
+import avaDefault from "../../assets/images/avaSamuray.jpg";
+import {UserDataType} from "../../Redux/users-reduser";
 
 type UsersType = {
-    users: Array<UserInfoType>
-    pageSize: number
-    totalUserCount: number
-    currentPage: number
-    follow: (userId: string) => void
-    unfollow: (userId: string) => void
-    setUsers: (users: Array<UserInfoType>) => void
-    setCurrentPage: (page: number) => void
-    setTotalUsersCount: (totalUserCount: number) => void
-    pagesNumberCount: number
-    startPagesCount: number
-    changePageListUpp: (pagesCount: number) => void
-    changePageListDown: () => void
-    toAndPage: (pagesCount: number) => void
-    toStartPage: () => void
+    userData: UserDataType
+
+    // users: Array<UserInfoType>//тут массив для орисовки
+    // pageSize: number//количество элементов на странице
+    // totalUserCount: number//общее количество элементов
+    // currentPage: number//текущая страница
+    // pagesNumberCount: number//число страниц на навигационной панели
+    // startPagesCount: number//начальный номер текущего списка страниц на навигационной панели
+    // isFetching: boolean
+
+    follow: (userId: string) => void//Подписаться на пользователя
+    unfollow: (userId: string) => void//Отписаться от пользователя
+    nextPageList: (pagesCount: number) => void//к следующему списку страниц
+    prevPage: () => void//к предидущему списку страниц
+    toAndPage: (pagesCount: number) => void//в конец списка
+    toStartPage: () => void//в начало списка
+    onPageChange: (pageNumber: number) => void//загрузка текущей страницы
+    setPage: (page: number) => void
+    toPageNumber: ()=>void
+    onChangeInput:(value:number|string)=>void
 }
 
-export class Users extends React.Component<UsersType, any> {
-    componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-            .then(response => {
-                this.props.setUsers(response.data.items)
-                this.props.setTotalUsersCount(response.data.totalCount)
-            });
+export const Users = (props: UsersType) => {
+    let pagesCount = Math.ceil(props.userData.totalUserCount / props.userData.pageSize);
+    let pages: Array<number> = [];
+    for (
+        let i = props.userData.startPagesCount;
+        i <= (props.userData.startPagesCount + props.userData.pagesNumberCount);
+        i++
+    ) {
+        pages.push(i)
     }
-
-    onPageChange = (pageNumber: number) => {
-        this.props.setCurrentPage(pageNumber)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
-            .then(response => {
-                this.props.setUsers(response.data.items)
-            });
+    const listUpp = () => {
+        props.nextPageList(pagesCount)
     }
-
-    render() {
-        let pagesCount = Math.ceil(this.props.totalUserCount / this.props.pageSize);
-        let pages = [];
-        for (let i = this.props.startPagesCount; i <= (this.props.startPagesCount + this.props.pagesNumberCount); i++) {
-            pages.push(i)
+    const toStartPage = () => {
+        props.toStartPage()
+        props.onPageChange(1)
+    }
+    const toEndPage = () => {
+        props.toAndPage(pagesCount)
+        props.onPageChange(pagesCount)
+    }
+    const onChange = (e:ChangeEvent<HTMLInputElement>) =>{
+        if(+e.currentTarget.value<1||+e.currentTarget.value>pagesCount){
+            props.onChangeInput('нет такой страницы')
+        }else {
+            props.onChangeInput(+e.target.value)
         }
-        return <div>
-            <div className={styles.pageListWrapper}>
-                <button onClick={() => {
-                    this.props.toStartPage()
-                    this.onPageChange(1)
-                }}>
-                    {"<<"}
-                </button>
-                <button onClick={this.props.changePageListDown}>
-                    {'<'}
-                </button>
-                {pages.map(p => <span
-                    className={this.props.currentPage === p ? styles.active : styles.hover}
-                    onClick={() => {
-                        this.onPageChange(p)
-                    }}
-                >
+    }
+    const goToPageNumber = ()=>{
+        props.toPageNumber()
+    }
+    const onKeyPress = (e:KeyboardEvent<HTMLInputElement>)=>{
+        if(e.charCode===13){
+            goToPageNumber()
+        }
+    }
+    return <div>
+        <div className={styles.pageListWrapper}>
+            <button
+                onClick={() => toStartPage()}
+                disabled={props.userData.isFetching}
+            >
+                {"<<"}
+            </button>
+            <button
+                onClick={props.prevPage}
+                disabled={props.userData.isFetching}
+            >
+                {'<'}
+            </button>
+            {pages.map(p => <span
+                className={props.userData.currentPage === p ? styles.active : styles.hover}
+                onClick={() => props.onPageChange(p)}
+            >
                     {p} </span>)}
 
-                <button onClick={() => this.props.changePageListUpp(pagesCount)}>
-                    {">"}
-                </button>
-                <button onClick={() => {
-                    this.props.toAndPage(pagesCount)
-                    this.onPageChange(pagesCount)
-                }}>
-                    {">>"}
-                </button>
+            <button
+                onClick={listUpp}
+                disabled={props.userData.isFetching}
+            >
+                {">"}
+            </button>
+            <button
+                disabled={props.userData.isFetching}
+                onClick={() => toEndPage()}
+            >
+                {">>"}
+            </button>
+            <input type='number'
+                   placeholder='№'
+                   onChange={onChange}
+                   value={props.userData.inputPage == null? '':props.userData.inputPage}
+                   className={styles.input}
+                   onKeyPress={onKeyPress}
+            />
+            <button onClick={goToPageNumber}>Go</button>
 
-            </div>
+        </div>
 
-            {
-                this.props.users.map(u => {
-                        const follow = () => {
-                            this.props.follow(u.id)
-                        }
-                        const unfollow = () => {
-                            this.props.unfollow(u.id)
-                        }
-                        return <div key={u.id} className={styles.usersWrapper}>
-                            <div className={styles.avatarWrapper}>
-                                <div>
-                                    <img src={u.photos.small ? u.photos.small : avaDefault} className={styles.userPhoto}/>
-                                </div>
-                                <div>{u.followed ?
-                                    <button onClick={unfollow}>unFollow</button>
-                                    : <button onClick={follow}>Follow</button>}
-                                </div>
+        {
+            props.userData.users.map(u => {
+                    const follow = () => {
+                        props.follow(u.id)
+                    }
+                    const unfollow = () => {
+                        props.unfollow(u.id)
+                    }
+                    return <div key={u.id} className={styles.usersWrapper}>
+                        <div className={styles.avatarWrapper}>
+                            <div>
+                                <img src={u.photos.small ? u.photos.small : avaDefault}
+                                     className={styles.userPhoto}/>
                             </div>
-                            <div className={styles.usersInfo}>
-                                <div className={styles.nameAndStatus}>
-                                    <div className={styles.name}>{u.name}</div>
-                                    <div className={styles.status}>{u.status ? u.status : 'empty'}</div>
-                                </div>
-                                <div className={styles.usersLocation}>
-                                    <div className={styles.country}>{"u.location.country"}</div>
-                                    <div className={styles.city}>{"u.location.city"}</div>
-                                </div>
+                            <div>{u.followed ?
+                                <button onClick={unfollow}>unFollow</button>
+                                : <button onClick={follow}>Follow</button>}
                             </div>
                         </div>
-                    }
-                )
-            }</div>
-    }
+                        <div className={styles.usersInfo}>
+                            <div className={styles.nameAndStatus}>
+                                <div className={styles.name}>{u.name}</div>
+                                <div className={styles.status}>{u.status ? u.status : 'empty'}</div>
+                            </div>
+                            <div className={styles.usersLocation}>
+                                <div className={styles.country}>{"u.location.country"}</div>
+                                <div className={styles.city}>{"u.location.city"}</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            )
+        }</div>
 }
-

@@ -109,3 +109,9 @@ button:hover{
     transform: scale(1.2);
     transition: 0.5s;
 }
+
+input{
+    min-width: 50px;
+    text-align: center;
+    border-radius: 10px;
+}
