@@ -12,25 +12,19 @@ import {
 import React from "react";
 import axios from "axios";
 import {Users} from "./Users";
-import loader from '../../assets/images/loading.gif'
+import {Preloader} from "../../common/Preloader";
 
 type UsersApiType = {
     usersData: UserDataType
-    // pageSize: number
-    // totalUserCount: number
-    // currentPage: number
     follow: (userId: string) => void
     unfollow: (userId: string) => void
     setUsers: (users: Array<UserInfoType>) => void
     setPage: (page: number) => void
     setTotalUsersCount: (totalUserCount: number) => void
-    // pagesNumberCount: number
-    // startPagesCount: number
     changePageListUpp: (pagesCount: number) => void
     changePageListDown: () => void
     toAndPage: (pagesCount: number) => void
     toStartPage: () => void
-    // isFetching: boolean
     toggleIsFetching: (isFetching: boolean) => void
     toPageNumber: ()=>void
     onChangeInput:(value:number|string)=>void
@@ -39,6 +33,7 @@ type UsersApiType = {
 class UsersAPIComp extends React.Component<UsersApiType> {
 
     componentDidMount() {
+        // debugger
         this.props.toggleIsFetching(true)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.usersData.currentPage}&count=${this.props.usersData.pageSize}`)
             .then(response => {
@@ -69,23 +64,20 @@ class UsersAPIComp extends React.Component<UsersApiType> {
     prevPage = () => {
         this.props.changePageListDown()
     }
+
+    loading=(load:boolean)=>{
+        if(load){
+            return <Preloader/>
+        }
+    }
+
     render() {
         return (
-            <>
-                {this.props.usersData.isFetching ?
-                    <div className='preloader'>
-                        <img src={loader} alt="loading"/>
-                    </div>
-                    : null}
+            <>{this.loading(this.props.usersData.isFetching)}
                 <Users
                     onChangeInput={this.props.onChangeInput}
                     userData={this.props.usersData}
-                    // users={this.props.usersData.users}
-                    // pageSize={this.props.pageSize}
-                    // totalUserCount={this.props.totalUserCount}
-                    // currentPage={this.props.currentPage}
-                    // pagesNumberCount={this.props.pagesNumberCount}
-                    // startPagesCount={this.props.startPagesCount}
+
                     setPage={this.props.setPage}
                     nextPageList={this.nextPageList}
                     prevPage={this.prevPage}
@@ -105,31 +97,8 @@ class UsersAPIComp extends React.Component<UsersApiType> {
 const mapStateToProps = (state: AppStateType) => {
     return {
         usersData: state.usersData,
-        // pageSize: state.usersData.pageSize,
-        // totalUserCount: state.usersData.totalUserCount,
-        // currentPage: state.usersData.currentPage,
-        // pagesNumberCount: state.usersData.pagesNumberCount,
-        // startPagesCount: state.usersData.startPagesCount,
-        // isFetching: state.usersData.isFetching
     }
 }
-// const mapDispatchToProps = () => {
-//     return {
-//         follow: FollowAC,
-//         unfollow: UnFollowAC,
-//         setUsers: setUsersAC,
-//         setCurrentPage: SetPageAC,
-//         setTotalUsersCount: setTotalUsersCountAC,
-//         changePageListUpp: ChangePageListUppAC,
-//         changePageListDown: ChangePageListDownAC,
-//         toAndPage: ToAndPageAC,
-//         toStartPage: ToStartPageAC,
-//         toggleIsFetching: ToggleIsFetchingAC,
-//         toPageNumber: ToPageNumberAC,
-//         oncChangeInput:OnChangeInputValueAC
-//     }
-
-
 
 export const UsersContainer = connect(mapStateToProps, {follow,
     unfollow,

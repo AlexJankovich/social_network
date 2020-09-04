@@ -97,7 +97,7 @@ export type UsersActionType =
     | changeInputValue
 
 
-export const UsersReducer = (state: UserDataType = initialState, action: UsersActionType) => {
+export const UsersReducer = (state: UserDataType = initialState, action: UsersActionType): UserDataType => {
     switch (action.type) {
         case "FOLLOW": {
             return {
@@ -148,7 +148,6 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
             return {...state, startPagesCount: 1, currentPage: 1}
         }
         case "SET-PAGE": {
-            debugger
             return {...state, currentPage: action.page}
         }
         case "TOGGLE-IS-FETCHING": {
@@ -157,8 +156,8 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
         case "TO-PAGE-NUMBER": {
             return {
                 ...state,
-                currentPage: state.inputPage,
-                startPagesCount: state.inputPage,
+                currentPage: state.inputPage as number,
+                startPagesCount: state.inputPage as number,
                 inputPage: null
             }
         }

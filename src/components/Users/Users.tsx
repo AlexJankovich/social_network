@@ -2,18 +2,10 @@ import React, {ChangeEvent, KeyboardEvent} from "react";
 import styles from "./users.module.css";
 import avaDefault from "../../assets/images/avaSamuray.jpg";
 import {UserDataType} from "../../Redux/users-reduser";
+import {NavLink} from "react-router-dom";
 
 type UsersType = {
     userData: UserDataType
-
-    // users: Array<UserInfoType>//тут массив для орисовки
-    // pageSize: number//количество элементов на странице
-    // totalUserCount: number//общее количество элементов
-    // currentPage: number//текущая страница
-    // pagesNumberCount: number//число страниц на навигационной панели
-    // startPagesCount: number//начальный номер текущего списка страниц на навигационной панели
-    // isFetching: boolean
-
     follow: (userId: string) => void//Подписаться на пользователя
     unfollow: (userId: string) => void//Отписаться от пользователя
     nextPageList: (pagesCount: number) => void//к следующему списку страниц
@@ -22,11 +14,12 @@ type UsersType = {
     toStartPage: () => void//в начало списка
     onPageChange: (pageNumber: number) => void//загрузка текущей страницы
     setPage: (page: number) => void
-    toPageNumber: ()=>void
-    onChangeInput:(value:number|string)=>void
+    toPageNumber: () => void
+    onChangeInput: (value: number | string) => void
 }
 
 export const Users = (props: UsersType) => {
+    // debugger
     let pagesCount = Math.ceil(props.userData.totalUserCount / props.userData.pageSize);
     let pages: Array<number> = [];
     for (
@@ -47,22 +40,23 @@ export const Users = (props: UsersType) => {
         props.toAndPage(pagesCount)
         props.onPageChange(pagesCount)
     }
-    const onChange = (e:ChangeEvent<HTMLInputElement>) =>{
-        if(+e.currentTarget.value<1||+e.currentTarget.value>pagesCount){
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (+e.currentTarget.value < 1 || +e.currentTarget.value > pagesCount) {
             props.onChangeInput('нет такой страницы')
-        }else {
+        } else {
             props.onChangeInput(+e.target.value)
         }
     }
-    const goToPageNumber = ()=>{
+    const goToPageNumber = () => {
         props.toPageNumber()
     }
-    const onKeyPress = (e:KeyboardEvent<HTMLInputElement>)=>{
-        if(e.charCode===13){
+    const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.charCode === 13) {
             goToPageNumber()
         }
     }
     return <div>
+
         <div className={styles.pageListWrapper}>
             <button
                 onClick={() => toStartPage()}
@@ -79,6 +73,7 @@ export const Users = (props: UsersType) => {
             {pages.map(p => <span
                 className={props.userData.currentPage === p ? styles.active : styles.hover}
                 onClick={() => props.onPageChange(p)}
+                key={p}
             >
                     {p} </span>)}
 
@@ -97,7 +92,7 @@ export const Users = (props: UsersType) => {
             <input type='number'
                    placeholder='№'
                    onChange={onChange}
-                   value={props.userData.inputPage == null? '':props.userData.inputPage}
+                   value={props.userData.inputPage == null ? '' : props.userData.inputPage}
                    className={styles.input}
                    onKeyPress={onKeyPress}
             />
@@ -107,35 +102,37 @@ export const Users = (props: UsersType) => {
 
         {
             props.userData.users.map(u => {
-                    const follow = () => {
-                        props.follow(u.id)
-                    }
-                    const unfollow = () => {
-                        props.unfollow(u.id)
-                    }
-                    return <div key={u.id} className={styles.usersWrapper}>
-                        <div className={styles.avatarWrapper}>
-                            <div>
+                const follow = () => {
+                    props.follow(u.id)
+                }
+                const unfollow = () => {
+                    props.unfollow(u.id)
+                }
+                return <div key={u.id} className={styles.usersWrapper}>
+                    <div className={styles.avatarWrapper}>
+                        <div>
+                            <NavLink to={'/profile/' + u.id}>
                                 <img src={u.photos.small ? u.photos.small : avaDefault}
                                      className={styles.userPhoto}/>
-                            </div>
-                            <div>{u.followed ?
-                                <button onClick={unfollow}>unFollow</button>
-                                : <button onClick={follow}>Follow</button>}
-                            </div>
+                            </NavLink>
                         </div>
-                        <div className={styles.usersInfo}>
-                            <div className={styles.nameAndStatus}>
-                                <div className={styles.name}>{u.name}</div>
-                                <div className={styles.status}>{u.status ? u.status : 'empty'}</div>
-                            </div>
-                            <div className={styles.usersLocation}>
-                                <div className={styles.country}>{"u.location.country"}</div>
-                                <div className={styles.city}>{"u.location.city"}</div>
-                            </div>
+                        <div>{u.followed ?
+                            <button onClick={unfollow}>unFollow</button>
+                            : <button onClick={follow}>Follow</button>}
                         </div>
                     </div>
-                }
-            )
+                    <div className={styles.usersInfo}>
+                        <div className={styles.nameAndStatus}>
+                            <div className={styles.name}>{u.name}</div>
+                            <div className={styles.status}>{u.status ? u.status : 'empty'}</div>
+                        </div>
+                        <div className={styles.usersLocation}>
+                            <div className={styles.country}>{"u.location.country"}</div>
+                            <div className={styles.city}>{"u.location.city"}</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        )
         }</div>
 }

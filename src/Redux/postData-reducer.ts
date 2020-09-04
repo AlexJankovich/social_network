@@ -5,8 +5,38 @@ type WritePostActionType = {
     type: 'WRITE-POST'
     newText: string
 }
+type setUserProfileActionType = {
+    type: 'SET-USER-PROFILE'
+    profile: profileUsersType
+}
 
-export type ActionType = AddPostActionType|WritePostActionType
+export type ActionType =
+    AddPostActionType
+    | WritePostActionType
+    | setUserProfileActionType
+
+export type profileUsersType = {
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: {
+        github: string
+        vk: string
+        facebook: string
+        instagram: string
+        twitter: string
+        website: string
+        youtube: string
+        mainLink: string
+    }
+    photos: {
+        small: string | null
+        large: string | null
+    }
+
+
+}
 export type postType = {
     id: string,
     name: string,
@@ -17,8 +47,10 @@ export type postType = {
 export type postDataType = {
     post: Array<postType>
     newMessageData: string
+    profile: profileUsersType|null
 }
-const initialState = {
+
+const initialState: postDataType = {
     post: [
         {
             id: '1',
@@ -56,7 +88,8 @@ const initialState = {
             isRead: false
         },
     ],
-    newMessageData: ''
+    newMessageData: '',
+    profile: null
 }
 export const postReducer = (state: postDataType = initialState, action: ActionType) => {
     switch (action.type) {
@@ -68,10 +101,13 @@ export const postReducer = (state: postDataType = initialState, action: ActionTy
                 time: new Date().toTimeString().slice(0, 5),
                 isRead: false
             };
-            return {...state, post:[...state.post, NewPost], newMessageData:''}
+            return {...state, post: [...state.post, NewPost], newMessageData: ''}
         }
         case "WRITE-POST":
-            return {...state,newMessageData: action.newText}
+            return {...state, newMessageData: action.newText}
+        case "SET-USER-PROFILE": {
+            return {...state, profile: action.profile}
+        }
         default:
             return state
     }
@@ -80,5 +116,8 @@ export const AddPostAC = (): ActionType => {
     return {type: "ADD-POST"}
 };
 export const WritePostAC = (newText: string): WritePostActionType => {
-    return {type: "WRITE-POST" , newText: newText}
+    return {type: "WRITE-POST", newText: newText}
 };
+export const setUserProfile = (profile: profileUsersType): setUserProfileActionType => {
+    return {type: "SET-USER-PROFILE", profile}
+}
