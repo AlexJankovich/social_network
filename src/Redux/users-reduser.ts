@@ -23,7 +23,6 @@ export type UserDataType = {
     pagesNumberCount: number
     startPagesCount: number
     isFetching: boolean
-    inputPage: number | null | string
 }
 
 const initialState: UserDataType = {
@@ -34,7 +33,6 @@ const initialState: UserDataType = {
     pagesNumberCount: 10,
     startPagesCount: 1,
     isFetching: false,
-    inputPage: ''
 }
 
 type FollowACType = {
@@ -77,6 +75,8 @@ type toggleIsFetchingType = {
 }
 type toPageNumberType = {
     type: 'TO-PAGE-NUMBER'
+    newPage:number
+    pagesCount:number
 }
 type changeInputValue = {
     type: 'ON-CHANGE-VALUE'
@@ -154,18 +154,21 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
             return {...state, isFetching: action.isFetching}
         }
         case "TO-PAGE-NUMBER": {
+            let newStartPage = action.newPage
+            if(action.newPage+state.pagesNumberCount>action.pagesCount){
+                newStartPage=action.pagesCount-state.pagesNumberCount
+            }
             return {
                 ...state,
-                currentPage: state.inputPage as number,
-                startPagesCount: state.inputPage as number,
-                inputPage: null
+                currentPage: action.newPage ,
+                startPagesCount: newStartPage
             }
         }
-        case "ON-CHANGE-VALUE": {
-            return {
-                ...state, inputPage: action.value
-            }
-        }
+        // case "ON-CHANGE-VALUE": {
+        //     return {
+        //         ...state, inputPage: action.value
+        //     }
+        // }
         default:
             return state
     }
@@ -200,12 +203,12 @@ export const toStartPage = (): toStartPageType => {
 export const toggleIsFetching = (isFetching: boolean): toggleIsFetchingType => {
     return {type: 'TOGGLE-IS-FETCHING', isFetching}
 }
-export const toPageNumber = (): toPageNumberType => {
-    return {type: "TO-PAGE-NUMBER"}
+export const toPageNumber = (newPage:number, pagesCount:number): toPageNumberType => {
+    return {type: "TO-PAGE-NUMBER", newPage, pagesCount}
 }
-export const onChangeInput = (value: number | string): changeInputValue => {
-    return {type: "ON-CHANGE-VALUE", value}
-}
+// export const onChangeInput = (value: number | string): changeInputValue => {
+//     return {type: "ON-CHANGE-VALUE", value}
+// }
 
 // export type usersDispatchTypes={
 //     follow:(userId: string)=>void,

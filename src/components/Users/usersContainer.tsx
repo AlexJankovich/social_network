@@ -7,12 +7,13 @@ import {
     setUsers, toAndPage, toggleIsFetching, toStartPage,
     unfollow,
     UserInfoType,
-    UserDataType, toPageNumber, onChangeInput,
+    UserDataType, toPageNumber
 } from "../../Redux/users-reduser";
 import React from "react";
 import axios from "axios";
 import {Users} from "./Users";
 import {Preloader} from "../../common/Preloader";
+import {Slider} from "../../common/Slider";
 
 type UsersApiType = {
     usersData: UserDataType
@@ -26,8 +27,7 @@ type UsersApiType = {
     toAndPage: (pagesCount: number) => void
     toStartPage: () => void
     toggleIsFetching: (isFetching: boolean) => void
-    toPageNumber: ()=>void
-    onChangeInput:(value:number|string)=>void
+    toPageNumber: (newPage: number, pagesCount:number ) => void
 }
 
 class UsersAPIComp extends React.Component<UsersApiType> {
@@ -65,29 +65,26 @@ class UsersAPIComp extends React.Component<UsersApiType> {
         this.props.changePageListDown()
     }
 
-    loading=(load:boolean)=>{
-        if(load){
+    loading = (load: boolean) => {
+        if (load) {
             return <Preloader/>
         }
     }
 
     render() {
         return (
-            <>{this.loading(this.props.usersData.isFetching)}
-                <Users
-                    onChangeInput={this.props.onChangeInput}
-                    userData={this.props.usersData}
-
-                    setPage={this.props.setPage}
-                    nextPageList={this.nextPageList}
-                    prevPage={this.prevPage}
-                    // isFetching={this.props.isFetching}
-                    toPageNumber={this.props.toPageNumber}
-                    onPageChange={this.onPageChange}
-                    follow={this.props.follow}
-                    unfollow={this.props.unfollow}
-                    toAndPage={this.props.toAndPage}
-                    toStartPage={this.props.toStartPage}
+            <>{this.loading(this.props.usersData.isFetching)}.
+                <Slider {...this.props.usersData}
+                        toPageNumber={this.props.toPageNumber}
+                        toStartPage={this.props.toStartPage}
+                        toAndPage={this.props.toAndPage}
+                        onPageChange={this.onPageChange}
+                        prevPage={this.prevPage}
+                        nextPageList={this.nextPageList}
+                />
+                <Users users={this.props.usersData.users}
+                       follow={this.props.follow}
+                       unfollow={this.props.unfollow}
                 />
             </>
         )
@@ -100,7 +97,8 @@ const mapStateToProps = (state: AppStateType) => {
     }
 }
 
-export const UsersContainer = connect(mapStateToProps, {follow,
+export const UsersContainer = connect(mapStateToProps, {
+    follow,
     unfollow,
     setUsers,
     setPage,
@@ -110,5 +108,5 @@ export const UsersContainer = connect(mapStateToProps, {follow,
     toAndPage,
     toStartPage,
     toggleIsFetching,
-    toPageNumber,
-    onChangeInput})(UsersAPIComp)
+    toPageNumber
+})(UsersAPIComp)

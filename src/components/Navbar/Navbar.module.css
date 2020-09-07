@@ -6,7 +6,7 @@
     box-shadow: 0 0 10px;
 }
 
-.item {
+.nav .item {
     margin-left: 15px;
     /*color: white;*/
     margin-top: 5px;
@@ -20,7 +20,7 @@
     font-size: 24px;
     box-shadow: 0 0 10px;
 }
-.item:hover{
+.nav .item:hover{
     /*border: 1px solid;*/
     /*border-radius: 3px;*/
     /*padding: 3px;*/

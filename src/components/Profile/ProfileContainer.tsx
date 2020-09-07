@@ -41,7 +41,7 @@ class ProfileClass extends React.Component<ProfileType, profileUsersType> {
     render() {
         return (
             <>
-                {/*{this.loading(this.props.isFetching)}*/}
+                {this.loading(this.props.isFetching)}
                 <div>
                     <Profile
                         profile={this.props.profile} />

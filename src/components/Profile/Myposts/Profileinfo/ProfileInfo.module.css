@@ -1,7 +1,50 @@
-.ava img{
-    height: 50px;
+.ava img {
     margin-top: 10px;
 }
+
 img {
     height: 200px;
+}
+
+.contentWrapper {
+    display: flex;
+}
+
+.contactWrapper {
+    display: flex;
+    flex-direction: row;
+}
+.name{
+    display: flex;
+    flex-direction: column;
+}
+.name span{
+    font-size: 25px;
+    font-weight:bold ;
+}
+.contactName {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.contactLink {
+    margin: 0 0 0 10px;
+}
+
+.contentWrapper h3 {
+    margin: 10px 0 10px 10px;
+    border-top: 1px solid;
+}
+
+.aboutJob {
+    border-top: 1px solid;
+    margin: 20px 0 0 10px;
+    padding-top: 10px;
+}
+
+.contactLink span{
+    font-weight: bold;
 }

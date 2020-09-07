@@ -10,17 +10,17 @@
 
 .pageListWrapper{
     /*border: 1px solid;*/
+    box-sizing: content-box;
     border-radius: 8px;
     padding: 5px;
     display: inline-block;
-    width: auto;
+    /*width: auto;*/
     margin: 5px;
     box-shadow: 0 0 10px;
 }
 
-span:hover{
+.pageListWrapper span:hover{
     border: 1px solid;
-    border-radius: 3px;
     /*padding: 3px;*/
     /*margin: 2px;*/
     /*transform: scale(1.5);*/
@@ -53,7 +53,6 @@ span:hover{
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
-    /*background-color: #bcca82;*/
     box-shadow: 0 0 10px;
 }
 
@@ -67,7 +66,6 @@ span:hover{
     justify-content: space-between;
     flex-grow: 1;
     border-radius: 10px;
-    /*opacity: 0.5;*/
 }
 
 .nameAndStatus {
@@ -75,6 +73,7 @@ span:hover{
     flex-direction: column;
     justify-content: space-between;
     margin-left: 10px;
+    max-width: 350px;
     /*opacity: 1;*/
 }
 
@@ -85,6 +84,7 @@ span:hover{
 
 .status {
     font-size: 25px;
+    word-break:break-all;
 }
 
 .usersLocation {
@@ -111,7 +111,7 @@ button:hover{
 }
 
 input{
-    min-width: 50px;
+    max-width: 50px;
     text-align: center;
     border-radius: 10px;
 }

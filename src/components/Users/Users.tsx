@@ -1,107 +1,20 @@
-import React, {ChangeEvent, KeyboardEvent} from "react";
+import React from "react";
 import styles from "./users.module.css";
 import avaDefault from "../../assets/images/avaSamuray.jpg";
-import {UserDataType} from "../../Redux/users-reduser";
+import { UserInfoType} from "../../Redux/users-reduser";
 import {NavLink} from "react-router-dom";
 
 type UsersType = {
-    userData: UserDataType
+    users: Array<UserInfoType>
     follow: (userId: string) => void//Подписаться на пользователя
     unfollow: (userId: string) => void//Отписаться от пользователя
-    nextPageList: (pagesCount: number) => void//к следующему списку страниц
-    prevPage: () => void//к предидущему списку страниц
-    toAndPage: (pagesCount: number) => void//в конец списка
-    toStartPage: () => void//в начало списка
-    onPageChange: (pageNumber: number) => void//загрузка текущей страницы
-    setPage: (page: number) => void
-    toPageNumber: () => void
-    onChangeInput: (value: number | string) => void
 }
 
 export const Users = (props: UsersType) => {
-    // debugger
-    let pagesCount = Math.ceil(props.userData.totalUserCount / props.userData.pageSize);
-    let pages: Array<number> = [];
-    for (
-        let i = props.userData.startPagesCount;
-        i <= (props.userData.startPagesCount + props.userData.pagesNumberCount);
-        i++
-    ) {
-        pages.push(i)
-    }
-    const listUpp = () => {
-        props.nextPageList(pagesCount)
-    }
-    const toStartPage = () => {
-        props.toStartPage()
-        props.onPageChange(1)
-    }
-    const toEndPage = () => {
-        props.toAndPage(pagesCount)
-        props.onPageChange(pagesCount)
-    }
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (+e.currentTarget.value < 1 || +e.currentTarget.value > pagesCount) {
-            props.onChangeInput('нет такой страницы')
-        } else {
-            props.onChangeInput(+e.target.value)
-        }
-    }
-    const goToPageNumber = () => {
-        props.toPageNumber()
-    }
-    const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.charCode === 13) {
-            goToPageNumber()
-        }
-    }
+
     return <div>
-
-        <div className={styles.pageListWrapper}>
-            <button
-                onClick={() => toStartPage()}
-                disabled={props.userData.isFetching}
-            >
-                {"<<"}
-            </button>
-            <button
-                onClick={props.prevPage}
-                disabled={props.userData.isFetching}
-            >
-                {'<'}
-            </button>
-            {pages.map(p => <span
-                className={props.userData.currentPage === p ? styles.active : styles.hover}
-                onClick={() => props.onPageChange(p)}
-                key={p}
-            >
-                    {p} </span>)}
-
-            <button
-                onClick={listUpp}
-                disabled={props.userData.isFetching}
-            >
-                {">"}
-            </button>
-            <button
-                disabled={props.userData.isFetching}
-                onClick={() => toEndPage()}
-            >
-                {">>"}
-            </button>
-            <input type='number'
-                   placeholder='№'
-                   onChange={onChange}
-                   value={props.userData.inputPage == null ? '' : props.userData.inputPage}
-                   className={styles.input}
-                   onKeyPress={onKeyPress}
-            />
-            <button onClick={goToPageNumber}>Go</button>
-
-        </div>
-
         {
-            props.userData.users.map(u => {
+            props.users.map(u => {
                 const follow = () => {
                     props.follow(u.id)
                 }
