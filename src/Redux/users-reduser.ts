@@ -4,7 +4,7 @@ type LocationType = {
 }
 
 export type UserInfoType = {
-    id: string,
+    id: number,
     name: string,
     status: string,
     location: LocationType
@@ -23,6 +23,7 @@ export type UserDataType = {
     pagesNumberCount: number
     startPagesCount: number
     isFetching: boolean
+    followInProgress: Array<number>
 }
 
 const initialState: UserDataType = {
@@ -33,15 +34,16 @@ const initialState: UserDataType = {
     pagesNumberCount: 10,
     startPagesCount: 1,
     isFetching: false,
+    followInProgress: []
 }
 
 type FollowACType = {
     type: 'FOLLOW'
-    userId: string
+    userId: number
 }
 type UnFollowACType = {
     type: 'UNFOLLOW'
-    userId: string
+    userId: number
 }
 type setUsersAC = {
     type: 'SET-USERS',
@@ -73,10 +75,15 @@ type toggleIsFetchingType = {
     type: 'TOGGLE-IS-FETCHING'
     isFetching: boolean
 }
+type followInProgressType = {
+    type: "TOGGLE-FOLLOW-IS-FETCHING"
+    userId: number
+    isFetching:boolean
+}
 type toPageNumberType = {
     type: 'TO-PAGE-NUMBER'
-    newPage:number
-    pagesCount:number
+    newPage: number
+    pagesCount: number
 }
 type changeInputValue = {
     type: 'ON-CHANGE-VALUE'
@@ -95,6 +102,7 @@ export type UsersActionType =
     | toggleIsFetchingType
     | toPageNumberType
     | changeInputValue
+    | followInProgressType
 
 
 export const UsersReducer = (state: UserDataType = initialState, action: UsersActionType): UserDataType => {
@@ -155,28 +163,31 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
         }
         case "TO-PAGE-NUMBER": {
             let newStartPage = action.newPage
-            if(action.newPage+state.pagesNumberCount>action.pagesCount){
-                newStartPage=action.pagesCount-state.pagesNumberCount
+            if (action.newPage + state.pagesNumberCount > action.pagesCount) {
+                newStartPage = action.pagesCount - state.pagesNumberCount
             }
             return {
                 ...state,
-                currentPage: action.newPage ,
+                currentPage: action.newPage,
                 startPagesCount: newStartPage
             }
         }
-        // case "ON-CHANGE-VALUE": {
-        //     return {
-        //         ...state, inputPage: action.value
-        //     }
-        // }
+        case "TOGGLE-FOLLOW-IS-FETCHING": {
+            return {
+                ...state,
+                followInProgress:action.isFetching
+                    ?[...state.followInProgress,action.userId]
+                    :state.followInProgress.filter(id=>id!==action.userId)
+            }
+        }
         default:
             return state
     }
 }
-export const follow = (userId: string): FollowACType => {
+export const follow = (userId: number): FollowACType => {
     return {type: "FOLLOW", userId}
 }
-export let unfollow = (userId: string): UnFollowACType => {
+export let unfollow = (userId: number): UnFollowACType => {
     return {type: "UNFOLLOW", userId}
 }
 export const setUsers = (users: Array<UserInfoType>): setUsersAC => {
@@ -203,8 +214,11 @@ export const toStartPage = (): toStartPageType => {
 export const toggleIsFetching = (isFetching: boolean): toggleIsFetchingType => {
     return {type: 'TOGGLE-IS-FETCHING', isFetching}
 }
-export const toPageNumber = (newPage:number, pagesCount:number): toPageNumberType => {
+export const toPageNumber = (newPage: number, pagesCount: number): toPageNumberType => {
     return {type: "TO-PAGE-NUMBER", newPage, pagesCount}
+}
+export const followIsFetchingAC = ( isFetching:boolean, userId: number): followInProgressType => {
+    return {type: "TOGGLE-FOLLOW-IS-FETCHING",isFetching, userId}
 }
 // export const onChangeInput = (value: number | string): changeInputValue => {
 //     return {type: "ON-CHANGE-VALUE", value}

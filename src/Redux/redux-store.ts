@@ -3,12 +3,14 @@ import {postReducer} from "./postData-reducer";
 import {messageReducer} from "./message-reducer";
 import {dialogsReducer} from "./dialogs-reducer";
 import {UsersReducer} from "./users-reduser";
+import {AuthReducer} from "./authReducer";
 
 const reducers = combineReducers({
     postData:postReducer,
     messageData:messageReducer,
     dialogsData:dialogsReducer,
-    usersData:UsersReducer
+    usersData:UsersReducer,
+    auth:AuthReducer
 });
 
 // type reducersType = typeof reducers;
