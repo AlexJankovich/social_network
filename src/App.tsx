@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import {Header} from "./components/Headr/Headr";
 import {NavBar} from "./components/Navbar/Navbar";
 import {BrowserRouter, Route} from "react-router-dom";
 import {DialogsConnectContainer} from "./components/Dialogs/dialogsConnectContainer";

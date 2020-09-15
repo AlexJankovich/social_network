@@ -3,58 +3,40 @@ import {AppStateType} from "../../Redux/redux-store";
 import {
     changePageListDown,
     changePageListUpp,
-    follow, setPage, setTotalUsersCount,
-    setUsers, toAndPage, toggleIsFetching, toStartPage,
-    unfollow,
-    UserInfoType,
-    UserDataType, toPageNumber, followIsFetchingAC
+    setPage,
+    toAndPage, toStartPage,
+    UserDataType, toPageNumber, getUsersThunk, followThunk, unfollowThunk
 } from "../../Redux/users-reduser";
 import React from "react";
-import axios from "axios";
 import {Users} from "./Users";
 import {Preloader} from "../../common/Preloader";
 import {Slider} from "../../common/Slider";
-import {GetUsers} from "../../api/api";
+import s from './users.module.css'
 
 type UsersApiType = {
     usersData: UserDataType
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    setUsers: (users: Array<UserInfoType>) => void
+    followThunk: (userId: number) => void
+    unfollowThunk: (userId: number) => void
     setPage: (page: number) => void
-    setTotalUsersCount: (totalUserCount: number) => void
     changePageListUpp: (pagesCount: number) => void
     changePageListDown: () => void
     toAndPage: (pagesCount: number) => void
     toStartPage: () => void
-    toggleIsFetching: (isFetching: boolean) => void
-    toPageNumber: (newPage: number, pagesCount:number ) => void
-    followIsFetchingAC:(followIsFetching: boolean, userId: number)=>void
+    toPageNumber: (newPage: number, pagesCount: number) => void
+    getUsersThunk: (currentPage: number, pageSize: number) => void
 }
 
 class UsersAPIComp extends React.Component<UsersApiType> {
 
     componentDidMount() {
         // debugger
-        this.props.toggleIsFetching(true)
-        GetUsers(this.props.usersData.currentPage, this.props.usersData.pageSize)
-            .then(data => {
-                this.props.toggleIsFetching(false)
-                this.props.setUsers(data.items)
-                this.props.setTotalUsersCount(data.totalCount)
-            });
+        this.props.getUsersThunk(this.props.usersData.currentPage, this.props.usersData.pageSize)
     }
 
     componentDidUpdate(prevProps: UsersApiType) {
         if (this.props.usersData.currentPage !== prevProps.usersData.currentPage) {
-            this.props.toggleIsFetching(true)
-            GetUsers(this.props.usersData.currentPage, this.props.usersData.pageSize)
-                .then(data => {
-                    this.props.toggleIsFetching(false)
-                    this.props.setUsers(data.items)
-                });
+            this.props.getUsersThunk(this.props.usersData.currentPage, this.props.usersData.pageSize)
         }
-
     }
 
     onPageChange = (pageNumber: number) => {
@@ -69,7 +51,7 @@ class UsersAPIComp extends React.Component<UsersApiType> {
 
     loading = (load: boolean) => {
         if (load) {
-            return <Preloader/>
+            return <div className={s.usersPreloader}><Preloader/></div>
         }
     }
 
@@ -86,13 +68,9 @@ class UsersAPIComp extends React.Component<UsersApiType> {
                 />
                 <Users users={this.props.usersData.users}
                        followInProgress={this.props.usersData.followInProgress}
-
-                       // followIsFetching={this.props.usersData.followIsFetching}
                        isFetching={this.props.usersData.isFetching}
-                       followIsFetchingAC={this.props.followIsFetchingAC}
-                       follow={this.props.follow}
-                       unfollow={this.props.unfollow}
-                       toggleIsFetching={this.props.toggleIsFetching}
+                       followThunk={this.props.followThunk}
+                       unfollowThunk={this.props.unfollowThunk}
                 />
             </>
         )
@@ -108,16 +86,14 @@ const mapStateToProps = (state: AppStateType) => {
 }
 
 export const UsersContainer = connect(mapStateToProps, {
-    follow,
-    unfollow,
-    setUsers,
     setPage,
-    setTotalUsersCount,
     changePageListUpp,
     changePageListDown,
     toAndPage,
     toStartPage,
-    toggleIsFetching,
     toPageNumber,
-    followIsFetchingAC
+
+    getUsersThunk,
+    followThunk,
+    unfollowThunk
 })(UsersAPIComp)

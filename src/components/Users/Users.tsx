@@ -3,40 +3,25 @@ import styles from "./users.module.css";
 import avaDefault from "../../assets/images/avaSamuray.jpg";
 import { UserInfoType} from "../../Redux/users-reduser";
 import {NavLink} from "react-router-dom";
-import axios from "axios";
-import {FollowToApi, unFollowToApi} from "../../api/api";
 
 type UsersType = {
     users: Array<UserInfoType>
     isFetching:boolean
-    follow: (userId: number) => void//Подписаться на пользователя
-    unfollow: (userId: number) => void//Отписаться от пользователя
-    toggleIsFetching:(isFetching:boolean)=>void
-    followIsFetchingAC:(followIsFetching: boolean, userId: number)=>void
+    followThunk: (userId: number) => void//Подписаться на пользователя
+    unfollowThunk: (userId: number) => void//Отписаться от пользователя
     followInProgress:Array<number>
 }
 
 export const Users = (props: UsersType) => {
 
-    return <div>
+    return <div className={props.isFetching?styles.shadow:''}>
         {
             props.users.map(u => {
                     const follow = () => {
-                        props.followIsFetchingAC(true, u.id)
-                        FollowToApi(u.id).then(data => {
-                                props.followIsFetchingAC(false, u.id)
-                                if (data.resultCode === 0) {props.follow(u.id)}
-                        });
+                        props.followThunk( u.id)
                     }
                     const unfollow = () => {
-                        props.followIsFetchingAC(true, u.id)
-                        unFollowToApi(u.id)
-                            .then(response => {
-                                props.followIsFetchingAC(false, u.id)
-                                if (response.resultCode === 0) {
-                                    props.unfollow(u.id)
-                                }
-                            });
+                        props.unfollowThunk(u.id)
                     }
                     return <div key={u.id} className={styles.usersWrapper}>
                         <div className={styles.avatarWrapper}>

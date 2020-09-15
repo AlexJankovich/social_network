@@ -1,0 +1,15 @@
+.preloader{
+    position: relative;
+    right: -50px;
+    top:  10px;
+    display: inline-block;
+    z-index: 99;
+    /*width: 50px;*/
+}
+.preloader img{
+    width: 250px;
+}
+.lorem{
+    /*opacity: 0.5;*/
+    /*background-color: black;*/
+}

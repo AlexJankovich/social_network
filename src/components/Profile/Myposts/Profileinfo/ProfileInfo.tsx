@@ -12,7 +12,8 @@ export const ProfileInfo = (props: ProfileInfoType) => {
     if (!props.profile) {image = ''
     } else if (props.profile.photos.large) {image = props.profile.photos.large
     } else if (props.profile.photos.small) {image = props.profile.photos.small}
-    if (!props.profile) {return <Preloader/>}
+    if (!props.profile) {return <div >loading</div>}
+    // if (!props.profile.photos) {return <div className={s.profilePreloader}><Preloader/></div>}
 
     return (<>
             <div className={s.name}><span>{props.profile.fullName}</span></div>

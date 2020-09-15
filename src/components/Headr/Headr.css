@@ -19,3 +19,14 @@
 .loginBlock a{
     color: black;
 }
+.loginPreloader{
+    position: relative;
+    right: -50px;
+    top:  -50px;
+    display: inline-block;
+    z-index: 99;
+    /*width: 50px;*/
+}
+.loginPreloader img{
+    width: 150px;
+}

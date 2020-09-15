@@ -1,3 +1,8 @@
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
+import {Action} from "redux";
+import {GetAuth} from "../api/api";
+
 export type AuthResponseType = {
     id: number|null
     email: string
@@ -55,4 +60,17 @@ export const AuthUser =(data:AuthResponseType):AuthACType=>{
 }
 export const AuthIsFetching=(isFetching:boolean):AuthIsFetchingACType=>{
     return {type:"AUTH-IS-FETCHING", isFetching}
+}
+
+export const authThunk = ():ThunkAction<void, AppStateType, unknown, Action<string>> =>{
+    return (dispatch) => {
+        dispatch(AuthIsFetching(true))
+        GetAuth()
+            .then(response => {
+                if (response.resultCode === 0) {
+                    dispatch(AuthUser(response.data))
+                }
+                dispatch(AuthIsFetching(false))
+            });
+    }
 }

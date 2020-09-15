@@ -48,3 +48,14 @@ img {
 .contactLink span{
     font-weight: bold;
 }
+.profilePreloader{
+    position: relative;
+    top: 28%;
+    left: 20%;
+    display: inline-block;
+    z-index: 999;
+    /*width: 50px;*/
+}
+.shadow{
+    opacity: 0.3;
+}

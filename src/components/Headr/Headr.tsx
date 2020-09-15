@@ -16,7 +16,7 @@ export const Header = (props:HeaderPropsType) => {
                 <img src="http://images-on-off.com/images/125/samuraiputvoina-ccf2693f.jpg" alt=""/>
 
             <div className='loginBlock'>
-                {props.isFetching?<Preloader/>:null}
+                {props.isFetching?<div className='loginPreloader'><Preloader/></div>:null}
                 {props.isAuth?
                     <div>{props.login}</div>:
                 <NavLink to={'/login'}>Login</NavLink>

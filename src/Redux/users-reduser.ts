@@ -1,3 +1,9 @@
+import {FollowToApi, GetProfileInfo, GetUsers, unFollowToApi} from "../api/api";
+import {ThunkAction} from "redux-thunk";
+import {Action} from "redux";
+import {AppStateType} from "./redux-store";
+import { setUserProfile } from "./postData-reducer";
+
 type LocationType = {
     city: string,
     country: string
@@ -220,6 +226,52 @@ export const toPageNumber = (newPage: number, pagesCount: number): toPageNumberT
 export const followIsFetchingAC = ( isFetching:boolean, userId: number): followInProgressType => {
     return {type: "TOGGLE-FOLLOW-IS-FETCHING",isFetching, userId}
 }
+
+export const getUsersThunk = (currentPage:number, pageSize:number):ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    return (dispatch)=> {
+        dispatch(toggleIsFetching(true));
+        GetUsers(currentPage, pageSize)
+            .then(data => {
+                dispatch(toggleIsFetching(false))
+                dispatch(setUsers(data.items))
+                dispatch(setTotalUsersCount(data.totalCount))
+            });
+    }
+}
+
+export const followThunk = (userId: number):ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    return (dispatch)=>{
+        dispatch(followIsFetchingAC(true, userId))
+        FollowToApi(userId).then(data => {
+            dispatch(followIsFetchingAC(false, userId))
+            if (data.resultCode === 0) {dispatch(follow(userId))}
+        });
+    }
+}
+
+export const unfollowThunk = (userId: number):ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    return (dispatch)=>{
+        dispatch(followIsFetchingAC(true, userId))
+        unFollowToApi(userId)
+            .then(response => {
+                dispatch(followIsFetchingAC(false, userId))
+                if (response.resultCode === 0) {
+                    dispatch(unfollow(userId))
+                }
+            });
+    }
+}
+export const getProfileThunk = (getQuestion:number):ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    return (dispatch)=> {
+        dispatch(toggleIsFetching(true))
+        GetProfileInfo(getQuestion)
+            .then(data => {
+                dispatch(toggleIsFetching(false))
+                dispatch(setUserProfile(data))
+            });
+    }
+}
+
 // export const onChangeInput = (value: number | string): changeInputValue => {
 //     return {type: "ON-CHANGE-VALUE", value}
 // }

@@ -115,3 +115,19 @@ input{
     text-align: center;
     border-radius: 10px;
 }
+
+.usersPreloader{
+    position: absolute;
+    /*margin: 0 auto;*/
+    top: 40%;
+    left: 50%;
+    display: inline-block;
+    z-index: 99;
+    /*width: 50px;*/
+}
+.shadow{
+    opacity: 0.3;
+}
+/*.usersPreloader img{*/
+/*    width: 150px;*/
+/*}*/

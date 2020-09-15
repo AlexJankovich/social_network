@@ -1,29 +1,19 @@
 import React from "react";
-import axios from "axios";
 import {Header} from "./Headr";
 import {AppStateType} from "../../Redux/redux-store";
 import {connect} from "react-redux";
-import {AuthIsFetching, AuthResponseType, AuthUser} from "../../Redux/authReducer";
-import {GetAuth} from "../../api/api";
+import {authThunk} from "../../Redux/authReducer";
 
 type HeaderContainerType = {
     isAuth:boolean
     login:string
     isFetching:boolean
-    AuthIsFetching:(isFetching:boolean)=>void
-    AuthUser: (data: AuthResponseType) => void
+    authThunk:()=>void
 }
 
 class HeaderClass extends React.Component<HeaderContainerType> {
     componentDidMount() {
-        this.props.AuthIsFetching(true)
-        GetAuth()
-            .then(response => {
-                if (response.resultCode === 0) {
-                    this.props.AuthUser(response.data)
-                }
-                this.props.AuthIsFetching(false)
-            });
+        this.props.authThunk()
     }
 
     render() {
@@ -41,4 +31,4 @@ const mapStateToProps = (state: AppStateType) => {
     }
 }
 
-export const HeaderContainer = connect(mapStateToProps, {AuthUser, AuthIsFetching})(HeaderClass);
+export const HeaderContainer = connect(mapStateToProps, {authThunk})(HeaderClass);

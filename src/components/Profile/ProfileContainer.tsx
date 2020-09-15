@@ -1,24 +1,23 @@
 import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
-import {setUserProfile, profileUsersType} from "../../Redux/postData-reducer";
+import {profileUsersType} from "../../Redux/postData-reducer";
 import {withRouter} from "react-router-dom";
 import {AppStateType} from "../../Redux/redux-store";
 import {RouteComponentProps} from "react-router";
-import {toggleIsFetching} from "../../Redux/users-reduser";
+import {getProfileThunk}  from "../../Redux/users-reduser";
 import {Preloader} from "../../common/Preloader";
-import {GetProfileInfo} from "../../api/api";
+import pre from './Myposts/Profileinfo/ProfileInfo.module.css'
 
 type PathParamsType = {
     userId: string
 }
 
 type ProfileType = RouteComponentProps<PathParamsType> & {
-    setUserProfile: (profile: profileUsersType) => void
     profile: profileUsersType|null
     isFetching:boolean
-    toggleIsFetching:(isFetching: boolean)=>void
     meId:number|null
+    getProfileThunk:(getQuestion:number)=>void
 }
 
 class ProfileClass extends React.Component<ProfileType> {
@@ -27,22 +26,23 @@ class ProfileClass extends React.Component<ProfileType> {
         if(!getQuestion){
             getQuestion=this.props.meId
         }
-        this.props.toggleIsFetching(true)
-        GetProfileInfo(+getQuestion)
-            .then(data => {
-                this.props.toggleIsFetching(false)
-                this.props.setUserProfile(data)
-            });
+        this.props.getProfileThunk(+getQuestion)
+        // this.props.toggleIsFetching(true)
+        // GetProfileInfo(+getQuestion)
+        //     .then(data => {
+        //         this.props.toggleIsFetching(false)
+        //         this.props.setUserProfile(data)
+        //     });
     }
-    loading=(load:boolean)=>{
-        if(load){
-            return <Preloader/>
+    loading = (load: boolean|null) => {
+        if (load) {
+            return <div className={pre.profilePreloader}><Preloader/></div>
         }
     }
     render() {
         return (
             <>
-                {this.loading(this.props.isFetching)}
+                {this.loading(this.props.isFetching?this.props.isFetching:null)}
                 <div>
                     <Profile
                         profile={this.props.profile} />
@@ -61,5 +61,5 @@ const MapStateToProps = (state: AppStateType) => ({
 const WithUrlData = withRouter(ProfileClass)
 
 export const ProfileContainer = connect(MapStateToProps, {
-    setUserProfile, toggleIsFetching
+    getProfileThunk
 })(WithUrlData);
