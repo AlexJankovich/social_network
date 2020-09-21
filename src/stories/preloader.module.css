@@ -1,15 +1,25 @@
-.preloader{
-    position: relative;
-    right: -50px;
-    top:  10px;
-    display: inline-block;
-    z-index: 99;
-    /*width: 50px;*/
+.wrapper{
+
 }
+
+
 .preloader img{
-    width: 250px;
+    /*position: relative;*/
+    /*right: -50px;*/
+    /*top:  10px;*/
+    /*display: inline-block;*/
+    /*z-index: 99;*/
+    width: 80px;
 }
 .lorem{
     /*opacity: 0.5;*/
     /*background-color: black;*/
 }
+.lorem .preloader {
+     position: relative;
+     /*right: -50px;*/
+     /*top:  10px;*/
+     display: inline-block;
+     /*z-index: 99;*/
+     /*width: 80px;*/
+ }

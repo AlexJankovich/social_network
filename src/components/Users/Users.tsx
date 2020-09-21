@@ -1,28 +1,25 @@
 import React from "react";
 import styles from "./users.module.css";
 import avaDefault from "../../assets/images/avaSamuray.jpg";
-import { UserInfoType} from "../../Redux/users-reduser";
+import {UserInfoType} from "../../Redux/users-reduser";
 import {NavLink} from "react-router-dom";
 
 type UsersType = {
     users: Array<UserInfoType>
-    isFetching:boolean
+    isFetching: boolean
     followThunk: (userId: number) => void//Подписаться на пользователя
     unfollowThunk: (userId: number) => void//Отписаться от пользователя
-    followInProgress:Array<number>
+    followInProgress: Array<number>
 }
 
 export const Users = (props: UsersType) => {
 
-    return <div className={props.isFetching?styles.shadow:''}>
+    return <div className={props.isFetching ? styles.shadow : ''}>
         {
             props.users.map(u => {
-                    const follow = () => {
-                        props.followThunk( u.id)
-                    }
-                    const unfollow = () => {
-                        props.unfollowThunk(u.id)
-                    }
+                    const follow = () => props.followThunk(u.id)
+                    const unfollow = () => props.unfollowThunk(u.id)
+
                     return <div key={u.id} className={styles.usersWrapper}>
                         <div className={styles.avatarWrapper}>
                             <div>
@@ -33,10 +30,10 @@ export const Users = (props: UsersType) => {
                             </div>
                             <div>{u.followed
                                 ? <button onClick={unfollow}
-                                          disabled={props.followInProgress.some(id=>id===u.id)}
+                                          disabled={props.followInProgress.some(id => id === u.id)}
                                 >unFollow</button>
                                 : <button onClick={follow}
-                                          disabled={props.followInProgress.some(id=>id===u.id)}
+                                          disabled={props.followInProgress.some(id => id === u.id)}
                                 >Follow</button>}
                             </div>
                         </div>

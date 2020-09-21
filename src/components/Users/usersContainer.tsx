@@ -9,12 +9,13 @@ import {
 } from "../../Redux/users-reduser";
 import React from "react";
 import {Users} from "./Users";
-import {Preloader} from "../../common/Preloader";
+import {Preloader} from "../../common/preloader/Preloader";
 import {Slider} from "../../common/Slider";
 import s from './users.module.css'
 
 type UsersApiType = {
     usersData: UserDataType
+    // isAuth:boolean
     followThunk: (userId: number) => void
     unfollowThunk: (userId: number) => void
     setPage: (page: number) => void
@@ -33,7 +34,7 @@ class UsersAPIComp extends React.Component<UsersApiType> {
         this.props.getUsersThunk(this.props.usersData.currentPage, this.props.usersData.pageSize)
     }
 
-    componentDidUpdate(prevProps: UsersApiType) {
+    componentDidUpdate(prevProps: UsersApiType, prevState:UserDataType) {
         if (this.props.usersData.currentPage !== prevProps.usersData.currentPage) {
             this.props.getUsersThunk(this.props.usersData.currentPage, this.props.usersData.pageSize)
         }
@@ -54,7 +55,6 @@ class UsersAPIComp extends React.Component<UsersApiType> {
             return <div className={s.usersPreloader}><Preloader/></div>
         }
     }
-
     render() {
         return (
             <>{this.loading(this.props.usersData.isFetching)}.
@@ -66,9 +66,7 @@ class UsersAPIComp extends React.Component<UsersApiType> {
                         prevPage={this.prevPage}
                         nextPageList={this.nextPageList}
                 />
-                <Users users={this.props.usersData.users}
-                       followInProgress={this.props.usersData.followInProgress}
-                       isFetching={this.props.usersData.isFetching}
+                <Users {...this.props.usersData}
                        followThunk={this.props.followThunk}
                        unfollowThunk={this.props.unfollowThunk}
                 />
@@ -80,10 +78,12 @@ class UsersAPIComp extends React.Component<UsersApiType> {
 const mapStateToProps = (state: AppStateType) => {
     return {
         usersData: state.usersData,
-        // isFetching:state.usersData.isFetching,
-        // followIsFetching:state.usersData.followIsFetching
     }
 }
+
+
+
+
 
 export const UsersContainer = connect(mapStateToProps, {
     setPage,

@@ -2,12 +2,13 @@ import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {profileUsersType} from "../../Redux/postData-reducer";
-import {withRouter} from "react-router-dom";
+import {withRouter, Redirect} from "react-router-dom";
 import {AppStateType} from "../../Redux/redux-store";
 import {RouteComponentProps} from "react-router";
 import {getProfileThunk}  from "../../Redux/users-reduser";
-import {Preloader} from "../../common/Preloader";
+import {Preloader} from "../../common/preloader/Preloader";
 import pre from './Myposts/Profileinfo/ProfileInfo.module.css'
+import {AuthRedirect} from "../../hoc/AuthRedirect";
 
 type PathParamsType = {
     userId: string
@@ -18,6 +19,7 @@ type ProfileType = RouteComponentProps<PathParamsType> & {
     isFetching:boolean
     meId:number|null
     getProfileThunk:(getQuestion:number)=>void
+    isAuth:boolean
 }
 
 class ProfileClass extends React.Component<ProfileType> {
@@ -27,12 +29,6 @@ class ProfileClass extends React.Component<ProfileType> {
             getQuestion=this.props.meId
         }
         this.props.getProfileThunk(+getQuestion)
-        // this.props.toggleIsFetching(true)
-        // GetProfileInfo(+getQuestion)
-        //     .then(data => {
-        //         this.props.toggleIsFetching(false)
-        //         this.props.setUserProfile(data)
-        //     });
     }
     loading = (load: boolean|null) => {
         if (load) {
@@ -40,25 +36,35 @@ class ProfileClass extends React.Component<ProfileType> {
         }
     }
     render() {
+
         return (
             <>
                 {this.loading(this.props.isFetching?this.props.isFetching:null)}
-                <div>
-                    <Profile
-                        profile={this.props.profile} />
-                </div>
+                {/*{this.loading(true)}*/}
+                    <Profile profile={this.props.profile} />
             </>
         );
     }
 }
 
+
+
+let AuthRedirectComp = AuthRedirect(ProfileClass)
+// const AuthRedirectComp = (props:ProfileType)=>{
+//     if(!props.isAuth)return <Redirect to='/login'/>
+//     return <ProfileClass {...props}/>
+// }
+
+
+
 const MapStateToProps = (state: AppStateType) => ({
     profile: state.postData.profile,
     isFetching: state.usersData.isFetching,
-    meId:state.auth.data.id
+    meId:state.auth.data.id,
+    // isAuth:state.auth.isAuth
 })
 
-const WithUrlData = withRouter(ProfileClass)
+const WithUrlData = withRouter(AuthRedirectComp)
 
 export const ProfileContainer = connect(MapStateToProps, {
     getProfileThunk

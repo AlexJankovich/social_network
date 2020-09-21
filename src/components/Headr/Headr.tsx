@@ -1,7 +1,7 @@
 import React from 'react';
 import './Headr.css';
 import {NavLink} from "react-router-dom";
-import {Preloader} from "../../common/Preloader";
+import {Preloader} from "../../common/preloader/Preloader";
 
 type HeaderPropsType={
     isAuth:boolean

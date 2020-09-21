@@ -48,8 +48,8 @@ img {
 .contactLink span{
     font-weight: bold;
 }
-.profilePreloader{
-    position: relative;
+.ava .profilePreloader{
+    position: absolute;
     top: 28%;
     left: 20%;
     display: inline-block;

@@ -3,16 +3,18 @@ import {AddMessageAC, OnChangeMessageAC} from "../../Redux/message-reducer";
 import { Message } from "./message";
 import Dialogs from "./dialogs";
 import {Dispatch} from "redux";
+import {AppStateType} from "../../Redux/redux-store";
 
 const mapStateToProps1 = (state: any) => {
     return {
         dialogs: state.dialogsData.dialogs
     }
 }
-const mapStateToProps2 = (state: any) => {
+const mapStateToProps2 = (state: AppStateType) => {
     return {
         messages: state.messageData.messages,
-        onChangeMessageData: state.messageData.onChangeMessageData
+        onChangeMessageData: state.messageData.onChangeMessageData,
+        // isAuth: state.auth.isAuth
     }
 }
 const mapDispatchToProps = (dispatch:Dispatch) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import s from "./ProfileInfo.module.css";
 import {profileUsersType} from "../../../../Redux/postData-reducer";
-import {Preloader} from "../../../../common/Preloader";
+import {Preloader} from "../../../../common/preloader/Preloader";
 
 type ProfileInfoType = {
     profile: profileUsersType | null
@@ -14,12 +14,12 @@ export const ProfileInfo = (props: ProfileInfoType) => {
     } else if (props.profile.photos.small) {image = props.profile.photos.small}
     if (!props.profile) {return <div >loading</div>}
     // if (!props.profile.photos) {return <div className={s.profilePreloader}><Preloader/></div>}
-
     return (<>
             <div className={s.name}><span>{props.profile.fullName}</span></div>
             <div className={s.contentWrapper}>
                 <div className={s.avaWrapper}>
                     <div className={s.ava}>
+                        {/*{!props.profile.photos?<div className={s.profilePreloader}><Preloader/></div>:null}*/}
                         <img src={image}
                              alt=""/>
                     </div>
