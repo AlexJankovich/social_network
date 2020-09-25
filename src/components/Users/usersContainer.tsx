@@ -81,10 +81,6 @@ const mapStateToProps = (state: AppStateType) => {
     }
 }
 
-
-
-
-
 export const UsersContainer = connect(mapStateToProps, {
     setPage,
     changePageListUpp,

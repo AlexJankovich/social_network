@@ -34,8 +34,6 @@ export type profileUsersType = {
         small: string | null
         large: string | null
     }
-
-
 }
 export type postType = {
     id: string,
@@ -48,6 +46,8 @@ export type postDataType = {
     post: Array<postType>
     newMessageData: string
     profile: profileUsersType|null
+    status: string
+    statusIsFetching:boolean
 }
 
 const initialState: postDataType = {
@@ -89,7 +89,9 @@ const initialState: postDataType = {
         },
     ],
     newMessageData: '',
-    profile: null
+    profile: null,
+    status: 'Here will be status',
+    statusIsFetching:false
 }
 export const postReducer = (state: postDataType = initialState, action: ActionType) => {
     switch (action.type) {

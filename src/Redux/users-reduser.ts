@@ -134,13 +134,12 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
             }
         }
         case "SET-USERS": {
-            return {...state, users: action.users}
+            return {...state, users:action.users}
         }
         case "SET-TOTAL-USERS-COUNT": {
             return {...state, totalUserCount: action.totalCount}
         }
         case "CHANGE-PAGE-LIST-UPP": {
-            debugger
             let newStartCount = state.startPagesCount + state.pagesNumberCount
             if ((newStartCount + state.pagesNumberCount) >= action.pagesCount) {
                 newStartCount = action.pagesCount - state.pagesNumberCount
@@ -228,6 +227,7 @@ export const followIsFetchingAC = ( isFetching:boolean, userId: number): followI
 }
 
 export const getUsersThunk = (currentPage:number, pageSize:number):ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    debugger
     return (dispatch)=> {
         dispatch(toggleIsFetching(true));
         GetUsers(currentPage, pageSize)
@@ -240,6 +240,7 @@ export const getUsersThunk = (currentPage:number, pageSize:number):ThunkAction<v
 }
 
 export const followThunk = (userId: number):ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    debugger
     return (dispatch)=>{
         dispatch(followIsFetchingAC(true, userId))
         FollowToApi(userId).then(data => {

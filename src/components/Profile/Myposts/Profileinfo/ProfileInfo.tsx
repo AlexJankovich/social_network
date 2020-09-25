@@ -5,6 +5,8 @@ import {Preloader} from "../../../../common/preloader/Preloader";
 
 type ProfileInfoType = {
     profile: profileUsersType | null
+    status:string
+    statusIsFetching:boolean
 }
 
 export const ProfileInfo = (props: ProfileInfoType) => {
@@ -12,14 +14,12 @@ export const ProfileInfo = (props: ProfileInfoType) => {
     if (!props.profile) {image = ''
     } else if (props.profile.photos.large) {image = props.profile.photos.large
     } else if (props.profile.photos.small) {image = props.profile.photos.small}
-    if (!props.profile) {return <div >loading</div>}
-    // if (!props.profile.photos) {return <div className={s.profilePreloader}><Preloader/></div>}
+    if (!props.profile) {return <div>loading</div>}
     return (<>
             <div className={s.name}><span>{props.profile.fullName}</span></div>
             <div className={s.contentWrapper}>
                 <div className={s.avaWrapper}>
                     <div className={s.ava}>
-                        {/*{!props.profile.photos?<div className={s.profilePreloader}><Preloader/></div>:null}*/}
                         <img src={image}
                              alt=""/>
                     </div>
@@ -46,6 +46,9 @@ export const ProfileInfo = (props: ProfileInfoType) => {
                     </div>
                 </div>
             </div>
+            <hr/>
+            <div>Status:{props.status}</div>
+            <hr/>
         </>
     )
 }

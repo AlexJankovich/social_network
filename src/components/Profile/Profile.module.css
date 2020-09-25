@@ -1,9 +1,6 @@
-
-img {
-    height: 200px;
-}
-
 .ava img{
     height: 50px;
 }
-
+.shadow{
+    opacity: 0.3;
+}

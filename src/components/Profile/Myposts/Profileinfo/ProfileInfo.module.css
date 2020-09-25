@@ -1,8 +1,5 @@
 .ava img {
     margin-top: 10px;
-}
-
-img {
     height: 200px;
 }
 
@@ -14,14 +11,17 @@ img {
     display: flex;
     flex-direction: row;
 }
-.name{
+
+.name {
     display: flex;
     flex-direction: column;
 }
-.name span{
+
+.name span {
     font-size: 25px;
-    font-weight:bold ;
+    font-weight: bold;
 }
+
 .contactName {
     display: flex;
     flex-direction: column;
@@ -45,17 +45,20 @@ img {
     padding-top: 10px;
 }
 
-.contactLink span{
+.contactLink span {
     font-weight: bold;
 }
-.ava .profilePreloader{
-    position: absolute;
-    top: 28%;
-    left: 20%;
-    display: inline-block;
+
+.profilePreloader {
     z-index: 999;
-    /*width: 50px;*/
 }
-.shadow{
+
+.profilePreloader img {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+}
+
+.shadow {
     opacity: 0.3;
 }

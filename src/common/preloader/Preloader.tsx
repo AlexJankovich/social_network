@@ -3,5 +3,5 @@ import React from "react";
 import s from './Preloader.module.css'
 
 export const Preloader=()=> {
-    return<img className={s.Preloader} src={loader} alt="loading"/>
+    return<img  src={loader} alt="loading"/>
 }

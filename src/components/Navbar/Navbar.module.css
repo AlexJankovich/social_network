@@ -1,6 +1,5 @@
 .nav {
     background-image: url("https://www.oko-ra.ru/wp-content/uploads/2016/12/pergament2.jpg");
-    /*background-color: #a98653;*/
     grid-area: n;
     padding: 10px;
     box-shadow: 0 0 10px;
@@ -8,7 +7,6 @@
 
 .nav .item {
     margin-left: 15px;
-    /*color: white;*/
     margin-top: 5px;
 }
 .item a.active{
@@ -21,10 +19,6 @@
     box-shadow: 0 0 10px;
 }
 .nav .item:hover{
-    /*border: 1px solid;*/
-    /*border-radius: 3px;*/
-    /*padding: 3px;*/
-    /*margin: 2px;*/
     transform: scale(1.1);
     transition: 0.3s;
 }

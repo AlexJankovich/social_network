@@ -17,7 +17,7 @@ type SliderPropsType = {
 }
 
 export const Slider = (props: SliderPropsType) => {
-    const [newPage, setNewPage] = useState<number | string>('props.currentPage')
+    const [newPage, setNewPage] = useState<number | string>('')
     let pagesCount = Math.ceil(props.totalUserCount / props.pageSize);
     let pages: Array<number> = [];
     for (
@@ -50,7 +50,7 @@ export const Slider = (props: SliderPropsType) => {
         setNewPage('')
     }
     const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.charCode === 13) {
+        if (e.keyCode === 13) {
             goToPageNumber()
         }
     }

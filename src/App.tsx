@@ -3,10 +3,10 @@ import './App.css';
 import {NavBar} from "./components/Navbar/Navbar";
 import {BrowserRouter, Route} from "react-router-dom";
 import {DialogsConnectContainer} from "./components/Dialogs/dialogsConnectContainer";
-import {UsersContainer} from "./components/Users/usersContainer";
-import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import {HeaderContainer} from "./components/Headr/HeaderContainer";
 import {Login} from "./components/Login/Login";
+import {ProfileContainer} from "./components/Profile/ProfileContainer";
+import { UsersHookContainer } from './components/Users/UsersHookContainer';
 
 const App = () => {
     return (
@@ -20,7 +20,7 @@ const App = () => {
                     <Route path='/Profile/:userId?'
                            render={() => <ProfileContainer/>}/>
                     <Route path='/users'
-                           render={() => <UsersContainer/>}/>
+                           render={() => <UsersHookContainer/>}/>
                     <Route path='/login'
                            render={() => <Login/>}/>
                 </div>

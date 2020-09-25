@@ -1,3 +1,7 @@
+.container{
+    position: relative;
+}
+
 .active {
     font-weight: bold;
     border: 1px solid;
@@ -9,21 +13,16 @@
 }
 
 .pageListWrapper{
-    /*border: 1px solid;*/
     box-sizing: content-box;
     border-radius: 8px;
     padding: 5px;
     display: inline-block;
-    /*width: auto;*/
     margin: 5px;
     box-shadow: 0 0 10px;
 }
 
 .pageListWrapper span:hover{
     border: 1px solid;
-    /*padding: 3px;*/
-    /*margin: 2px;*/
-    /*transform: scale(1.5);*/
     transition: 0.5s;
 }
 
@@ -35,8 +34,6 @@
 }
 
 .avatarWrapper {
-    /*border: 2px solid;*/
-    /*padding: 5px;*/
     margin: 5px;
     background-color: rgba(224, 241, 176, 0.3);
     border-radius: 10px;
@@ -49,7 +46,6 @@
 .usersWrapper {
     display: flex;
     flex-direction: row;
-    /*border: 2px solid;*/
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
@@ -59,7 +55,6 @@
 .usersInfo {
     display: flex;
     flex-direction: row;
-    /*border: 2px solid;*/
     padding: 5px;
     margin: 5px;
     background-color: rgba(224,241,176,0.3);
@@ -74,7 +69,6 @@
     justify-content: space-between;
     margin-left: 10px;
     max-width: 350px;
-    /*opacity: 1;*/
 }
 
 .name {
@@ -117,17 +111,15 @@ input{
 }
 
 .usersPreloader{
-    position: absolute;
-    /*margin: 0 auto;*/
-    top: 40%;
-    left: 50%;
-    display: inline-block;
     z-index: 99;
-    /*width: 50px;*/
 }
 .shadow{
     opacity: 0.3;
 }
-/*.usersPreloader img{*/
-/*    width: 150px;*/
-/*}*/
+.container .usersPreloader img{
+    width: 450px;
+    height: 450px;
+    position: absolute;
+    top: 10%;
+    left: 20%;
+}
