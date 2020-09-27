@@ -1,3 +1,6 @@
+import {Dispatch} from "redux";
+import {ProfileAPI} from "../api/api";
+
 type AddPostActionType = {
     type: 'ADD-POST'
 }
@@ -9,11 +12,21 @@ type setUserProfileActionType = {
     type: 'SET-USER-PROFILE'
     profile: profileUsersType
 }
+type SetStatusActionType = {
+    type: 'SET-STATUS'
+    newStatus: string
+}
+type ToggleStatusFetchingType = {
+    type: 'TOGGLE-STATUS-FETCHING'
+    statusIsFetching: boolean
+}
 
 export type ActionType =
     AddPostActionType
     | WritePostActionType
     | setUserProfileActionType
+    | SetStatusActionType
+    | ToggleStatusFetchingType
 
 export type profileUsersType = {
     userId: number
@@ -45,9 +58,9 @@ export type postType = {
 export type postDataType = {
     post: Array<postType>
     newMessageData: string
-    profile: profileUsersType|null
+    profile: profileUsersType | null
     status: string
-    statusIsFetching:boolean
+    statusIsFetching: boolean
 }
 
 const initialState: postDataType = {
@@ -90,8 +103,8 @@ const initialState: postDataType = {
     ],
     newMessageData: '',
     profile: null,
-    status: 'Here will be status',
-    statusIsFetching:false
+    status: '',
+    statusIsFetching: false,
 }
 export const postReducer = (state: postDataType = initialState, action: ActionType) => {
     switch (action.type) {
@@ -105,10 +118,17 @@ export const postReducer = (state: postDataType = initialState, action: ActionTy
             };
             return {...state, post: [...state.post, NewPost], newMessageData: ''}
         }
-        case "WRITE-POST":
+        case "WRITE-POST": {
             return {...state, newMessageData: action.newText}
+        }
         case "SET-USER-PROFILE": {
             return {...state, profile: action.profile}
+        }
+        case "SET-STATUS": {
+            return {...state, status: action.newStatus}
+        }
+        case "TOGGLE-STATUS-FETCHING": {
+            return {...state, statusIsFetching: action.statusIsFetching}
         }
         default:
             return state
@@ -122,4 +142,30 @@ export const WritePostAC = (newText: string): WritePostActionType => {
 };
 export const setUserProfile = (profile: profileUsersType): setUserProfileActionType => {
     return {type: "SET-USER-PROFILE", profile}
+}
+export const SetStatusAC = (newStatus: string): SetStatusActionType => {
+    return {type: "SET-STATUS", newStatus}
+}
+export const ToggleStatusFetching = (statusIsFetching: boolean): ToggleStatusFetchingType => {
+    return {type: "TOGGLE-STATUS-FETCHING", statusIsFetching}
+}
+
+export const SetStatusTC = (userId: number) => {
+    return (dispatch: Dispatch) => {
+        ProfileAPI.GetProfileStatus(userId).then(res => {
+                dispatch(SetStatusAC(res.data))
+            }
+        )
+    }
+}
+export const UpdateStatusTC = (newText: string) => {
+    return (dispatch: Dispatch) => {
+        dispatch(ToggleStatusFetching(true))
+        ProfileAPI.UpdateStatus(newText).then(res => {
+            dispatch(ToggleStatusFetching(false))
+            if (res.resultCode === 0) {
+                SetStatusAC(newText)
+            }
+        })
+    }
 }

@@ -1,20 +1,29 @@
 import React from "react";
 import s from "./ProfileInfo.module.css";
 import {profileUsersType} from "../../../../Redux/postData-reducer";
-import {Preloader} from "../../../../common/preloader/Preloader";
+
+import {Status} from "../../../Status/Status";
 
 type ProfileInfoType = {
     profile: profileUsersType | null
-    status:string
-    statusIsFetching:boolean
+    status: string
+    statusIsFetching: boolean
 }
 
 export const ProfileInfo = (props: ProfileInfoType) => {
+
     let image
-    if (!props.profile) {image = ''
-    } else if (props.profile.photos.large) {image = props.profile.photos.large
-    } else if (props.profile.photos.small) {image = props.profile.photos.small}
-    if (!props.profile) {return <div>loading</div>}
+    if (!props.profile) {
+        image = ''
+    } else if (props.profile.photos.large) {
+        image = props.profile.photos.large
+    } else if (props.profile.photos.small) {
+        image = props.profile.photos.small
+    }
+    if (!props.profile) {
+        return <div>loading</div>
+    }
+
     return (<>
             <div className={s.name}><span>{props.profile.fullName}</span></div>
             <div className={s.contentWrapper}>
@@ -29,13 +38,13 @@ export const ProfileInfo = (props: ProfileInfoType) => {
                     <div className={s.contactWrapper}>
 
                         <div className={s.contactName}>{
-                            Object.keys(props.profile.contacts).map(u=>{
-                                return <div>{u + ":"}</div>
+                            Object.keys(props.profile.contacts).map((u,i) => {
+                                return <div key={i}>{u + ":"}</div>
                             })
                         }</div>
                         <div className={s.contactLink}>{
-                            Object.values(props.profile.contacts).map(u=>{
-                                return <div><a href={u ? u : '#'}>{u ? u : 'none'}</a></div>
+                            Object.values(props.profile.contacts).map((u ,i)=> {
+                                return <div key={i}><a href={u ? u : '#'}>{u ? u : 'none'}</a></div>
                             })
                         }</div>
 
@@ -47,7 +56,9 @@ export const ProfileInfo = (props: ProfileInfoType) => {
                 </div>
             </div>
             <hr/>
-            <div>Status:{props.status}</div>
+            <div>
+                <Status userId={props.profile.userId}/>
+            </div>
             <hr/>
         </>
     )

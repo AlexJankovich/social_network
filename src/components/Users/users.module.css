@@ -104,7 +104,7 @@ button:hover{
     transition: 0.5s;
 }
 
-input{
+.pageListWrapper input{
     max-width: 50px;
     text-align: center;
     border-radius: 10px;

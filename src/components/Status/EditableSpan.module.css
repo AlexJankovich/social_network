@@ -1,0 +1,24 @@
+.container{
+    position: relative;
+}
+.preloader{
+    z-index: 99;
+}
+.preloader img {
+    position: absolute;
+    height: 100px;
+    left: 40%;
+    top:-200%
+}
+.container input {
+    display: inline-block;
+    margin: 0 auto;
+    position: absolute;
+    width: 80%;
+    font-size: 25px;
+}
+
+.container span{
+    font-size: 20px;
+    font-weight: bold;
+}
