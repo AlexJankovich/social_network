@@ -6,8 +6,6 @@ import {Status} from "../../../Status/Status";
 
 type ProfileInfoType = {
     profile: profileUsersType | null
-    status: string
-    statusIsFetching: boolean
 }
 
 export const ProfileInfo = (props: ProfileInfoType) => {

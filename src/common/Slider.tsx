@@ -16,7 +16,7 @@ type SliderPropsType = {
     toPageNumber: (newPage: number, pagesCount:number) => void
 }
 
-export const Slider = (props: SliderPropsType) => {
+export const Slider = React.memo((props: SliderPropsType) => {
     const [newPage, setNewPage] = useState<number | string>('')
     let pagesCount = Math.ceil(props.totalUserCount / props.pageSize);
     let pages: Array<number> = [];
@@ -98,4 +98,4 @@ export const Slider = (props: SliderPropsType) => {
                 disabled={props.isFetching}
         >Go</button>
     </div>
-};
+});

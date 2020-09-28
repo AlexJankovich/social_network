@@ -12,8 +12,8 @@ type UsersType = {
     followInProgress: Array<number>
 }
 
-export const Users = (props: UsersType) => {
-
+export const Users =React.memo ((props: UsersType) => {
+console.log('users')
     return <div className={props.isFetching ? styles.shadow : ''}>
         {
             props.users.map(u => {
@@ -51,4 +51,4 @@ export const Users = (props: UsersType) => {
                 }
             )
         }</div>
-}
+})

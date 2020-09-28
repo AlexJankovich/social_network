@@ -3,18 +3,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
 import {postDataType, SetStatusTC, UpdateStatusTC} from "../../Redux/postData-reducer";
 import {EditableSpan} from "./EditableSpan";
-import {AuthResponseType, UserAuthType} from "../../Redux/authReducer";
 
 type StatusType ={
     userId:number
 }
-export const Status = (props:StatusType)=>{
+export const Status = React.memo((props:StatusType)=>{
+    console.log('status')
     const spanProps = useSelector<AppStateType, postDataType>(state => state.postData)
     const AllowStatusReading = useSelector<AppStateType, number|null>(state => state.auth.data.id)
     const dispatch = useDispatch()
     useEffect(()=>{
         dispatch(SetStatusTC(props.userId))
-    },[SetStatusTC,props.userId])
+    },[props.userId])
    const updateStatus = useCallback((newText:string)=>{
         dispatch(UpdateStatusTC(newText))
     },[dispatch])
@@ -25,4 +25,4 @@ export const Status = (props:StatusType)=>{
                          UserId={props.userId}
     />
 
-}
+})

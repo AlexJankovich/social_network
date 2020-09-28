@@ -19,15 +19,13 @@ type ProfileType = RouteComponentProps<PathParamsType> & {
     profile: profileUsersType|null
     isFetching:boolean
     meId:number|null
+    isAuth:boolean
     getProfileThunk:(getQuestion:number)=>void
     SetStatusTC:(newStatus: string)=>void
     UpdateStatusTC:(newText:string)=>void
-    isAuth:boolean
-    status: string
-    statusIsFetching:boolean
 }
 
-class ProfileClass extends React.Component<ProfileType> {
+class ProfileClass extends React.PureComponent<ProfileType> {
 
 
     componentDidMount() {
@@ -37,7 +35,6 @@ class ProfileClass extends React.Component<ProfileType> {
         }
         this.props.getProfileThunk(getQuestion)
     }
-
     loading = (load: boolean|null) => {
         if (load) {
             return <div className={pre.profilePreloader}><Preloader/></div>
@@ -55,8 +52,6 @@ class ProfileClass extends React.Component<ProfileType> {
 }
 const MapStateToProps = (state: AppStateType) => ({
     profile: state.postData.profile,
-    status: state.postData.status,
-    statusIsFetching: state.postData.statusIsFetching,
     isFetching: state.usersData.isFetching,
     meId:state.auth.data.id,
 })

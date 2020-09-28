@@ -6,8 +6,6 @@ import s from './Profile.module.css'
 
 type ProfileType = {
     profile: profileUsersType | null
-    status: string
-    statusIsFetching: boolean
     isFetching:boolean
 }
 

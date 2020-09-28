@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
 import {
@@ -17,41 +17,42 @@ import {Slider} from "../../common/Slider";
 import s from "./users.module.css";
 import {Preloader} from "../../common/preloader/Preloader";
 
-export const UsersHookContainer = () => {
+export const UsersHookContainer = (() => {
+    console.log("user container")
     const UsersProps = useSelector<AppStateType, UserDataType>(state => state.usersData)
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(getUsersThunk(UsersProps.currentPage, UsersProps.pageSize))
-    }, [getUsersThunk,UsersProps.currentPage])
+    }, [UsersProps.currentPage])
 
-    const changePageListDown = () => {
+    const changePageListDown =useCallback( () => {
         dispatch(changePageListDown())
-    }
-    const follow = (userId: number) => {
+    },[dispatch])
+    const follow = useCallback((userId: number) => {
         dispatch(followThunk(userId))
-    }
-    const unfollow = (userId: number) => {
+    }, [dispatch])
+    const unfollow = useCallback((userId: number) => {
         dispatch(unfollowThunk(userId))
-    }
-    const PageListUpp = (pagesCount: number) => {
+    }, [dispatch])
+    const PageListUpp = useCallback((pagesCount: number) => {
         dispatch(changePageListUpp(pagesCount))
-    }
-    const PageListDown = () => {
+    }, [dispatch])
+    const PageListDown = useCallback(() => {
         dispatch(changePageListDown())
-    }
-    const setCurrentPage = (page: number) => {
+    }, [dispatch])
+    const setCurrentPage = useCallback((page: number) => {
         dispatch(setPage(page))
-    }
-    const AndPage = (pagesCount: number) => {
+    }, [dispatch])
+    const AndPage =useCallback( (pagesCount: number) => {
         dispatch(toAndPage(pagesCount))
-    }
-    const StartPage = () => {
+    }, [dispatch])
+    const StartPage = useCallback(() => {
         dispatch(toStartPage())
-    }
-    const PageNumber = (newPage: number, pagesCount: number) => {
+    }, [dispatch])
+    const PageNumber =useCallback( (newPage: number, pagesCount: number) => {
         dispatch(toPageNumber(newPage, pagesCount))
-    }
+    }, [dispatch])
 
     return (
         <div className={s.container}>
@@ -77,4 +78,4 @@ export const UsersHookContainer = () => {
             />
         </div>
     )
-}
+})

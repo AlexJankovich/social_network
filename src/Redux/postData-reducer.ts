@@ -164,7 +164,7 @@ export const UpdateStatusTC = (newText: string) => {
         ProfileAPI.UpdateStatus(newText).then(res => {
             dispatch(ToggleStatusFetching(false))
             if (res.resultCode === 0) {
-                SetStatusAC(newText)
+                dispatch(SetStatusAC(newText))
             }
         })
     }

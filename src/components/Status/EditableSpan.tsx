@@ -10,8 +10,8 @@ type EditableSpanType = {
     UserId:number
 }
 
-export const EditableSpan = React.memo((props: EditableSpanType) => {
-
+export const EditableSpan =((props: EditableSpanType) => {
+console.log('span')
     const [editMode, setEditMode] = useState<boolean>(false)
     const [value, setValue] = useState<string>(props.status)
 
@@ -38,7 +38,6 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
                    autoFocus
                    onChange={onChange}
                    value={value}
-                   // className={span.editMode}
             /> :
             <span onDoubleClick={OnEditMode}>Status:{props.status}</span>}
     </div>
