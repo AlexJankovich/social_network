@@ -26,8 +26,6 @@ type ProfileType = RouteComponentProps<PathParamsType> & {
 }
 
 class ProfileClass extends React.PureComponent<ProfileType> {
-
-
     componentDidMount() {
         let getQuestion:any = +this.props.match.params.userId
         if(!getQuestion){
@@ -35,11 +33,19 @@ class ProfileClass extends React.PureComponent<ProfileType> {
         }
         this.props.getProfileThunk(getQuestion)
     }
+
+    componentDidUpdate(prevProps: ProfileType, prevState: AppStateType) {
+       if (prevProps.match.params.userId!==this.props.match.params.userId){
+           this.props.getProfileThunk(this.props.meId?this.props.meId:+this.props.match.params.userId)
+       }
+    }
+
     loading = (load: boolean|null) => {
         if (load) {
             return <div className={pre.profilePreloader}><Preloader/></div>
         }
     }
+
     render() {
         return (
             <>
@@ -50,6 +56,7 @@ class ProfileClass extends React.PureComponent<ProfileType> {
         );
     }
 }
+
 const MapStateToProps = (state: AppStateType) => ({
     profile: state.postData.profile,
     isFetching: state.usersData.isFetching,

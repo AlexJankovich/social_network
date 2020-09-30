@@ -13,7 +13,7 @@ export const Profile = (props: ProfileType) => {
     return (
         <div className={props.isFetching?s.shadow:''}>
             <ProfileInfo {...props}/>
-            <MyPostsContainer/>
+            <MyPostsContainer />
         </div>
     )
 }

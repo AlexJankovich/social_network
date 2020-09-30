@@ -17,7 +17,7 @@ export const Status = React.memo((props:StatusType)=>{
     },[props.userId])
    const updateStatus = useCallback((newText:string)=>{
         dispatch(UpdateStatusTC(newText))
-    },[dispatch])
+    },[])
     return <EditableSpan statusIsFetching={spanProps.statusIsFetching}
                          status={spanProps.status}
                          updateStatus={updateStatus}

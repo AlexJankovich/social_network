@@ -3,9 +3,6 @@ import {ProfileAPI} from "../api/api";
 
 type AddPostActionType = {
     type: 'ADD-POST'
-}
-type WritePostActionType = {
-    type: 'WRITE-POST'
     newText: string
 }
 type setUserProfileActionType = {
@@ -23,7 +20,6 @@ type ToggleStatusFetchingType = {
 
 export type ActionType =
     AddPostActionType
-    | WritePostActionType
     | setUserProfileActionType
     | SetStatusActionType
     | ToggleStatusFetchingType
@@ -57,7 +53,6 @@ export type postType = {
 }
 export type postDataType = {
     post: Array<postType>
-    newMessageData: string
     profile: profileUsersType | null
     status: string
     statusIsFetching: boolean
@@ -101,7 +96,6 @@ const initialState: postDataType = {
             isRead: false
         },
     ],
-    newMessageData: '',
     profile: null,
     status: '',
     statusIsFetching: false,
@@ -112,14 +106,11 @@ export const postReducer = (state: postDataType = initialState, action: ActionTy
             let NewPost = {
                 id: '6',
                 name: 'someName',
-                message: state.newMessageData,
+                message: action.newText,
                 time: new Date().toTimeString().slice(0, 5),
                 isRead: false
             };
-            return {...state, post: [...state.post, NewPost], newMessageData: ''}
-        }
-        case "WRITE-POST": {
-            return {...state, newMessageData: action.newText}
+            return {...state, post: [...state.post, NewPost]}
         }
         case "SET-USER-PROFILE": {
             return {...state, profile: action.profile}
@@ -134,11 +125,8 @@ export const postReducer = (state: postDataType = initialState, action: ActionTy
             return state
     }
 }
-export const AddPostAC = (): ActionType => {
-    return {type: "ADD-POST"}
-};
-export const WritePostAC = (newText: string): WritePostActionType => {
-    return {type: "WRITE-POST", newText: newText}
+export const AddPostAC = (newText: string): ActionType => {
+    return {type: "ADD-POST", newText}
 };
 export const setUserProfile = (profile: profileUsersType): setUserProfileActionType => {
     return {type: "SET-USER-PROFILE", profile}

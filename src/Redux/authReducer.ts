@@ -1,7 +1,7 @@
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
-import {Action} from "redux";
-import {GetAuth} from "../api/api";
+import {Action, Dispatch} from "redux";
+import {SignIn} from "../api/api";
 
 export type AuthResponseType = {
     id: number|null
@@ -65,12 +65,26 @@ export const AuthIsFetching=(isFetching:boolean):AuthIsFetchingACType=>{
 export const authThunk = ():ThunkAction<void, AppStateType, unknown, Action<string>> =>{
     return (dispatch) => {
         dispatch(AuthIsFetching(true))
-        GetAuth()
+        SignIn.GetAuth()
             .then(response => {
+                debugger
                 if (response.resultCode === 0) {
                     dispatch(AuthUser(response.data))
                 }
                 dispatch(AuthIsFetching(false))
             });
+    }
+}
+
+export const AuthTC = (login:string, password:string, rememberMe:boolean):ThunkAction<void, AppStateType, unknown, Action<string>> =>{
+    return (dispatch)=>{
+        // dispatch(AuthIsFetching(true))
+        debugger
+        SignIn.Authorisation(login, password, rememberMe).then(res=>{
+            debugger
+            if(res.resultCode===0){
+                dispatch(authThunk())
+            }
+        })
     }
 }

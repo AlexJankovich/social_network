@@ -1,22 +1,18 @@
 import s from "./message.module.css";
-import React, {ChangeEvent} from "react";
+import React from "react";
 import {messagesType} from "../../Redux/message-reducer";
+import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 type MessageType = {
     messages: Array<messagesType>
-    AddMessage: () => void
-    onChangeMassageHandler: (message: string) => void
-    onChangeMessageData: string
+    AddMessageAC: (value:string) => void
 }
 
 export const Message = (props: MessageType) => {
-    const AddMessage = () => {
-        props.AddMessage()
-    }
-    let onChangeMassageHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onChangeMassageHandler(e.currentTarget.value)
-    }
 
+    const addNewMessage =(values:AddMessageFormType)=>{
+        props.AddMessageAC(values.NewMessage)
+    }
     const mapMessages = props.messages.map(m =>
         <div key={m.id}
              className={s.message}>
@@ -25,16 +21,29 @@ export const Message = (props: MessageType) => {
 
     return <div className={s.wrapperMessages}>
         <div className={s.messages}>
-        {mapMessages}
+            {mapMessages}
         </div>
-        <div>
-            <textarea value={props.onChangeMessageData}
-                      onChange={onChangeMassageHandler}
-                      placeholder='write message'
-            >x</textarea>
-        </div>
-        <button onClick={AddMessage}>add massage</button>
+        <AddMessageFormRedux onSubmit={addNewMessage}/>
     </div>
-
-
 }
+
+type AddMessageFormType = {
+    NewMessage: string
+}
+
+const AddMessageForm: React.FC<InjectedFormProps<AddMessageFormType>> = (props) => {
+
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <div>
+                <Field component='textarea'
+                       name={'NewMessage'}
+                       placeholder='write message'
+                />
+            </div>
+            <button>send massage</button>
+        </form>
+    )
+}
+
+const AddMessageFormRedux = reduxForm<any, any>({form: 'DialogAddMassage'})(AddMessageForm)

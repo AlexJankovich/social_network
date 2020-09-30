@@ -88,7 +88,6 @@ export const UsersContainer = connect(mapStateToProps, {
     toAndPage,
     toStartPage,
     toPageNumber,
-
     getUsersThunk,
     followThunk,
     unfollowThunk

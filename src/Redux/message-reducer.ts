@@ -1,7 +1,8 @@
 export type messagesType = { id: string, message: string }
 export type messageDataType = {
     messages: Array<messagesType>
-    onChangeMessageData: string}
+    // onChangeMessageData: string
+}
 
 const initialState = {
         messages: [
@@ -12,37 +13,33 @@ const initialState = {
             {id: '5', message: 'message5'},
             {id: '6', message: 'message6'},
         ],
-        onChangeMessageData: '',
+        // onChangeMessageData: '',
 }
 
-type OnChangeMessageHandlerActionType = {
-    type: 'ON-CHANGE-MESSAGE'
-    message: string
-}
+// type OnChangeMessageHandlerActionType = {
+//     type: 'ON-CHANGE-MESSAGE'
+//     message: string
+// }
 type AddMessageActionType = {
     type: 'ADD-MESSAGE'
+    NewMessage:string
 }
-type ActionType = OnChangeMessageHandlerActionType | AddMessageActionType
+type ActionType =  AddMessageActionType
 
 export const messageReducer = (state:messageDataType=initialState, action:ActionType)=>{
     switch (action.type) {
         case "ADD-MESSAGE": {
             const NewMessage = {
                 id: '8',
-                message: state.onChangeMessageData
+                message: action.NewMessage
             }
             return {...state,messages:[...state.messages,NewMessage],onChangeMessageData:''}
-        }
-        case "ON-CHANGE-MESSAGE": {
-            return {...state, onChangeMessageData: action.message}
         }
         default:
             return state
     }
 }
-export const AddMessageAC = ():AddMessageActionType => {
-    return {type: "ADD-MESSAGE"}
+export const AddMessageAC = (NewMessage:string):AddMessageActionType => {
+    return {type: "ADD-MESSAGE", NewMessage}
 }
-export let OnChangeMessageAC = (message: string):OnChangeMessageHandlerActionType => {
-    return {type: "ON-CHANGE-MESSAGE", message: message}
-}
+

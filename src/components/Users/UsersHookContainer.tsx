@@ -10,7 +10,7 @@ import {
     toAndPage,
     toStartPage,
     toPageNumber,
-    getUsersThunk
+    getUsersThunk, changePageListDown
 } from "../../Redux/users-reduser";
 import {Users} from "./Users";
 import {Slider} from "../../common/Slider";
@@ -26,33 +26,30 @@ export const UsersHookContainer = (() => {
         dispatch(getUsersThunk(UsersProps.currentPage, UsersProps.pageSize))
     }, [UsersProps.currentPage])
 
-    const changePageListDown =useCallback( () => {
-        dispatch(changePageListDown())
-    },[dispatch])
     const follow = useCallback((userId: number) => {
         dispatch(followThunk(userId))
-    }, [dispatch])
+    }, [])
     const unfollow = useCallback((userId: number) => {
         dispatch(unfollowThunk(userId))
-    }, [dispatch])
+    }, [])
     const PageListUpp = useCallback((pagesCount: number) => {
         dispatch(changePageListUpp(pagesCount))
-    }, [dispatch])
+    }, [])
     const PageListDown = useCallback(() => {
         dispatch(changePageListDown())
-    }, [dispatch])
+    }, [])
     const setCurrentPage = useCallback((page: number) => {
         dispatch(setPage(page))
     }, [dispatch])
     const AndPage =useCallback( (pagesCount: number) => {
         dispatch(toAndPage(pagesCount))
-    }, [dispatch])
+    }, [])
     const StartPage = useCallback(() => {
         dispatch(toStartPage())
-    }, [dispatch])
+    }, [])
     const PageNumber =useCallback( (newPage: number, pagesCount: number) => {
         dispatch(toPageNumber(newPage, pagesCount))
-    }, [dispatch])
+    }, [])
 
     return (
         <div className={s.container}>

@@ -1,8 +1,7 @@
 import {connect} from "react-redux";
-import {AddMessageAC, OnChangeMessageAC} from "../../Redux/message-reducer";
+import {AddMessageAC} from "../../Redux/message-reducer";
 import { Message } from "./message";
 import Dialogs from "./dialogs";
-import {Dispatch} from "redux";
 import {AppStateType} from "../../Redux/redux-store";
 
 const mapStateToProps1 = (state: any) => {
@@ -13,24 +12,11 @@ const mapStateToProps1 = (state: any) => {
 const mapStateToProps2 = (state: AppStateType) => {
     return {
         messages: state.messageData.messages,
-        onChangeMessageData: state.messageData.onChangeMessageData,
-        // isAuth: state.auth.isAuth
-    }
-}
-const mapDispatchToProps = (dispatch:Dispatch) => {
-    return {
-        AddMessage: () => {
-            dispatch(AddMessageAC())
-        },
-        onChangeMassageHandler: (message: string) => {
-            const action = dispatch(OnChangeMessageAC(message))
-            dispatch(action)
-        }
     }
 }
 
 export const DialogContainer1 = connect(mapStateToProps1)(Dialogs)
-export const MessagesContainer2 = connect(mapStateToProps2, mapDispatchToProps)(Message)
+export const MessagesContainer2 = connect(mapStateToProps2, {AddMessageAC})(Message)
 
 
 

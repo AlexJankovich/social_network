@@ -5,13 +5,15 @@ import {dialogsReducer} from "./dialogs-reducer";
 import {UsersReducer} from "./users-reduser";
 import {AuthReducer} from "./authReducer";
 import thunkMiddleware from "redux-thunk"
+import {reducer as formReducer} from "redux-form"
 
 const reducers = combineReducers({
     postData:postReducer,
     messageData:messageReducer,
     dialogsData:dialogsReducer,
     usersData:UsersReducer,
-    auth:AuthReducer
+    auth:AuthReducer,
+    form:formReducer
 });
 
 // type reducersType = typeof reducers;

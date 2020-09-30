@@ -10,13 +10,13 @@ type EditableSpanType = {
     UserId:number
 }
 
-export const EditableSpan =((props: EditableSpanType) => {
+export const EditableSpan =React.memo((props: EditableSpanType) => {
 console.log('span')
     const [editMode, setEditMode] = useState<boolean>(false)
     const [value, setValue] = useState<string>(props.status)
 
     const OnEditMode = () => {
-        if(props.AllowStatusReading==props.UserId) {
+        if(props.AllowStatusReading===props.UserId) {
             setEditMode(true)
             setValue(props.status)
         }

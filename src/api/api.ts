@@ -5,11 +5,12 @@ const instance = axios.create(
     {
         withCredentials:true,
         baseURL: `https://social-network.samuraijs.com/api/1.0/`,
-        headers: {'API-KEY': '0ef6ceb4-8351-4f10-830f-7860bde0de05'}
+        headers: {'API-KEY': process.env.REACT_APP_API_KEY}
     }
 );
 
 //`https://social-network.samuraijs.com/api/1.0/profile/status/2`
+//`https://social-network.samuraijs.com/api/1.0/security/get-captcha-url`
 
 export const UserAPI ={
     GetUsers:(currentPage: number = 1, pageSize: number = 10) => {
@@ -27,8 +28,9 @@ export const UserAPI ={
 type UpdateStatusType = {
     resultCode: number
     messages: [string],
-    data: {}
+    data: {},
 }
+
 
 export const ProfileAPI={
     GetProfileInfo:(id:number)=>{
@@ -43,6 +45,26 @@ export const ProfileAPI={
 
 }
 
-export const GetAuth =()=>{
-    return instance.get(`auth/me`).then(response=>response.data)
+type LoginResType={
+    resultCode: number
+    messages: [string],
+    data: {
+        userId: number
+    }
+}
+
+export const SignIn={
+    GetAuth :()=>{
+        return instance.get(`auth/me`).then(response=>response.data)
+    },
+    Authorisation:(login:string, password:string,rememberMe:boolean)=>{
+        debugger
+        return instance.post<LoginResType>('/auth/login', {email:login,password:password,rememberMe:rememberMe})
+            .then((res) => {
+                debugger
+            console.log(res.data.resultCode)
+                return res.data
+        })
+    }
+
 }
