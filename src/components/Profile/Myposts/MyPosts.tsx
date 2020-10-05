@@ -2,7 +2,10 @@ import React from "react";
 import s from './MyPosts.module.css';
 import Post from "./Posts/Post";
 import {postType} from "../../../Redux/postData-reducer";
-import {reduxForm, Field, InjectedFormProps} from "redux-form";
+import {reduxForm, Field, InjectedFormProps, reset} from "redux-form";
+import {MaxLengthCreator, requiredField} from "../../../utils/validators/validators";
+import {TextArea} from "../../../common/FormsControls/FormsControls";
+import {useDispatch} from "react-redux";
 
 
 type MyPostsType = {
@@ -11,6 +14,7 @@ type MyPostsType = {
 }
 
 export const MyPosts = (props: MyPostsType) => {
+    const dispatch=useDispatch()
     let postItem = props.post.map(p => {
         return <Post key={p.id}
                      message={p.message}
@@ -22,6 +26,7 @@ export const MyPosts = (props: MyPostsType) => {
 
 const AddNewPost = (value:AddPostType) =>{
     props.AddPostAC(value.NewPostText)
+    dispatch(reset('AddNewPostForm'))
 }
     return (
         <div className={s.content}>
@@ -42,13 +47,19 @@ type AddPostType = {
     NewPostText:string
 }
 
+const MaxLength10 = MaxLengthCreator(10)
+
 const AddPost:React.FC<InjectedFormProps<AddPostType>> = (props)=>{
     return(
         <form onSubmit={props.handleSubmit}>
             <div className={s.myPost}>
-                    <Field component={'textarea'} name={'NewPostText'} placeholder={'AddYourNewPost'}/>
+                    <Field component={TextArea}
+                           name={'NewPostText'}
+                           placeholder='AddYourNewPost'
+                           validate={[MaxLength10]}
+                    />
                 <div>
-                    <button >Add post</button>
+                    <button>Add post</button>
                     {/*<button>Remove post</button>*/}
                 </div>
             </div>
@@ -56,4 +67,4 @@ const AddPost:React.FC<InjectedFormProps<AddPostType>> = (props)=>{
     )
 }
 
-const AddPostReduxForm = reduxForm<any, any>({form:'AddNewPostForm'})(AddPost)
+const AddPostReduxForm = reduxForm<AddPostType>({form:'AddNewPostForm'})(AddPost)

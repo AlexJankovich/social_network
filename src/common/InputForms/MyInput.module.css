@@ -1,0 +1,15 @@
+.InputWrapper{
+    position: relative;
+    display: inline-block;
+}
+.inputErrStyle{
+    border: 2px solid red;
+}
+.InputWrapper span{
+    position: absolute;
+    margin-left: 20px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: 3px;
+}

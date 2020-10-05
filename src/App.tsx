@@ -3,7 +3,7 @@ import './App.css';
 import {NavBar} from "./components/Navbar/Navbar";
 import {BrowserRouter, Route} from "react-router-dom";
 import {DialogsConnectContainer} from "./components/Dialogs/dialogsConnectContainer";
-import {HeaderContainer} from "./components/Headr/HeaderContainer";
+import {HeaderContainer} from "./components/Header/HeaderContainer";
 import {Login} from "./components/Login/Login";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
 import { UsersHookContainer } from './components/Users/UsersHookContainer';

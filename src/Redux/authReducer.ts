@@ -1,6 +1,6 @@
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
-import {Action, Dispatch} from "redux";
+import {Action} from "redux";
 import {SignIn} from "../api/api";
 
 export type AuthResponseType = {
@@ -28,6 +28,7 @@ const initialState: UserAuthType = {
 type AuthACType = {
     type: 'AUTH-USER'
     data: AuthResponseType
+    isAuth:boolean
 }
 export type AuthIsFetchingACType = {
     type:'AUTH-IS-FETCHING'
@@ -41,7 +42,7 @@ export const AuthReducer = (state: UserAuthType = initialState, action: AuthActi
             return {
                 ...state,
                 data:{...action.data},
-                isAuth:true
+                isAuth:action.isAuth
             }
         }
         case "AUTH-IS-FETCHING":{
@@ -55,8 +56,8 @@ export const AuthReducer = (state: UserAuthType = initialState, action: AuthActi
     }
 }
 
-export const AuthUser =(data:AuthResponseType):AuthACType=>{
-    return{type:"AUTH-USER", data}
+export const AuthUser =(data:AuthResponseType, isAuth:boolean):AuthACType=>{
+    return{type:"AUTH-USER", data, isAuth}
 }
 export const AuthIsFetching=(isFetching:boolean):AuthIsFetchingACType=>{
     return {type:"AUTH-IS-FETCHING", isFetching}
@@ -69,7 +70,7 @@ export const authThunk = ():ThunkAction<void, AppStateType, unknown, Action<stri
             .then(response => {
                 debugger
                 if (response.resultCode === 0) {
-                    dispatch(AuthUser(response.data))
+                    dispatch(AuthUser(response.data, true))
                 }
                 dispatch(AuthIsFetching(false))
             });
@@ -78,12 +79,26 @@ export const authThunk = ():ThunkAction<void, AppStateType, unknown, Action<stri
 
 export const AuthTC = (login:string, password:string, rememberMe:boolean):ThunkAction<void, AppStateType, unknown, Action<string>> =>{
     return (dispatch)=>{
-        // dispatch(AuthIsFetching(true))
+        dispatch(AuthIsFetching(true))
         debugger
         SignIn.Authorisation(login, password, rememberMe).then(res=>{
             debugger
             if(res.resultCode===0){
                 dispatch(authThunk())
+                dispatch(AuthIsFetching(false))
+            }
+        })
+    }
+}
+export const Logout = ():ThunkAction<void, AppStateType, unknown, Action<string>> =>{
+    return (dispatch)=>{
+        dispatch(AuthIsFetching(true))
+        debugger
+        SignIn.Logout().then(res=>{
+            debugger
+            if(res.resultCode===0){
+                dispatch(AuthUser(res.data, false))
+                dispatch(AuthIsFetching(false))
             }
         })
     }

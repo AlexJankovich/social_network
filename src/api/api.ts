@@ -65,6 +65,14 @@ export const SignIn={
             console.log(res.data.resultCode)
                 return res.data
         })
+    },
+ Logout:()=>{
+        debugger
+        return instance.post('/auth/logout', {})
+            .then((res) => {
+                debugger
+                return res.data
+        })
     }
 
 }
