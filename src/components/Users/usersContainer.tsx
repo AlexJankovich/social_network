@@ -15,7 +15,7 @@ import s from './users.module.css'
 
 type UsersApiType = {
     usersData: UserDataType
-    // isAuth:boolean
+    isAuth:boolean
     followThunk: (userId: number) => void
     unfollowThunk: (userId: number) => void
     setPage: (page: number) => void

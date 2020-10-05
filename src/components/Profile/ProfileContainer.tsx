@@ -25,7 +25,7 @@ type ProfileType = RouteComponentProps<PathParamsType> & {
     UpdateStatusTC:(newText:string)=>void
 }
 
-class ProfileClass extends React.PureComponent<ProfileType> {
+class ProfileClass extends React.Component<ProfileType> {
     componentDidMount() {
         let getQuestion:any = +this.props.match.params.userId
         if(!getQuestion){
