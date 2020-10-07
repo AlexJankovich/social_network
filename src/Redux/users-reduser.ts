@@ -2,7 +2,7 @@ import {ProfileAPI, UserAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {Action, Dispatch} from "redux";
 import {AppStateType} from "./redux-store";
-import { setUserProfile} from "./postData-reducer";
+import {setUserProfile} from "./postData-reducer";
 
 type LocationType = {
     city: string,
@@ -96,19 +96,19 @@ const initialState: UserDataType = {
 //     value: number | string
 // }
 
-    // FollowACType
-    // | UnFollowACType
-    // | setUsersAC
-    // | setPageType
-    // | setTotalUsersCountType
-    // | changePageListUppType
-    // | changePageListDownType
-    // | toAndPageType
-    // | toStartPageType
-    // | toggleIsFetchingType
-    // | toPageNumberType
-    // | changeInputValue
-    // | followInProgressType
+// FollowACType
+// | UnFollowACType
+// | setUsersAC
+// | setPageType
+// | setTotalUsersCountType
+// | changePageListUppType
+// | changePageListDownType
+// | toAndPageType
+// | toStartPageType
+// | toggleIsFetchingType
+// | toPageNumberType
+// | changeInputValue
+// | followInProgressType
 
 
 export const UsersReducer = (state: UserDataType = initialState, action: UsersActionType): UserDataType => {
@@ -193,24 +193,28 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
     }
 }
 
-type ReturnedActionsTypes<T>=T extends {[key:string]: infer U}? U:never;
+type ReturnedActionsTypes<T> = T extends { [key: string]: infer U } ? U : never;
 export type UsersActionType = ReturnType<ReturnedActionsTypes<typeof actions>>
-const actions = {
-    follow : (userId: number) => ({type: "FOLLOW", userId} as const),
-    unfollow : (userId: number) => ( {type: "UNFOLLOW", userId} as const),
-    setUsers : (users: Array<UserInfoType>) => ({type: 'SET-USERS', users} as const),
-    setPage : (page: number) => ({type: "SET-PAGE", page}as const),
-    setTotalUsersCount : (totalCount: number) => ({type: "SET-TOTAL-USERS-COUNT", totalCount} as const),
-     changePageListUpp : (pagesCount: number) => ({type: 'CHANGE-PAGE-LIST-UPP', pagesCount} as const),
-    changePageListDown : () =>({type: 'CHANGE-PAGE-LIST-DOWN'} as const),
-    toAndPage : (pagesCount: number) =>({type: 'TO-AND-PAGE', pagesCount} as const),
-     toStartPage : () =>({type: 'TO-START-PAGE'} as const),
-    toggleIsFetching : (isFetching: boolean) =>({type: 'TOGGLE-IS-FETCHING', isFetching} as const),
-    toPageNumber : (newPage: number, pagesCount: number) =>({type: "TO-PAGE-NUMBER", newPage, pagesCount} as const),
-    followIsFetchingAC : (isFetching: boolean, userId: number) => ({type: "TOGGLE-FOLLOW-IS-FETCHING", isFetching, userId} as const)
+export const actions = {
+    follow: (userId: number) => ({type: "FOLLOW", userId} as const),
+    unfollow: (userId: number) => ({type: "UNFOLLOW", userId} as const),
+    setUsers: (users: Array<UserInfoType>) => ({type: 'SET-USERS', users} as const),
+    setPage: (page: number) => ({type: "SET-PAGE", page} as const),
+    setTotalUsersCount: (totalCount: number) => ({type: "SET-TOTAL-USERS-COUNT", totalCount} as const),
+    changePageListUpp: (pagesCount: number) => ({type: 'CHANGE-PAGE-LIST-UPP', pagesCount} as const),
+    changePageListDown: () => ({type: 'CHANGE-PAGE-LIST-DOWN'} as const),
+    toAndPage: (pagesCount: number) => ({type: 'TO-AND-PAGE', pagesCount} as const),
+    toStartPage: () => ({type: 'TO-START-PAGE'} as const),
+    toggleIsFetching: (isFetching: boolean) => ({type: 'TOGGLE-IS-FETCHING', isFetching} as const),
+    toPageNumber: (newPage: number, pagesCount: number) => ({type: "TO-PAGE-NUMBER", newPage, pagesCount} as const),
+    followIsFetchingAC: (isFetching: boolean, userId: number) => ({
+        type: "TOGGLE-FOLLOW-IS-FETCHING",
+        isFetching,
+        userId
+    } as const)
 }
-export const getUsersThunk = (currentPage: number, pageSize: number)=> {
-    return (dispatch:Dispatch) => {
+export const getUsersThunk = (currentPage: number, pageSize: number) => {
+    return (dispatch: Dispatch) => {
         dispatch(actions.toggleIsFetching(true));
         UserAPI.GetUsers(currentPage, pageSize)
             .then(data => {

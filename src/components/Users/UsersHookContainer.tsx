@@ -5,12 +5,8 @@ import {
     UserDataType,
     followThunk,
     unfollowThunk,
-    changePageListUpp,
-    setPage,
-    toAndPage,
-    toStartPage,
-    toPageNumber,
-    getUsersThunk, changePageListDown
+    getUsersThunk,
+    actions
 } from "../../Redux/users-reduser";
 import {Users} from "./Users";
 import {Slider} from "../../common/Slider";
@@ -24,31 +20,38 @@ export const UsersHookContainer = (() => {
 
     useEffect(() => {
         dispatch(getUsersThunk(UsersProps.currentPage, UsersProps.pageSize))
-    }, [UsersProps.currentPage,UsersProps.pageSize,dispatch ])
+    }, [UsersProps.currentPage, UsersProps.pageSize, dispatch])
 
     const follow = useCallback((userId: number) => {
         dispatch(followThunk(userId))
     }, [dispatch])
+
     const unfollow = useCallback((userId: number) => {
         dispatch(unfollowThunk(userId))
     }, [dispatch])
+
     const PageListUpp = useCallback((pagesCount: number) => {
-        dispatch(changePageListUpp(pagesCount))
+        dispatch(actions.changePageListUpp(pagesCount))
     }, [dispatch])
+
     const PageListDown = useCallback(() => {
-        dispatch(changePageListDown())
+        dispatch(actions.changePageListDown())
     }, [dispatch])
+
     const setCurrentPage = useCallback((page: number) => {
-        dispatch(setPage(page))
+        dispatch(actions.setPage(page))
     }, [dispatch])
-    const AndPage =useCallback( (pagesCount: number) => {
-        dispatch(toAndPage(pagesCount))
+
+    const AndPage = useCallback((pagesCount: number) => {
+        dispatch(actions.toAndPage(pagesCount))
     }, [dispatch])
+
     const StartPage = useCallback(() => {
-        dispatch(toStartPage())
+        dispatch(actions.toStartPage())
     }, [dispatch])
-    const PageNumber =useCallback( (newPage: number, pagesCount: number) => {
-        dispatch(toPageNumber(newPage, pagesCount))
+
+    const PageNumber = useCallback((newPage: number, pagesCount: number) => {
+        dispatch(actions.toPageNumber(newPage, pagesCount))
     }, [dispatch])
 
     return (

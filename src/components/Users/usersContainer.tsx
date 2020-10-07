@@ -1,17 +1,14 @@
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
 import {
-    changePageListDown,
-    changePageListUpp,
-    setPage,
-    toAndPage, toStartPage,
-    UserDataType, toPageNumber, getUsersThunk, followThunk, unfollowThunk
+    actions, getUsersThunk, followThunk, unfollowThunk, UserDataType
 } from "../../Redux/users-reduser";
 import React from "react";
 import {Users} from "./Users";
 import {Preloader} from "../../common/preloader/Preloader";
 import {Slider} from "../../common/Slider";
 import s from './users.module.css'
+import {Dispatch} from "redux";
 
 type UsersApiType = {
     usersData: UserDataType
@@ -80,14 +77,12 @@ const mapStateToProps = (state: AppStateType) => {
         usersData: state.usersData,
     }
 }
+// const mapDispatchToProps =(dispatch:Dispatch) ({
+//
+// })
 
 export const UsersContainer = connect(mapStateToProps, {
-    setPage,
-    changePageListUpp,
-    changePageListDown,
-    toAndPage,
-    toStartPage,
-    toPageNumber,
+    actions,
     getUsersThunk,
     followThunk,
     unfollowThunk
