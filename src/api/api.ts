@@ -58,19 +58,15 @@ export const SignIn={
         return instance.get(`auth/me`).then(response=>response.data)
     },
     Authorisation:(login:string, password:string,rememberMe:boolean)=>{
-        debugger
         return instance.post<LoginResType>('/auth/login', {email:login,password:password,rememberMe:rememberMe})
             .then((res) => {
-                debugger
             console.log(res.data.resultCode)
                 return res.data
         })
     },
  Logout:()=>{
-        debugger
         return instance.post('/auth/logout', {})
             .then((res) => {
-                debugger
                 return res.data
         })
     }

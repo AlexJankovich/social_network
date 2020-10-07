@@ -14,7 +14,7 @@ const Dialogs = () => {
     let pagesCount = Math.ceil(userProps.totalUserCount / userProps.pageSize);
     useEffect(() => {
         dispatch(getUsersThunk(userProps.currentPage, userProps.pageSize))
-    }, [userProps.currentPage])
+    }, [userProps.currentPage,  userProps.pageSize, dispatch])
 
     const nextUserList = (pagesCount: number) => {
         dispatch(changePageListUpp(pagesCount))

@@ -3,7 +3,7 @@ import s from './MyPosts.module.css';
 import Post from "./Posts/Post";
 import {postType} from "../../../Redux/postData-reducer";
 import {reduxForm, Field, InjectedFormProps, reset} from "redux-form";
-import {MaxLengthCreator, requiredField} from "../../../utils/validators/validators";
+import {MaxLengthCreator} from "../../../utils/validators/validators";
 import {TextArea} from "../../../common/FormsControls/FormsControls";
 import {useDispatch} from "react-redux";
 

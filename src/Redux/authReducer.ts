@@ -2,6 +2,7 @@ import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {Action} from "redux";
 import {SignIn} from "../api/api";
+import {stopSubmit} from "redux-form";
 
 export type AuthResponseType = {
     id: number|null
@@ -68,7 +69,6 @@ export const authThunk = ():ThunkAction<void, AppStateType, unknown, Action<stri
         dispatch(AuthIsFetching(true))
         SignIn.GetAuth()
             .then(response => {
-                debugger
                 if (response.resultCode === 0) {
                     dispatch(AuthUser(response.data, true))
                 }
@@ -79,12 +79,16 @@ export const authThunk = ():ThunkAction<void, AppStateType, unknown, Action<stri
 
 export const AuthTC = (login:string, password:string, rememberMe:boolean):ThunkAction<void, AppStateType, unknown, Action<string>> =>{
     return (dispatch)=>{
+
         dispatch(AuthIsFetching(true))
-        debugger
+
         SignIn.Authorisation(login, password, rememberMe).then(res=>{
-            debugger
+
             if(res.resultCode===0){
                 dispatch(authThunk())
+                dispatch(AuthIsFetching(false))
+            }else {
+                dispatch(stopSubmit('login', {_error: res.messages[0]}))
                 dispatch(AuthIsFetching(false))
             }
         })
@@ -93,9 +97,9 @@ export const AuthTC = (login:string, password:string, rememberMe:boolean):ThunkA
 export const Logout = ():ThunkAction<void, AppStateType, unknown, Action<string>> =>{
     return (dispatch)=>{
         dispatch(AuthIsFetching(true))
-        debugger
+
         SignIn.Logout().then(res=>{
-            debugger
+
             if(res.resultCode===0){
                 dispatch(AuthUser(res.data, false))
                 dispatch(AuthIsFetching(false))
