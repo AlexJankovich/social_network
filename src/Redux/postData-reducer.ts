@@ -61,7 +61,7 @@ export type profileUsersType = {
     }
     photos: {
         small: string | null
-        large: string | null
+        large: string| null
     }
 }
 export type postType = {
@@ -73,7 +73,7 @@ export type postType = {
 }
 export type postDataType = {
     post: Array<postType>
-    profile: profileUsersType | null
+    profile: profileUsersType  | null | {}
     status: string
     statusIsFetching: boolean
     uploadPhotoIsFetching: boolean
@@ -117,12 +117,12 @@ const initialState: postDataType = {
             isRead: false
         },
     ],
-    profile: null,
+    profile:  null,
     status: '',
     statusIsFetching: false,
     uploadPhotoIsFetching: false
 }
-export const postReducer = (state: postDataType = initialState, action: ActionType) => {
+export const postReducer = (state: postDataType = initialState, action: ActionType): postDataType => {
     switch (action.type) {
         case "ADD-POST": {
             let NewPost = {
@@ -146,17 +146,14 @@ export const postReducer = (state: postDataType = initialState, action: ActionTy
         case "TOGGLE-UPLOAD-PHOTO-FETCHING": {
             return {...state, statusIsFetching: action.uploadPhotoIsFetching}
         }
+
         case "UPDATE-PROFILE-PHOTO": {
-            if (action.photos.large&&action.photos.small) {
+
                 return {
                     ...state,
-                    profile: {
-                        ...state.profile,
-                        photos: action.photos
-                    }
+                    profile: {...state.profile, photos:action.photos}
                 }
-            }
-            return
+
         }
         default:
             return state
@@ -216,8 +213,9 @@ export const SavePhotoTC = (photo: File) => {
         dispatch(ToggleUploadPhotoFetching(true))
         ProfileAPI.SavePhoto(photo).then(res => {
                 if (res.resultCode === 0) {
-                    dispatch(UpdatePhotosAC(res.data.photos))
-                }
+                        dispatch(UpdatePhotosAC(res.data?.photos))
+                    }
+                return
             }
         )
         dispatch(ToggleUploadPhotoFetching(false))

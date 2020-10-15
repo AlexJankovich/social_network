@@ -6,7 +6,6 @@ import {AppStateType} from "../../../Redux/redux-store";
 const mapStateToProps = (state:AppStateType)=>{
 
     return{
-        // @ts-ignore
         post: state.postData.post,
     }
 }

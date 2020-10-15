@@ -14,21 +14,17 @@ type ProfileInfoType = {
 }
 
 export const ProfileInfo = (props: ProfileInfoType) => {
-
-    let image
-    if (!props.profile) {
-        image = ''
-    } else if (props.profile.photos.large) {
-        image = props.profile.photos.large
-    } else if (props.profile.photos.small) {
-        image = props.profile.photos.small
-    } else {image=avaDefault}
-
     if (!props.profile){
         return <>
             no data
         </>
     }
+    let image
+    if (!props.profile?.photos===null || !props.profile.photos.large||!props.profile.photos.small) {
+      image= avaDefault  }
+    else {image=props.profile.photos.large}
+
+
     const upLoadImage =(e:ChangeEvent<HTMLInputElement>)=> {
        if(e.target.files?.length){
            props.SavePhoto(e.target.files[0])
@@ -49,7 +45,7 @@ export const ProfileInfo = (props: ProfileInfoType) => {
                 <div className={s.avaWrapper}>
                     <div className={s.ava}>
                         <img src={image}
-                             alt=""/>
+                             alt="ava"/>
                     </div>
                 </div>
                 <div>

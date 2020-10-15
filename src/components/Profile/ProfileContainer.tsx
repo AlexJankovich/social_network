@@ -16,7 +16,7 @@ type PathParamsType = {
 }
 
 type ProfileType = RouteComponentProps<PathParamsType> & {
-    profile: profileUsersType
+    profile: profileUsersType | null
     isFetching: boolean
     meId: number
     isAuth: boolean
@@ -73,7 +73,6 @@ class ProfileClass extends React.Component<ProfileType> {
 
 
 const MapStateToProps = (state: AppStateType) => ({
-    // @ts-ignore
     profile: state.postData.profile,
     isFetching: state.usersData.isFetching,
     meId: state.auth.data.id,
