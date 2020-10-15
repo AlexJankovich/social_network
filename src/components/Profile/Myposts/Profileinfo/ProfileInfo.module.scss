@@ -1,0 +1,75 @@
+.profileInfoWrapper {
+  .name {
+    display: flex;
+    flex-direction: column;
+
+    span {
+      font-size: 25px;
+      font-weight: bold;
+    }
+  }
+
+  .contentWrapper {
+    display: flex;
+
+    .avaWrapper {
+      .ava {
+        img {
+          margin-top: 10px;
+          height: 200px;
+        }
+      }
+    }
+
+    h3 {
+      margin: 10px 0 10px 10px;
+      border-top: 1px solid;
+    }
+
+    .contactWrapper {
+      display: flex;
+      flex-direction: row;
+
+      .contactName {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+        text-align: right;
+        font-weight: bold;
+      }
+
+      .contactLink {
+        margin: 0 0 0 10px;
+
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+
+    .aboutJob {
+      border-top: 1px solid;
+      margin: 20px 0 0 10px;
+      padding-top: 10px;
+    }
+
+  }
+
+  .profilePreloader {
+    z-index: 999;
+    img {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+  .shadow {
+    opacity: 0.3;
+  }
+
+}
+
+
+
+

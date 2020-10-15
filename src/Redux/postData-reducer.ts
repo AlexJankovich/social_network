@@ -17,12 +17,32 @@ type ToggleStatusFetchingType = {
     type: 'TOGGLE-STATUS-FETCHING'
     statusIsFetching: boolean
 }
+type TogglePhotoFetchingType = {
+    type: 'TOGGLE-UPLOAD-PHOTO-FETCHING'
+    uploadPhotoIsFetching: boolean
+}
+
+type SavePhotoActionType = {
+    type: 'SAVE-PHOTO'
+    photo: File
+}
+
+type UpdatePhotosAcType = {
+    type: 'UPDATE-PROFILE-PHOTO'
+    photos: {
+        small: string | null
+        large: string | null
+    }
+}
 
 export type ActionType =
     AddPostActionType
     | setUserProfileActionType
     | SetStatusActionType
     | ToggleStatusFetchingType
+    | SavePhotoActionType
+    | TogglePhotoFetchingType
+    | UpdatePhotosAcType
 
 export type profileUsersType = {
     userId: number
@@ -56,6 +76,7 @@ export type postDataType = {
     profile: profileUsersType | null
     status: string
     statusIsFetching: boolean
+    uploadPhotoIsFetching: boolean
 }
 
 const initialState: postDataType = {
@@ -99,6 +120,7 @@ const initialState: postDataType = {
     profile: null,
     status: '',
     statusIsFetching: false,
+    uploadPhotoIsFetching: false
 }
 export const postReducer = (state: postDataType = initialState, action: ActionType) => {
     switch (action.type) {
@@ -121,21 +143,51 @@ export const postReducer = (state: postDataType = initialState, action: ActionTy
         case "TOGGLE-STATUS-FETCHING": {
             return {...state, statusIsFetching: action.statusIsFetching}
         }
+        case "TOGGLE-UPLOAD-PHOTO-FETCHING": {
+            return {...state, statusIsFetching: action.uploadPhotoIsFetching}
+        }
+        case "UPDATE-PROFILE-PHOTO": {
+            if (action.photos.large&&action.photos.small) {
+                return {
+                    ...state,
+                    profile: {
+                        ...state.profile,
+                        photos: action.photos
+                    }
+                }
+            }
+            return
+        }
         default:
             return state
     }
 }
+
 export const AddPostAC = (newText: string): ActionType => {
     return {type: "ADD-POST", newText}
 };
+
 export const setUserProfile = (profile: profileUsersType): setUserProfileActionType => {
     return {type: "SET-USER-PROFILE", profile}
 }
+
 export const SetStatusAC = (newStatus: string): SetStatusActionType => {
     return {type: "SET-STATUS", newStatus}
 }
+
 export const ToggleStatusFetching = (statusIsFetching: boolean): ToggleStatusFetchingType => {
     return {type: "TOGGLE-STATUS-FETCHING", statusIsFetching}
+}
+
+export const ToggleUploadPhotoFetching = (uploadPhotoIsFetching: boolean): TogglePhotoFetchingType => {
+    return {type: "TOGGLE-UPLOAD-PHOTO-FETCHING", uploadPhotoIsFetching}
+}
+
+export const UpdatePhotosAC = (photos: {
+    small: string | null
+    large: string | null
+}): UpdatePhotosAcType => {
+    return {type: "UPDATE-PROFILE-PHOTO", photos}
 }
 
 export const SetStatusTC = (userId: number) => {
@@ -146,6 +198,7 @@ export const SetStatusTC = (userId: number) => {
         )
     }
 }
+
 export const UpdateStatusTC = (newText: string) => {
     return (dispatch: Dispatch) => {
         dispatch(ToggleStatusFetching(true))
@@ -155,5 +208,18 @@ export const UpdateStatusTC = (newText: string) => {
                 dispatch(SetStatusAC(newText))
             }
         })
+    }
+}
+
+export const SavePhotoTC = (photo: File) => {
+    return (dispatch: Dispatch) => {
+        dispatch(ToggleUploadPhotoFetching(true))
+        ProfileAPI.SavePhoto(photo).then(res => {
+                if (res.resultCode === 0) {
+                    dispatch(UpdatePhotosAC(res.data.photos))
+                }
+            }
+        )
+        dispatch(ToggleUploadPhotoFetching(false))
     }
 }

@@ -1,7 +1,6 @@
 export type messagesType = { id: string, message: string }
 export type messageDataType = {
     messages: Array<messagesType>
-    // onChangeMessageData: string
 }
 
 const initialState = {
@@ -13,13 +12,8 @@ const initialState = {
             {id: '5', message: 'message5'},
             {id: '6', message: 'message6'},
         ],
-        // onChangeMessageData: '',
 }
 
-// type OnChangeMessageHandlerActionType = {
-//     type: 'ON-CHANGE-MESSAGE'
-//     message: string
-// }
 type AddMessageActionType = {
     type: 'ADD-MESSAGE'
     NewMessage:string
@@ -30,7 +24,7 @@ export const messageReducer = (state:messageDataType=initialState, action:Action
     switch (action.type) {
         case "ADD-MESSAGE": {
             const NewMessage = {
-                id: '8',
+                id: '99',
                 message: action.NewMessage
             }
             return {...state,messages:[...state.messages,NewMessage],onChangeMessageData:''}

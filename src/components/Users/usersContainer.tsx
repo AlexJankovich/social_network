@@ -1,13 +1,11 @@
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
-import {
-    actions, getUsersThunk, followThunk, unfollowThunk, UserDataType
-} from "../../Redux/users-reduser";
+import {actions, UserDataType,} from "../../Redux/users-reduser";
 import React from "react";
 import {Users} from "./Users";
 import {Preloader} from "../../common/preloader/Preloader";
-import {Slider} from "../../common/Slider";
-import s from './users.module.css'
+import {Slider} from "../../common/slider/Slider";
+import s from './users.module.scss'
 import {Dispatch} from "redux";
 
 type UsersApiType = {
@@ -54,20 +52,21 @@ class UsersAPIComp extends React.Component<UsersApiType> {
     }
     render() {
         return (
-            <>{this.loading(this.props.usersData.isFetching)}.
-                <Slider {...this.props.usersData}
-                        toPageNumber={this.props.toPageNumber}
-                        toStartPage={this.props.toStartPage}
-                        toAndPage={this.props.toAndPage}
-                        onPageChange={this.onPageChange}
-                        prevPage={this.prevPage}
-                        nextPageList={this.nextPageList}
+            <div className={s.container}>
+                {this.loading(this.props.usersData.isFetching)}.
+                <div className={s.u}><Slider {...this.props.usersData}
+                           toPageNumber={this.props.toPageNumber}
+                           toStartPage={this.props.toStartPage}
+                           toAndPage={this.props.toAndPage}
+                           onPageChange={this.onPageChange}
+                           prevPage={this.prevPage}
+                           nextPageList={this.nextPageList}
                 />
-                <Users {...this.props.usersData}
-                       followThunk={this.props.followThunk}
-                       unfollowThunk={this.props.unfollowThunk}
-                />
-            </>
+                    <Users {...this.props.usersData}
+                           followThunk={this.props.followThunk}
+                           unfollowThunk={this.props.unfollowThunk}
+                    /></div>
+            </div>
         )
     }
 }
@@ -75,15 +74,31 @@ class UsersAPIComp extends React.Component<UsersApiType> {
 const mapStateToProps = (state: AppStateType) => {
     return {
         usersData: state.usersData,
+        isAuth: state.auth.isAuth
     }
 }
-// const mapDispatchToProps =(dispatch:Dispatch) ({
-//
-// })
+
+const mapDispatchToProps =(dispatch:Dispatch) => {
+    return{
+        toStartPage:()=>dispatch(actions.toStartPage())
+    }
+}
+
+// const userActions = {
+//     ...actions.toStartPage,
+//     ...actions.toAndPage,
+//     ...actions.toPageNumber,
+//     ...actions.changePageListDown,
+//     ...actions.changePageListUpp
+// }
 
 export const UsersContainer = connect(mapStateToProps, {
-    actions,
-    getUsersThunk,
-    followThunk,
-    unfollowThunk
+    // getUsersThunk,
+    // followThunk,
+    // unfollowThunk,
+    // ...actions.toStartPage
+    toStartPage: actions.toStartPage,
+
 })(UsersAPIComp)
+// export const UsersContainer = connect(mapStateToProps, mapDispatchToProps
+// )(UsersAPIComp)

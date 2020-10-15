@@ -5,7 +5,7 @@ import {action} from "@storybook/addon-actions";
 import {BrowserRouter} from "react-router-dom";
 import {UserDataType} from "../Redux/users-reduser";
 import s from './ContentContainer.module.css'
-import {Slider} from "../common/Slider";
+import {Slider} from "../common/slider/Slider";
 
 export default {
     title: 'Social/Container',

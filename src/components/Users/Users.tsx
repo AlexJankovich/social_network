@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./users.module.css";
+import styles from "./users.module.scss";
 import avaDefault from "../../assets/images/avaSamuray.jpg";
 import {UserInfoType} from "../../Redux/users-reduser";
 import {NavLink} from "react-router-dom";
@@ -38,14 +38,13 @@ export const Users = React.memo((props: UsersType) => {
                                 />
                             </NavLink>
                         </div>
-                        <div>{u.followed
+                        {u.followed
                             ? <button onClick={unfollow}
                                       disabled={props.followInProgress.some(id => id === u.id)}
                             >unFollow</button>
                             : <button onClick={follow}
                                       disabled={props.followInProgress.some(id => id === u.id)}
                             >Follow</button>}
-                        </div>
                     </div>
                     <div className={styles.usersInfo}>
                         <div className={styles.nameAndStatus}>

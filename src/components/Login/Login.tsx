@@ -6,6 +6,7 @@ import {requiredField} from "../../utils/validators/validators";
 import {Input} from "../../common/FormsControls/FormsControls";
 import {AppStateType} from "../../Redux/redux-store";
 import { Redirect } from "react-router-dom";
+import s from './Login.module.scss'
 
 type FormDataType = {
     email: string
@@ -13,57 +14,73 @@ type FormDataType = {
     rememberMe: boolean
 }
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                <Field component={Input}
-                       name={'email'}
-                       placeholder={'email'}
-                       validate={[requiredField]}
-                       onBlur={(x:any)=>x}
-                />
-            </div>
-            <div>
-                <Field component={Input}
-                       name={'password'}
-                       placeholder={'password'}
-                       validate={[requiredField]}
-                       type={'password'}
-                />
-            </div>
-            <div>
-                {props.error}
-            </div>
-            <div>
-                <Field component={'input'}
-                       type={'checkbox'}
-                       name={'rememberMe'}/>
-                       remember Me
-            </div>
-            <div>
-                <button>Login...</button>
-            </div>
-        </form>
-    )
+const checkBoxStyle = {
+    width :" 20px"
 }
+
+const LoginForm: React.FC<InjectedFormProps<FormDataType>> = React.memo((props) => {
+    return (
+        <div>
+            <form onSubmit={props.handleSubmit}>
+                <div>
+                    <Field component={Input}
+                           name={'email'}
+                           placeholder={'email'}
+                           validate={[requiredField]}
+                           type={'text'}
+                    />
+                </div>
+                <div >
+                    <Field component={Input}
+                           name={'password'}
+                           placeholder={'password'}
+                           validate={[requiredField]}
+                           type={'password'}
+                    />
+                </div>
+                <div>
+                    {props.error}
+                </div>
+                <div >
+                    <Field component={'input'}
+                           type={'checkbox'}
+                           name={'rememberMe'}
+                           style={checkBoxStyle}
+                    />
+                    remember Me
+                </div>
+                <div>
+                    <button>Login...</button>
+                </div>
+            </form>
+        </div>
+    )
+})
+
 
 const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 
-export const Login = () => {
+
+export const Login = React.memo(() => {
+
     const dispatch = useDispatch()
+
     const isAuth = useSelector<AppStateType>((state )=>state.auth.isAuth )
+
     const onSubmit=(formData:FormDataType)=>{
         debugger
         console.log(formData)
       dispatch(AuthTC(formData.email, formData.password, formData.rememberMe))
     }
+
     if (isAuth){
         return <Redirect to={'/profile'}/>
     }
+
     return (
-        <><h3>Login</h3>.
+        <div className={s.loginWrapper}>
+            <h2>Login</h2>
             <LoginReduxForm onSubmit={onSubmit}/>
-        </>
+        </div>
     )
-}
+})

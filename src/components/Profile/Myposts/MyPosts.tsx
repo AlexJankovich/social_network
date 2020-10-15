@@ -2,7 +2,7 @@ import React from "react";
 import s from './MyPosts.module.css';
 import Post from "./Posts/Post";
 import {postType} from "../../../Redux/postData-reducer";
-import {reduxForm, Field, InjectedFormProps, reset} from "redux-form";
+import {reduxForm, Field, InjectedFormProps, reset, stopSubmit} from "redux-form";
 import {MaxLengthCreator} from "../../../utils/validators/validators";
 import {TextArea} from "../../../common/FormsControls/FormsControls";
 import {useDispatch} from "react-redux";
@@ -25,8 +25,11 @@ export const MyPosts = (props: MyPostsType) => {
     })
 
 const AddNewPost = (value:AddPostType) =>{
-    props.AddPostAC(value.NewPostText)
-    dispatch(reset('AddNewPostForm'))
+    if(!value.NewPostText) {
+        dispatch(stopSubmit('AddNewPostForm', {NewPostText: 'Field is empty'}))}else {
+        props.AddPostAC(value.NewPostText)
+        dispatch(reset('AddNewPostForm'))
+    }
 }
     return (
         <div className={s.content}>

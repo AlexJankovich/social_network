@@ -7,11 +7,16 @@ import s from './Profile.module.css'
 type ProfileType = {
     profile: profileUsersType | null
     isFetching:boolean
+    meId:number
+    SavePhoto:(file:File)=>void
+    uploadPhotoIsFetching: boolean
 }
 
 export const Profile = (props: ProfileType) => {
     return (
-        <div className={props.isFetching?s.shadow:''}>
+        <div
+            className={props.isFetching?s.profileWrapper+' ' +s.shadow:s.profileWrapper}
+        >
             <ProfileInfo {...props}/>
             <MyPostsContainer />
         </div>

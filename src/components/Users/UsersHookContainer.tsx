@@ -9,8 +9,8 @@ import {
     actions
 } from "../../Redux/users-reduser";
 import {Users} from "./Users";
-import {Slider} from "../../common/Slider";
-import s from "./users.module.css";
+import {Slider} from "../../common/slider/Slider";
+import s from "./users.module.scss";
 import {Preloader} from "../../common/preloader/Preloader";
 
 export const UsersHookContainer = (() => {
@@ -57,6 +57,7 @@ export const UsersHookContainer = (() => {
     return (
         <div className={s.container}>
             {UsersProps.isFetching ? <div className={s.usersPreloader}><Preloader/></div> : null}
+            {/*{true ? <div className={s.usersPreloader}><Preloader/></div> : null}*/}
             <Slider isFetching={UsersProps.isFetching}
                     pagesNumberCount={UsersProps.pagesNumberCount}
                     startPagesCount={UsersProps.startPagesCount}

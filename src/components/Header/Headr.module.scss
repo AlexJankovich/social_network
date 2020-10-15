@@ -1,0 +1,61 @@
+.header {
+    //grid-area: h;
+    /*background-image: url("https://www.oko-ra.ru/wp-content/uploads/2016/12/pergament2.jpg");*/
+    box-shadow: 0 0 10px;
+    background: #363c42;
+  color: white;
+    .loginBlock{
+
+        padding: 20px;
+        font-weight: bold;
+        font-size: 25px;
+       text-align: right;
+
+        button{
+            margin-left: 10px;
+            background: none;
+
+            border: 1px solid white;
+        }
+        img{
+            height: 100px;
+            position: absolute;
+            right: 46px;
+            top: 10px;
+        }
+        a{
+            color: white;
+        }
+        .loginPreloader{
+            z-index: 99;
+        }
+    }
+}
+
+//.header .logo {
+//    margin: 3px;
+//    box-shadow: 0 0 10px;
+//    height: 200px;
+//}
+//
+//.loginBlock button{
+//    margin-left: 10px;
+//    background: none;
+//    color: white;
+//    border: 1px solid white;
+//}
+
+//.loginBlock a{
+//    color: black;
+//}
+
+//.loginBlock  .loginPreloader{
+//    z-index: 99;
+//}
+//
+//.loginBlock .loginPreloader img{
+//    height: 100px;
+//    position: absolute;
+//    right: 46px;
+//    top: 10px;
+//}

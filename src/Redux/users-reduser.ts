@@ -1,7 +1,7 @@
 import {ProfileAPI, UserAPI} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {Action, Dispatch} from "redux";
-import {AppStateType} from "./redux-store";
+import {AppStateType, InferActionTypes} from "./redux-store";
 import {setUserProfile} from "./postData-reducer";
 
 type LocationType = {
@@ -42,74 +42,6 @@ const initialState: UserDataType = {
     isFetching: false,
     followInProgress: []
 }
-
-// type FollowACType = {
-//     type: 'FOLLOW'
-//     userId: number
-// }
-// type UnFollowACType = {
-//     type: 'UNFOLLOW'
-//     userId: number
-// }
-// type setUsersAC = {
-//     type: 'SET-USERS',
-//     users: Array<UserInfoType>
-// }
-// type setPageType = {
-//     type: 'SET-PAGE'
-//     page: number
-// }
-// type setTotalUsersCountType = {
-//     type: 'SET-TOTAL-USERS-COUNT'
-//     totalCount: number
-// }
-// type changePageListUppType = {
-//     type: "CHANGE-PAGE-LIST-UPP"
-//     pagesCount: number
-// }
-// type changePageListDownType = {
-//     type: "CHANGE-PAGE-LIST-DOWN"
-// }
-// type toAndPageType = {
-//     type: "TO-AND-PAGE"
-//     pagesCount: number
-// }
-// type toStartPageType = {
-//     type: "TO-START-PAGE"
-// }
-// type toggleIsFetchingType = {
-//     type: 'TOGGLE-IS-FETCHING'
-//     isFetching: boolean
-// }
-// type followInProgressType = {
-//     type: "TOGGLE-FOLLOW-IS-FETCHING"
-//     userId: number
-//     isFetching: boolean
-// }
-// type toPageNumberType = {
-//     type: 'TO-PAGE-NUMBER'
-//     newPage: number
-//     pagesCount: number
-// }
-// type changeInputValue = {
-//     type: 'ON-CHANGE-VALUE'
-//     value: number | string
-// }
-
-// FollowACType
-// | UnFollowACType
-// | setUsersAC
-// | setPageType
-// | setTotalUsersCountType
-// | changePageListUppType
-// | changePageListDownType
-// | toAndPageType
-// | toStartPageType
-// | toggleIsFetchingType
-// | toPageNumberType
-// | changeInputValue
-// | followInProgressType
-
 
 export const UsersReducer = (state: UserDataType = initialState, action: UsersActionType): UserDataType => {
     switch (action.type) {
@@ -193,8 +125,11 @@ export const UsersReducer = (state: UserDataType = initialState, action: UsersAc
     }
 }
 
-type ReturnedActionsTypes<T> = T extends { [key: string]: infer U } ? U : never;
-export type UsersActionType = ReturnType<ReturnedActionsTypes<typeof actions>>
+// type ReturnedActionsTypes<T> = T extends { [key: string]: infer U } ? U : never;
+// export type UsersActionType = ReturnType<ReturnedActionsTypes<typeof actions>>
+
+type UsersActionType = InferActionTypes<typeof actions>
+
 export const actions = {
     follow: (userId: number) => ({type: "FOLLOW", userId} as const),
     unfollow: (userId: number) => ({type: "UNFOLLOW", userId} as const),
@@ -213,6 +148,7 @@ export const actions = {
         userId
     } as const)
 }
+
 export const getUsersThunk = (currentPage: number, pageSize: number) => {
     return (dispatch: Dispatch) => {
         dispatch(actions.toggleIsFetching(true));
@@ -249,6 +185,7 @@ export const unfollowThunk = (userId: number): ThunkAction<void, AppStateType, u
             });
     }
 }
+
 export const getProfileThunk = (getQuestion: number): ThunkAction<void, AppStateType, unknown, Action<string>> => {
     return (dispatch) => {
         dispatch(actions.toggleIsFetching(true))

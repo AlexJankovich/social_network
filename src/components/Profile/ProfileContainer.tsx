@@ -1,13 +1,13 @@
 import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
-import { profileUsersType} from "../../Redux/postData-reducer";
+import {profileUsersType, SavePhotoTC} from "../../Redux/postData-reducer";
 import {withRouter} from "react-router-dom";
 import {AppStateType} from "../../Redux/redux-store";
 import {RouteComponentProps} from "react-router";
-import {getProfileThunk}  from "../../Redux/users-reduser";
+import {getProfileThunk} from "../../Redux/users-reduser";
 import {Preloader} from "../../common/preloader/Preloader";
-import pre from './Myposts/Profileinfo/ProfileInfo.module.css'
+import pre from './Myposts/Profileinfo/ProfileInfo.module.scss'
 import {AuthRedirect} from "../../hoc/AuthRedirect";
 import {compose} from "redux";
 
@@ -16,55 +16,71 @@ type PathParamsType = {
 }
 
 type ProfileType = RouteComponentProps<PathParamsType> & {
-    profile: profileUsersType|null
-    isFetching:boolean
-    meId:number|null
-    isAuth:boolean
-    getProfileThunk:(getQuestion:number)=>void
-    SetStatusTC:(newStatus: string)=>void
-    UpdateStatusTC:(newText:string)=>void
+    profile: profileUsersType
+    isFetching: boolean
+    meId: number
+    isAuth: boolean
+    getProfileThunk: (getQuestion: number) => void
+    SetStatusTC: (newStatus: string) => void
+    UpdateStatusTC: (newText: string) => void
+    SavePhotoTC:(file:File)=>void
+    uploadPhotoIsFetching: boolean
 }
 
 class ProfileClass extends React.Component<ProfileType> {
-    componentDidMount() {
-        let getQuestion:any = +this.props.match.params.userId
-        if(!getQuestion){
-            getQuestion=this.props.meId
+
+    MountProps() {
+        let getQuestion = +this.props.match.params.userId
+        if (!getQuestion) {
+            getQuestion = this.props.meId
+            if (!getQuestion) {
+                this.props.history.push('/login')
+            }
         }
         this.props.getProfileThunk(getQuestion)
     }
 
-    componentDidUpdate(prevProps: ProfileType, prevState: AppStateType) {
-       if (prevProps.match.params.userId!==this.props.match.params.userId){
-           this.props.getProfileThunk(this.props.meId?this.props.meId:+this.props.match.params.userId)
-       }
+    componentDidMount() {
+        this.MountProps()
     }
 
-    loading = (load: boolean|null) => {
+    componentDidUpdate(prevProps: ProfileType, prevState: AppStateType) {
+        if (prevProps.match.params.userId !== this.props.match.params.userId) {
+            this.MountProps()
+        }
+    }
+
+    loading = (load: boolean | null) => {
         if (load) {
-            return <div className={pre.profilePreloader}><Preloader/></div>
+            return <div className={pre.profilePreloader}>
+                <Preloader/>
+            </div>
         }
     }
 
     render() {
         return (
-            <>
-                {this.loading(this.props.isFetching?this.props.isFetching:null)}
+            <div className={pre.profileInfoWrapper}>
+                {this.loading(this.props.isFetching ? this.props.isFetching : null)}
                 {/*{this.loading(true)}*/}
-                    <Profile {...this.props}/>
-            </>
+                <Profile {...this.props}
+                         SavePhoto={this.props.SavePhotoTC}
+                />
+            </div>
         );
     }
 }
 
+
 const MapStateToProps = (state: AppStateType) => ({
+    // @ts-ignore
     profile: state.postData.profile,
     isFetching: state.usersData.isFetching,
-    meId:state.auth.data.id,
+    meId: state.auth.data.id,
 })
 
 export const ProfileContainer = compose<React.ComponentType>(
-    connect(MapStateToProps, {getProfileThunk}),
+    connect(MapStateToProps, {getProfileThunk, SavePhotoTC}),
     withRouter,
     AuthRedirect
 )(ProfileClass)

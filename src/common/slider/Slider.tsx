@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import styles from "../components/Users/users.module.css";
+import styles from "../../components/Users/users.module.scss";
+import s from './Slider.module.scss'
 
 type SliderPropsType = {
     totalUserCount: number
@@ -13,7 +14,7 @@ type SliderPropsType = {
     toAndPage: (pagesCount: number) => void//в конец списка
     toStartPage: () => void//в начало списка
     onPageChange: (pageNumber: number) => void//загрузка текущей страницы
-    toPageNumber: (newPage: number, pagesCount:number) => void
+    toPageNumber: (newPage: number, pagesCount: number) => void
 }
 
 export const Slider = React.memo((props: SliderPropsType) => {
@@ -34,10 +35,12 @@ export const Slider = React.memo((props: SliderPropsType) => {
         props.toStartPage()
         props.onPageChange(1)
     }
+
     const toEndPage = () => {
         props.toAndPage(pagesCount)
         props.onPageChange(pagesCount)
     }
+
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (+e.currentTarget.value < 1 || +e.currentTarget.value > pagesCount) {
             setNewPage('нет такой страницы')
@@ -45,57 +48,64 @@ export const Slider = React.memo((props: SliderPropsType) => {
             setNewPage(+e.target.value)
         }
     }
+
     const goToPageNumber = () => {
         props.toPageNumber(newPage as number, pagesCount)
         setNewPage('')
     }
+
     const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 13) {
             goToPageNumber()
         }
     }
-    return <div className={styles.pageListWrapper}>
-        <button
-            onClick={() => toStartPage()}
-            disabled={props.isFetching}
-        >
-            {"<<"}
-        </button>
-        <button
-            onClick={props.prevPage}
-            disabled={props.isFetching}
-        >
-            {'<'}
-        </button>
-        {pages.map(p => <span
+
+    return <div className={s.sliderWrapper}>
+        <div>
+            <button
+                onClick={() => toStartPage()}
+                disabled={props.isFetching}
+            >
+                {"<<"}
+            </button>
+            <button
+                onClick={props.prevPage}
+                disabled={props.isFetching}
+            >
+                {'<'}
+            </button>
+        </div>
+        <div>{pages.map(p => <span
             className={props.currentPage === p ? styles.active : styles.hover}
             onClick={() => props.onPageChange(p)}
             key={p}
-        >
-                    {p} </span>)}
-
-        <button
-            onClick={listUpp}
-            disabled={props.isFetching}
-        >
-            {">"}
-        </button>
-        <button
-            disabled={props.isFetching}
-            onClick={() => toEndPage()}
-        >
-            {">>"}
-        </button>
-        <input type='number'
-               placeholder='№'
-               onChange={onChange}
-               value={newPage == null ? '' : newPage}
-               className={styles.input}
-               onKeyPress={onKeyPress}
-               disabled={props.isFetching}
-        />
-        <button onClick={goToPageNumber}
+        >{p}</span>)}</div>
+        <div>
+            <button
+                onClick={listUpp}
                 disabled={props.isFetching}
-        >Go</button>
+            >
+                {">"}
+            </button>
+            <button
+                disabled={props.isFetching}
+                onClick={() => toEndPage()}
+            >
+                {">>"}
+            </button>
+        </div>
+        <div className={s.inputWrapper}><input type='number'
+                  placeholder='№'
+                  onChange={onChange}
+                  value={newPage == null ? '' : newPage}
+                  className={styles.input}
+                  onKeyPress={onKeyPress}
+                  disabled={props.isFetching}
+        />
+            <button onClick={goToPageNumber}
+                    disabled={props.isFetching}
+            >Go
+            </button>
+        </div>
     </div>
 });

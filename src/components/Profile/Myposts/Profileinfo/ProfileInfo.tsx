@@ -1,11 +1,16 @@
-import React from "react";
-import s from "./ProfileInfo.module.css";
+import React, {ChangeEvent} from "react";
+import s from "./ProfileInfo.module.scss";
 import {profileUsersType} from "../../../../Redux/postData-reducer";
+import avaDefault from "../../../../assets/images/avaSamuray.jpg";
 
 import {Status} from "../../../Status/Status";
+import {Preloader} from "../../../../common/preloader/Preloader";
 
 type ProfileInfoType = {
     profile: profileUsersType | null
+    meId:number
+    SavePhoto:(file:File)=>void
+    uploadPhotoIsFetching: boolean
 }
 
 export const ProfileInfo = (props: ProfileInfoType) => {
@@ -17,13 +22,29 @@ export const ProfileInfo = (props: ProfileInfoType) => {
         image = props.profile.photos.large
     } else if (props.profile.photos.small) {
         image = props.profile.photos.small
-    }
-    if (!props.profile) {
-        return <div>loading</div>
-    }
+    } else {image=avaDefault}
 
+    if (!props.profile){
+        return <>
+            no data
+        </>
+    }
+    const upLoadImage =(e:ChangeEvent<HTMLInputElement>)=> {
+       if(e.target.files?.length){
+           props.SavePhoto(e.target.files[0])
+       }
+    }
     return (<>
-            <div className={s.name}><span>{props.profile.fullName}</span></div>
+            {/*{ !props.profile? <div>loading</div>:null}*/}
+            <div className={s.name}>
+                <span>{props.profile.fullName}</span>
+                {props.meId === props.profile.userId&&
+                <div>
+                    {props.uploadPhotoIsFetching&&<Preloader/>}
+                    <input type={'file'} onChange={upLoadImage}></input>
+                    {/*<button onClick={upLoadImage}></button>*/}
+                </div>}
+            </div>
             <div className={s.contentWrapper}>
                 <div className={s.avaWrapper}>
                     <div className={s.ava}>
@@ -34,7 +55,6 @@ export const ProfileInfo = (props: ProfileInfoType) => {
                 <div>
                     <h3>Контакты:</h3>
                     <div className={s.contactWrapper}>
-
                         <div className={s.contactName}>{
                             Object.keys(props.profile.contacts).map((u,i) => {
                                 return <div key={i}>{u + ":"}</div>
@@ -48,8 +68,8 @@ export const ProfileInfo = (props: ProfileInfoType) => {
 
                     </div>
                     <div className={s.aboutJob}>
-                        <div><span>lookingForAJob: </span>{props.profile.lookingForAJob ? 'Yes' : 'Nou'}</div>
-                        <div><span>AboutJobsSkills: </span>{props.profile.lookingForAJobDescription}</div>
+                        <div><span>lookingForAJob: </span>{props.profile?.lookingForAJob ? 'Yes' : 'Nou'}</div>
+                        <div><span>AboutJobsSkills: </span>{props.profile?.lookingForAJobDescription}</div>
                     </div>
                 </div>
             </div>
