@@ -43,22 +43,28 @@ type ResponsePhotoType = {
 
 
 export const ProfileAPI = {
+
     GetProfileInfo: (id: number) => {
         return instance.get(`profile/${id}`).then(response => response.data)
     },
+
     GetProfileStatus: (id: number) => {
         return instance.get(`profile/status/${id}`)
     },
+
     UpdateStatus: (newText: string) => {
         return instance.put<ResponseStatusType>(`profile/status/`, {status: newText}).then(res => res.data)
     },
+
     SavePhoto: (photo: File) => {
+
         let formData = new FormData()
         formData.append("image", photo)
         return instance.put<ResponsePhotoType>("profile/photo", formData, {
             headers: {"Content-Type": "multipart/form-data"}
         }).then(res => res.data)
     },
+
     SaveProfileInfo:(data:profileUsersType)=>{
        return instance.put<ResponseStatusType>( 'profile', data).then(res=>res.data)
     }
@@ -73,23 +79,22 @@ type LoginResType = {
 }
 
 export const SignIn = {
+
     GetAuth: () => {
         return instance.get(`auth/me`).then(response => response.data)
     },
 
-    Authorisation: (login: string, password: string, rememberMe: boolean) => {
-        return instance.post<LoginResType>('auth/login', {email: login, password: password, rememberMe: rememberMe})
-            .then((res) => {
-                console.log(res.data.resultCode)
-                return res.data
-            })
+    Authorisation: (login: string, password: string, rememberMe: boolean, captcha?: string) => {
+        return instance.post<LoginResType>('auth/login', {email: login, password: password, rememberMe: rememberMe, captcha:captcha})
+            .then((res) => res.data)
     },
 
     Logout: () => {
-        return instance.post('auth/logout', {})
-            .then((res) => {
-                return res.data
-            })
+        return instance.post('auth/logout', {}).then((res) => res.data)
+    },
+
+    GetCaptcha:()=>{
+        return instance.get('/security/get-captcha-url').then(res=>res.data)
     }
 
 }
