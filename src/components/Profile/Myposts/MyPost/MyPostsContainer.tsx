@@ -1,7 +1,7 @@
-import {AddPostAC} from "../../../Redux/postData-reducer";
+import {AddPostAC} from "../../../../Redux/postData-reducer";
 import {MyPosts} from "./MyPosts";
 import {connect} from "react-redux";
-import {AppStateType} from "../../../Redux/redux-store";
+import {AppStateType} from "../../../../Redux/redux-store";
 
 const mapStateToProps = (state:AppStateType)=>{
 

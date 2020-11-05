@@ -1,4 +1,4 @@
-import {Action, Dispatch} from "redux";
+import {Action} from "redux";
 import {authThunk} from "./authReducer";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";

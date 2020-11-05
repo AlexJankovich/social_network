@@ -1,22 +1,30 @@
-import {Dispatch} from "redux";
+import {Action, Dispatch} from "redux";
 import {ProfileAPI} from "../api/api";
+import {getProfileThunk} from "./users-reduser";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
+import {stopSubmit} from "redux-form";
 
 type AddPostActionType = {
     type: 'ADD-POST'
     newText: string
 }
+
 type setUserProfileActionType = {
     type: 'SET-USER-PROFILE'
     profile: profileUsersType
 }
+
 type SetStatusActionType = {
     type: 'SET-STATUS'
     newStatus: string
 }
+
 type ToggleStatusFetchingType = {
     type: 'TOGGLE-STATUS-FETCHING'
     statusIsFetching: boolean
 }
+
 type TogglePhotoFetchingType = {
     type: 'TOGGLE-UPLOAD-PHOTO-FETCHING'
     uploadPhotoIsFetching: boolean
@@ -49,6 +57,7 @@ export type profileUsersType = {
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
+    AboutMe:string
     contacts: {
         github: string
         vk: string
@@ -64,6 +73,7 @@ export type profileUsersType = {
         large: string| null
     }
 }
+
 export type postType = {
     id: string,
     name: string,
@@ -71,9 +81,10 @@ export type postType = {
     time: string,
     isRead: boolean
 }
+
 export type postDataType = {
     post: Array<postType>
-    profile: profileUsersType  | null | {}
+    profile: profileUsersType | null | {}
     status: string
     statusIsFetching: boolean
     uploadPhotoIsFetching: boolean
@@ -122,6 +133,7 @@ const initialState: postDataType = {
     statusIsFetching: false,
     uploadPhotoIsFetching: false
 }
+
 export const postReducer = (state: postDataType = initialState, action: ActionType): postDataType => {
     switch (action.type) {
         case "ADD-POST": {
@@ -221,3 +233,16 @@ export const SavePhotoTC = (photo: File) => {
         dispatch(ToggleUploadPhotoFetching(false))
     }
 }
+
+export const SaveProfile =  (data: profileUsersType):ThunkAction<void, AppStateType, unknown, Action<string>> => async (dispatch, getState) => {
+        // dispatch(ToggleUploadPhotoFetching(true))
+        const res = await ProfileAPI.SaveProfileInfo(data)
+                if (res.resultCode === 0) {
+                       dispatch(getProfileThunk(getState().auth.data.id))
+                    } else {
+                    dispatch(stopSubmit('ProfileForm', {_error: res.messages}))
+                    return Promise.reject(res.messages)
+            }
+
+         // dispatch(ToggleUploadPhotoFetching(false))
+    }

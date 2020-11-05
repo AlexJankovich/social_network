@@ -1,8 +1,4 @@
 import React from "react";
-import {reduxForm, Field, InjectedFormProps} from "redux-form";
-import {AuthTC, authThunk} from "../../Redux/authReducer";
-import {useDispatch} from "react-redux";
-import {requiredField} from "../../utils/validators/validators";
 import {MyInput} from "../../common/InputForms/Input";
 
 // type FormDataType = {

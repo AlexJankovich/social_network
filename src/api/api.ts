@@ -1,4 +1,5 @@
 import axios from "axios";
+import {profileUsersType} from "../Redux/postData-reducer";
 
 const instance = axios.create(
     {
@@ -57,6 +58,9 @@ export const ProfileAPI = {
         return instance.put<ResponsePhotoType>("profile/photo", formData, {
             headers: {"Content-Type": "multipart/form-data"}
         }).then(res => res.data)
+    },
+    SaveProfileInfo:(data:profileUsersType)=>{
+       return instance.put<ResponseStatusType>( 'profile', data).then(res=>res.data)
     }
 }
 

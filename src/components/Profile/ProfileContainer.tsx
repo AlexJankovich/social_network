@@ -1,7 +1,7 @@
 import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
-import {profileUsersType, SavePhotoTC} from "../../Redux/postData-reducer";
+import {profileUsersType, SavePhotoTC, SaveProfile} from "../../Redux/postData-reducer";
 import {withRouter} from "react-router-dom";
 import {AppStateType} from "../../Redux/redux-store";
 import {RouteComponentProps} from "react-router";
@@ -25,6 +25,7 @@ type ProfileType = RouteComponentProps<PathParamsType> & {
     UpdateStatusTC: (newText: string) => void
     SavePhotoTC:(file:File)=>void
     uploadPhotoIsFetching: boolean
+    SaveProfile:(data:profileUsersType)=>Promise<void>
 }
 
 class ProfileClass extends React.Component<ProfileType> {
@@ -65,6 +66,7 @@ class ProfileClass extends React.Component<ProfileType> {
                 {/*{this.loading(true)}*/}
                 <Profile {...this.props}
                          SavePhoto={this.props.SavePhotoTC}
+                         SaveProfile={this.props.SaveProfile}
                 />
             </div>
         );
@@ -79,7 +81,7 @@ const MapStateToProps = (state: AppStateType) => ({
 })
 
 export const ProfileContainer = compose<React.ComponentType>(
-    connect(MapStateToProps, {getProfileThunk, SavePhotoTC}),
+    connect(MapStateToProps, {getProfileThunk, SavePhotoTC,SaveProfile}),
     withRouter,
     AuthRedirect
 )(ProfileClass)

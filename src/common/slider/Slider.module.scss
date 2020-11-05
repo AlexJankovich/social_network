@@ -10,6 +10,9 @@
     span{
         padding: 0 3px;
     }
+    .active{
+        border: 1px solid;
+    }
     span:hover{
         border: 1px solid;
         transition: 0.5s;

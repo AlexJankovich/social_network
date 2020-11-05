@@ -1,7 +1,7 @@
 import React from "react";
 import {ProfileInfo} from "./Myposts/Profileinfo/ProfileInfo";
 import {profileUsersType} from "../../Redux/postData-reducer";
-import {MyPostsContainer} from "./Myposts/MyPostsContainer";
+import {MyPostsContainer} from "./Myposts/MyPost/MyPostsContainer";
 import s from './Profile.module.css'
 
 type ProfileType = {
@@ -10,6 +10,7 @@ type ProfileType = {
     meId:number
     SavePhoto:(file:File)=>void
     uploadPhotoIsFetching: boolean
+    SaveProfile:(data:profileUsersType)=>Promise<void>
 }
 
 export const Profile = (props: ProfileType) => {

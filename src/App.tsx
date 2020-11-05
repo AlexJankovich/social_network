@@ -11,10 +11,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./Redux/redux-store";
 import {InitializeApp} from "./Redux/App-reducer";
 import {Preloader} from "./common/preloader/Preloader";
-import {Layout} from 'antd'
+// import {Layout} from 'antd'
 import 'antd/dist/antd.css';
 
-const {Header, Footer, Content, Sider} = Layout;
+// const {Header, Footer, Content, Sider} = Layout;
 
 const App = React.memo(() => {
 

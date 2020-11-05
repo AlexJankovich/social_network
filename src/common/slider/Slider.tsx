@@ -55,7 +55,7 @@ export const Slider = React.memo((props: SliderPropsType) => {
     }
 
     const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.keyCode === 13) {
+        if (e.charCode === 13) {
             goToPageNumber()
         }
     }
@@ -76,7 +76,7 @@ export const Slider = React.memo((props: SliderPropsType) => {
             </button>
         </div>
         <div>{pages.map(p => <span
-            className={props.currentPage === p ? styles.active : styles.hover}
+            className={props.currentPage === p ? s.active : ''}
             onClick={() => props.onPageChange(p)}
             key={p}
         >{p}</span>)}</div>

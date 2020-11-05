@@ -3,10 +3,9 @@ import {AppStateType} from "./redux-store";
 import {Action, Dispatch} from "redux";
 import {SignIn} from "../api/api";
 import {stopSubmit} from "redux-form";
-import {setInitializeSuccess} from "./App-reducer";
 
 export type AuthResponseType = {
-    id: number|null
+    id: number
     email: string
     login: string
 }
@@ -19,7 +18,7 @@ export type UserAuthType = {
 
 const initialState: UserAuthType = {
     data:{
-    id: null,
+    id: 0,
     email: '',
     login: '',
     },
