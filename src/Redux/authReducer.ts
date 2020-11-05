@@ -11,45 +11,53 @@ export type AuthResponseType = {
 }
 
 export type UserAuthType = {
-    data:AuthResponseType
+    data: AuthResponseType
     isFetching: boolean
-    isAuth:boolean
+    isAuth: boolean
+    CaptchaURL: string
 }
 
 const initialState: UserAuthType = {
-    data:{
-    id: 0,
-    email: '',
-    login: '',
+    data: {
+        id: 0,
+        email: '',
+        login: '',
     },
     isFetching: false,
-    isAuth:false
+    isAuth: false,
+    CaptchaURL: ''
 }
 
 type AuthACType = {
     type: 'AUTH-USER'
     data: AuthResponseType
-    isAuth:boolean
+    isAuth: boolean
 }
 export type AuthIsFetchingACType = {
-    type:'AUTH-IS-FETCHING'
-    isFetching:boolean
+    type: 'AUTH-IS-FETCHING'
+    isFetching: boolean
 }
-type AuthActionType = AuthIsFetchingACType|AuthACType
+type AuthActionType = AuthIsFetchingACType | AuthACType | SetCaptchaUrlType
 
 export const AuthReducer = (state: UserAuthType = initialState, action: AuthActionType): UserAuthType => {
     switch (action.type) {
-        case "AUTH-USER":{
+        case "AUTH-USER": {
             return {
                 ...state,
-                data:{...action.data},
-                isAuth:action.isAuth
+                data: {...action.data},
+                isAuth: action.isAuth
             }
         }
-        case "AUTH-IS-FETCHING":{
+        case "AUTH-IS-FETCHING": {
             return {
                 ...state,
-                isFetching:action.isFetching
+                isFetching: action.isFetching
+            }
+        }
+        case "AUTH/SET-CAPTCHA-URL": {
+            return {
+                ...state,
+                CaptchaURL: action.CaptchaURL
             }
         }
         default:
@@ -57,15 +65,22 @@ export const AuthReducer = (state: UserAuthType = initialState, action: AuthActi
     }
 }
 
-export const AuthUser =(data:AuthResponseType, isAuth:boolean):AuthACType=>{
-    return{type:"AUTH-USER", data, isAuth}
-}
-export const AuthIsFetching=(isFetching:boolean):AuthIsFetchingACType=>{
-    return {type:"AUTH-IS-FETCHING", isFetching}
+export const AuthUser = (data: AuthResponseType, isAuth: boolean): AuthACType => {
+    return {type: "AUTH-USER", data, isAuth}
 }
 
-export const authThunk = () =>{
-    return (dispatch:Dispatch) => {
+export const AuthIsFetching = (isFetching: boolean): AuthIsFetchingACType => {
+    return {type: "AUTH-IS-FETCHING", isFetching}
+}
+
+export const SetCaptchaURL = (CaptchaURL: string) => {
+    return {type: "AUTH/SET-CAPTCHA-URL", CaptchaURL} as const
+}
+
+type SetCaptchaUrlType = ReturnType<typeof SetCaptchaURL>
+
+export const authThunk = () => {
+    return (dispatch: Dispatch) => {
         dispatch(AuthIsFetching(true))
         return SignIn.GetAuth()
             .then(response => {
@@ -77,18 +92,31 @@ export const authThunk = () =>{
     }
 }
 
+export const GetCaptcha = () => {
+    return (dispatch: Dispatch) => {
+        dispatch(AuthIsFetching(true))
+        SignIn.GetCaptcha().then(res => {
 
+        })
+    }
+}
 
-export const AuthTC = (login:string, password:string, rememberMe:boolean):ThunkAction<void, AppStateType, unknown, Action<string>> =>{
-    return (dispatch)=>{
+export const AuthTC = (login: string, password: string, rememberMe: boolean, captcha?: string): ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    return (dispatch) => {
 
         dispatch(AuthIsFetching(true))
 
-        SignIn.Authorisation(login, password, rememberMe).then(res=>{
-            if(res.resultCode===0){
+        SignIn.Authorisation(login, password, rememberMe, captcha).then(res => {
+            if (res.resultCode === 0) {
                 dispatch(authThunk())
                 dispatch(AuthIsFetching(false))
-            }else {
+            } else if (res.resultCode === 10) {
+                SignIn.GetCaptcha().then(res => {
+                    debugger
+                    dispatch(SetCaptchaURL(res.url))
+                    dispatch(AuthIsFetching(false))
+                })
+            } else {
                 dispatch(stopSubmit('login', {_error: res.messages[0]}))
                 dispatch(AuthIsFetching(false))
             }
@@ -96,12 +124,12 @@ export const AuthTC = (login:string, password:string, rememberMe:boolean):ThunkA
     }
 }
 
-export const Logout = ():ThunkAction<void, AppStateType, unknown, Action<string>> =>{
-    return (dispatch)=>{
+export const Logout = (): ThunkAction<void, AppStateType, unknown, Action<string>> => {
+    return (dispatch) => {
         dispatch(AuthIsFetching(true))
 
-        SignIn.Logout().then(res=>{
-            if(res.resultCode===0){
+        SignIn.Logout().then(res => {
+            if (res.resultCode === 0) {
                 dispatch(AuthUser(res.data, false))
                 // dispatch(setInitializeSuccess(false))
                 dispatch(AuthIsFetching(false))
