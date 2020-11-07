@@ -1,8 +1,8 @@
 import s from "./message.module.css";
 import React from "react";
 import {messagesType} from "../../Redux/message-reducer";
-import {reduxForm, Field, InjectedFormProps, reset, stopSubmit} from "redux-form";
-import {TextArea} from "../../common/FormsControls/FormsControls";
+import {reduxForm, InjectedFormProps, reset, stopSubmit} from "redux-form";
+import {createField, TextArea} from "../../common/FormsControls/FormsControls";
 import {MaxLengthCreator} from "../../utils/validators/validators";
 import {useDispatch} from "react-redux";
 
@@ -46,11 +46,13 @@ const AddMessageForm: React.FC<InjectedFormProps<AddMessageFormType>> = (props) 
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field component={TextArea}
-                       name={'NewMessage'}
-                       placeholder='write message'
-                       validate={[MaxLength15]}
-                />
+                {createField<keyof AddMessageFormType>(
+                    'write message',
+                    'NewMessage',
+                    [MaxLength15],
+                    TextArea,
+                    'text'
+                )}
             </div>
             <button >send massage</button>
         </form>

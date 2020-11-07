@@ -1,49 +1,48 @@
-import React, { Component } from "react";
-import {WrappedFieldMetaProps, WrappedFieldProps, Field, BaseFieldProps} from "redux-form";
+import React, {ComponentType} from "react";
+import {WrappedFieldMetaProps, WrappedFieldProps, Field, Validator} from "redux-form";
 
 type FormControlType = {
     meta: WrappedFieldMetaProps
 }
 
-const FormControl: React.FC<FormControlType> = (props) => {
+const FormControl: React.FC<FormControlType> = ({children,meta,...props}) => {
     return (
         <div>
-            {props.children}
-            {props.meta.touched && props.meta.error ? <span>{props.meta.error}</span> : null}
+            {children}
+            {meta.touched && meta.error ? <span>{meta.error}</span> : null}
         </div>
     )
 }
 
-export const TextArea: React.FC<WrappedFieldProps> = (props) => {
-    return <FormControl meta={props.meta}>
-        <textarea {...props} {...props.input}/>
+export const TextArea: React.FC<WrappedFieldProps> = ({input,meta,...props}) => {
+    return <FormControl meta={meta}>
+        <textarea {...props} {...input}/>
     </FormControl>
 
 }
 
-export const Input: React.FC<WrappedFieldProps> = (props) => {
+export const Input: React.FC<WrappedFieldProps> = ({input,meta,...props}) => {
     return (
-        <FormControl {...props}>
-            <input
-                {...props.input}
-                {...props}
-            />
+        <FormControl meta={meta}>
+            <input {...input} {...props}/>
         </FormControl>
     )
 }
 
-export const createField = (
+export function createField<KeysType extends string> (
     placeholder:string,
-    name:string,
-    Validator:any,
-    component:any,
-    type:string) => <div>
-    <Field
-       placeholder={placeholder}
-       name={name}
-       validate={Validator}
-       component={component}
-       type={type}
-    />
-</div>
+    name:KeysType,
+    Validators:Validator|Validator[],
+    component:ComponentType<WrappedFieldProps> | "input" | "select" | "textarea",
+    type:string) {
+   return <div>
+        <Field
+            placeholder={placeholder}
+            name={name}
+            validate={Validators}
+            component={component}
+            type={type}
+        />
+    </div>
+}
 

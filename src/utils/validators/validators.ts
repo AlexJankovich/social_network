@@ -1,13 +1,13 @@
-type ErrorReturnType = (value:string)=>void;
+import {Validator} from "redux-form";
 
-export const requiredField:ErrorReturnType = (value) => {
+export const requiredField:Validator = (value) => {
     if (value) {
         return undefined
     }
     return "Field is required"
 }
 
-export const MaxLengthCreator = (maxLength: number):ErrorReturnType => (value) => {
+export const MaxLengthCreator = (maxLength: number):Validator => (value) => {
     if (value&&value.length > maxLength) return `Max length is ${maxLength} symbols`;
     return undefined
 }
