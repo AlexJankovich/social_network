@@ -1,20 +1,17 @@
+import 'antd/dist/antd.css';
 import React, {useEffect} from 'react';
-import s from './App.module.scss';
-import {NavBar} from './components/Navbar/Navbar';
+import {useDispatch, useSelector} from 'react-redux';
 import {BrowserRouter, Route} from 'react-router-dom';
+import s from './App.module.scss';
+import {Preloader} from './common/preloader/Preloader';
 import {DialogsConnectContainer} from './components/Dialogs/dialogsConnectContainer';
 import {HeaderContainer} from './components/Header/HeaderContainer';
 import {Login} from './components/Login/Login';
+import {NavBar} from './components/Navbar/Navbar';
 import {ProfileContainer} from './components/Profile/ProfileContainer';
 import {UsersHookContainer} from './components/Users/UsersHookContainer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppStateType} from './Redux/redux-store';
 import {InitializeApp} from './Redux/App-reducer';
-import {Preloader} from './common/preloader/Preloader';
-// import {Layout} from 'antd'
-import 'antd/dist/antd.css';
-
-// const {Header, Footer, Content, Sider} = Layout;
+import {AppStateType} from './Redux/redux-store';
 
 const App = React.memo(() => {
 
