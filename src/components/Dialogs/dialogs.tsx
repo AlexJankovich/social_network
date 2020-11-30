@@ -3,7 +3,7 @@ import s from './dialogs.module.css';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
-import {getUsersThunk, actions, UserDataType} from "../../Redux/users-reduser";
+import {getUsersThunk, UserDataType, changePageListUpp, changePageListDown, setPage} from "../../Redux/users-reduser";
 import {Preloader} from "../../common/preloader/Preloader";
 
 
@@ -17,17 +17,17 @@ const Dialogs = () => {
     }, [userProps.currentPage,  userProps.pageSize, dispatch])
 
     const nextUserList = (pagesCount: number) => {
-        dispatch(actions.changePageListUpp(pagesCount))
+        dispatch(changePageListUpp({pagesCount}))
     }
     const prevUsersList = () => {
-        dispatch(actions.changePageListDown())
+        dispatch(changePageListDown())
     }
 
     const onScroll = (e: WheelEvent<HTMLDivElement>) => {
         if (e.deltaY > 0) {
-            dispatch(actions.setPage(userProps.currentPage + 1))
+            dispatch(setPage({page:userProps.currentPage + 1}))
         } else if (e.deltaY < 0) {
-            dispatch(actions.setPage(userProps.currentPage - 1))
+            dispatch(setPage({page:userProps.currentPage - 1}))
         }
     }
 

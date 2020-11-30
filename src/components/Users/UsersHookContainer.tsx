@@ -6,8 +6,13 @@ import {
     followThunk,
     unfollowThunk,
     getUsersThunk,
-    actions
-} from "../../Redux/users-reduser";
+    changePageListUpp,
+    setPage,
+    toAndPage,
+    toStartPage,
+    toPageNumber,
+    changePageListDown,
+  } from "../../Redux/users-reduser";
 import {Users} from "./Users";
 import {Slider} from "../../common/slider/Slider";
 import s from "./users.module.scss";
@@ -31,27 +36,27 @@ export const UsersHookContainer = (() => {
     }, [dispatch])
 
     const PageListUpp = useCallback((pagesCount: number) => {
-        dispatch(actions.changePageListUpp(pagesCount))
+        dispatch(changePageListUpp({pagesCount}))
     }, [dispatch])
 
     const PageListDown = useCallback(() => {
-        dispatch(actions.changePageListDown())
+        dispatch(changePageListDown())
     }, [dispatch])
 
     const setCurrentPage = useCallback((page: number) => {
-        dispatch(actions.setPage(page))
+        dispatch(setPage({page}))
     }, [dispatch])
 
     const AndPage = useCallback((pagesCount: number) => {
-        dispatch(actions.toAndPage(pagesCount))
+        dispatch(toAndPage({pagesCount}))
     }, [dispatch])
 
     const StartPage = useCallback(() => {
-        dispatch(actions.toStartPage())
+        dispatch(toStartPage())
     }, [dispatch])
 
     const PageNumber = useCallback((newPage: number, pagesCount: number) => {
-        dispatch(actions.toPageNumber(newPage, pagesCount))
+        dispatch(toPageNumber({newPage, pagesCount}))
     }, [dispatch])
 
     return (

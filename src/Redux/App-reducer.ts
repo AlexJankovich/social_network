@@ -1,3 +1,4 @@
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Action} from "redux";
 import {authThunk} from "./authReducer";
 import {ThunkAction} from "redux-thunk";
@@ -7,33 +8,22 @@ const InitialState = {
     initialized: false
 }
 
-type initType = typeof InitialState
-
-
-export const AppReducer = (state:initType = InitialState, action: AppActionType) => {
-    switch (action.type) {
-        case "SET-INITIALIZED": {
-            return {
-                ...state,
-                initialized: action.initialized
-            }
+const slice = createSlice({
+    name:'App',
+    initialState: InitialState,
+    reducers:{
+        setInitializeSuccess(state, action:PayloadAction<{ initialized: boolean }>){
+            state.initialized = action.payload.initialized
         }
-        default:
-            return state
     }
-}
-
-export const setInitializeSuccess = (initialized:boolean) => ({
-        type: 'SET-INITIALIZED', initialized
-    } as const)
-
-type setInitializeType = ReturnType<typeof setInitializeSuccess>
-
-type AppActionType = setInitializeType
+})
 
 export const InitializeApp = (): ThunkAction<void, AppStateType, unknown, Action<string>> => (dispatch) => {
     let promise = dispatch(authThunk())
     promise.then(()=>
-        dispatch(setInitializeSuccess(true))
+        dispatch(setInitializeSuccess({initialized:true}))
     )
 }
+
+export const AppReducer = slice.reducer
+export const {setInitializeSuccess} = slice.actions

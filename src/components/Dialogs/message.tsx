@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 
 type MessageType = {
     messages: Array<messagesType>
-    AddMessageAC: (value:string) => void
+    AddMessageAC: (value: { NewMessage:string }) => void
 }
 
 export const Message = (props: MessageType) => {
@@ -17,7 +17,7 @@ export const Message = (props: MessageType) => {
         if(!values.NewMessage) {
             dispatch(stopSubmit('DialogAddMassage', {NewMessage: 'Field is empty'}))
         }else {
-            props.AddMessageAC(values.NewMessage)
+            props.AddMessageAC({NewMessage:values.NewMessage})
             dispatch(reset('DialogAddMassage'))
         }
     }

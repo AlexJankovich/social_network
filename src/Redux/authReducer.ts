@@ -1,139 +1,105 @@
-import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
-import {Action, Dispatch} from "redux";
-import {SignIn} from "../api/api";
-import {stopSubmit} from "redux-form";
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Action, Dispatch} from 'redux';
+import {stopSubmit} from 'redux-form';
+import {ThunkAction} from 'redux-thunk';
+import {SignIn} from '../api/api';
+import {AppStateType} from './redux-store';
 
 export type AuthResponseType = {
-    id: number
-    email: string
-    login: string
+  id: number
+  email: string
+  login: string
 }
 
-export type UserAuthType = {
-    data: AuthResponseType
-    isFetching: boolean
-    isAuth: boolean
-    CaptchaURL: string
-}
+const initialState = {
+  data: {
+    id: 0,
+    email: '',
+    login: '',
+  },
+  isFetching: false,
+  isAuth: false,
+  CaptchaURL: ''
+};
 
-const initialState: UserAuthType = {
-    data: {
-        id: 0,
-        email: '',
-        login: '',
+const slice = createSlice({
+  name: 'auth',
+  initialState: initialState,
+  reducers: {
+    AuthUser(state, action: PayloadAction<{ data: AuthResponseType, isAuth: boolean }>) {
+      state.data = action.payload.data;
+      state.isAuth = action.payload.isAuth;
     },
-    isFetching: false,
-    isAuth: false,
-    CaptchaURL: ''
-}
-
-type AuthACType = {
-    type: 'AUTH-USER'
-    data: AuthResponseType
-    isAuth: boolean
-}
-export type AuthIsFetchingACType = {
-    type: 'AUTH-IS-FETCHING'
-    isFetching: boolean
-}
-type AuthActionType = AuthIsFetchingACType | AuthACType | SetCaptchaUrlType
-
-export const AuthReducer = (state: UserAuthType = initialState, action: AuthActionType): UserAuthType => {
-    switch (action.type) {
-        case "AUTH-USER": {
-            return {
-                ...state,
-                data: {...action.data},
-                isAuth: action.isAuth
-            }
-        }
-        case "AUTH-IS-FETCHING": {
-            return {
-                ...state,
-                isFetching: action.isFetching
-            }
-        }
-        case "AUTH/SET-CAPTCHA-URL": {
-            return {
-                ...state,
-                CaptchaURL: action.CaptchaURL
-            }
-        }
-        default:
-            return state
+    AuthIsFetching(state, action: PayloadAction<{ isFetching: boolean }>) {
+      state.isFetching = action.payload.isFetching;
+    },
+    SetCaptchaURL(state, action: PayloadAction<{ CaptchaURL: string }>) {
+      state.CaptchaURL = action.payload.CaptchaURL;
     }
-}
-
-export const AuthUser = (data: AuthResponseType, isAuth: boolean): AuthACType => {
-    return {type: "AUTH-USER", data, isAuth}
-}
-
-export const AuthIsFetching = (isFetching: boolean): AuthIsFetchingACType => {
-    return {type: "AUTH-IS-FETCHING", isFetching}
-}
-
-export const SetCaptchaURL = (CaptchaURL: string) => {
-    return {type: "AUTH/SET-CAPTCHA-URL", CaptchaURL} as const
-}
-
-type SetCaptchaUrlType = ReturnType<typeof SetCaptchaURL>
+  }
+});
 
 export const authThunk = () => {
-    return (dispatch: Dispatch) => {
-        dispatch(AuthIsFetching(true))
-        return SignIn.GetAuth()
-            .then(response => {
-                if (response.resultCode === 0) {
-                    dispatch(AuthUser(response.data, true))
-                }
-                dispatch(AuthIsFetching(false))
-            });
-    }
-}
+  return (dispatch: Dispatch) => {
+    dispatch(AuthIsFetching({isFetching: true}));
+    return SignIn.GetAuth()
+      .then(response => {
+        if (response.resultCode === 0) {
+          dispatch(AuthUser({data: response.data, isAuth: true}));
+        }
+        dispatch(AuthIsFetching({isFetching: false}));
+      });
+  };
+};
 
-export const GetCaptcha = () => {
-    return (dispatch: Dispatch) => {
-        dispatch(AuthIsFetching(true))
-        SignIn.GetCaptcha().then(res => {
-
-        })
-    }
-}
+// export const GetCaptcha = () => {
+//   return (dispatch: Dispatch) => {
+//     dispatch(AuthIsFetching({isFetching: true}));
+//     SignIn.GetCaptcha().then(res => {
+//       dispatch(SetCaptchaURL({CaptchaURL: res.url}));
+//     });
+//   };
+// };
 
 export const AuthTC = (login: string, password: string, rememberMe: boolean, captcha?: string): ThunkAction<void, AppStateType, unknown, Action<string>> => {
-    return (dispatch) => {
+  return (dispatch) => {
 
-        dispatch(AuthIsFetching(true))
+    dispatch(AuthIsFetching({isFetching: true}));
 
-        SignIn.Authorisation(login, password, rememberMe, captcha).then(res => {
-            if (res.resultCode === 0) {
-                dispatch(authThunk())
-                dispatch(AuthIsFetching(false))
-            } else if (res.resultCode === 10) {
-                SignIn.GetCaptcha().then(res => {
-                    debugger
-                    dispatch(SetCaptchaURL(res.url))
-                    dispatch(AuthIsFetching(false))
-                })
-            } else {
-                dispatch(stopSubmit('login', {_error: res.messages[0]}))
-                dispatch(AuthIsFetching(false))
-            }
-        })
-    }
-}
+    SignIn.Authorisation(login, password, rememberMe, captcha).then(res => {
+      if (res.resultCode === 0) {
+        dispatch(authThunk());
+        dispatch(AuthIsFetching({isFetching: false}));
+
+      } else if (res.resultCode === 10) {
+        SignIn.GetCaptcha().then(res => {
+          debugger
+          dispatch(SetCaptchaURL({CaptchaURL:res.url}));
+          dispatch(AuthIsFetching({isFetching: false}));
+
+        });
+      } else {
+        dispatch(stopSubmit('login', {_error: res.messages[0]}));
+        dispatch(AuthIsFetching({isFetching: false}));
+
+      }
+    });
+  };
+};
 
 export const Logout = (): ThunkAction<void, AppStateType, unknown, Action<string>> => {
-    return (dispatch) => {
-        dispatch(AuthIsFetching(true))
+  return (dispatch) => {
+    dispatch(AuthIsFetching({isFetching: true}));
 
-        SignIn.Logout().then(res => {
-            if (res.resultCode === 0) {
-                dispatch(AuthUser(res.data, false))
-                // dispatch(setInitializeSuccess(false))
-                dispatch(AuthIsFetching(false))
-            }
-        })
-    }
-}
+    SignIn.Logout().then(res => {
+      if (res.resultCode === 0) {
+        dispatch(AuthUser({data:res.data, isAuth:false}));
+        // dispatch(setInitializeSuccess(false))
+        dispatch(AuthIsFetching({isFetching: false}));
+      }
+    });
+  };
+};
+
+export const AuthReducer =slice.reducer;
+export const {AuthUser, AuthIsFetching, SetCaptchaURL} = slice.actions;

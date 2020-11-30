@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
-import {actions, UserDataType,} from "../../Redux/users-reduser";
+import { UserDataType, toStartPage,} from "../../Redux/users-reduser";
 import React from "react";
 import {Users} from "./Users";
 import {Preloader} from "../../common/preloader/Preloader";
@@ -80,7 +80,7 @@ const mapStateToProps = (state: AppStateType) => {
 
 const mapDispatchToProps =(dispatch:Dispatch) => {
     return{
-        toStartPage:()=>dispatch(actions.toStartPage())
+        toStartPage:()=>dispatch(toStartPage())
     }
 }
 
@@ -97,7 +97,7 @@ export const UsersContainer = connect(mapStateToProps, {
     // followThunk,
     // unfollowThunk,
     // ...actions.toStartPage
-    toStartPage: actions.toStartPage,
+    toStartPage: toStartPage,
 
 })(UsersAPIComp)
 // export const UsersContainer = connect(mapStateToProps, mapDispatchToProps

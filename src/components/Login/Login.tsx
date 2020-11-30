@@ -15,10 +15,6 @@ type FormDataType = {
     captcha?: string
 }
 
-const checkBoxStyle = {
-    width: " 20px"
-}
-
 type FormDataPropsType = {
     captcha: string
 }

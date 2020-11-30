@@ -8,7 +8,7 @@ import {AddPostReduxForm, AddPostType} from "./AddPostForm";
 
 type MyPostsType = {
     post: Array<postType>
-    AddPostAC:(NewText:string)=>void
+    AddPostAC:(NewText: { newText:string })=>void
 }
 
 export const MyPosts = (props: MyPostsType) => {
@@ -25,7 +25,7 @@ export const MyPosts = (props: MyPostsType) => {
 const AddNewPost = (value:AddPostType) =>{
     if(!value.NewPostText) {
         dispatch(stopSubmit('AddNewPostForm', {NewPostText: 'Field is empty'}))}else {
-        props.AddPostAC(value.NewPostText)
+        props.AddPostAC({newText:value.NewPostText})
         dispatch(reset('AddNewPostForm'))
     }
 }
