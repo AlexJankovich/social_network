@@ -42,7 +42,7 @@ export const Slider = React.memo((props: SliderPropsType) => {
     }
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (+e.currentTarget.value < 1 || +e.currentTarget.value > pagesCount) {
+        if (+e.currentTarget.value < 1 || +e.currentTarget.value > pagesCount||e.currentTarget.value==='') {
             setNewPage('нет такой страницы')
         } else {
             setNewPage(+e.target.value)
@@ -50,6 +50,7 @@ export const Slider = React.memo((props: SliderPropsType) => {
     }
 
     const goToPageNumber = () => {
+        if (newPage < 1 || newPage > pagesCount||newPage==='') return
         props.toPageNumber(newPage as number, pagesCount)
         setNewPage('')
     }
@@ -97,7 +98,7 @@ export const Slider = React.memo((props: SliderPropsType) => {
         <div className={s.inputWrapper}><input type='number'
                   placeholder='№'
                   onChange={onChange}
-                  value={newPage == null ? '' : newPage}
+                  value={newPage === null ? '' : newPage}
                   className={styles.input}
                   onKeyPress={onKeyPress}
                   disabled={props.isFetching}

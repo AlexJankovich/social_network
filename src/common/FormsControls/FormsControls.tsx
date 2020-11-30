@@ -34,7 +34,7 @@ export function createField<KeysType extends string> (
     name:KeysType,
     Validators:Validator|Validator[],
     component:ComponentType<WrappedFieldProps> | "input" | "select" | "textarea",
-    type:string) {
+    type:'checkbox'|'text'|'password') {
    return <div>
         <Field
             placeholder={placeholder}
