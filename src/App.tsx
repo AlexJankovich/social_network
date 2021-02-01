@@ -12,44 +12,47 @@ import {ProfileContainer} from './components/Profile/ProfileContainer';
 import {UsersHookContainer} from './components/Users/UsersHookContainer';
 import {InitializeApp} from './Redux/App-reducer';
 import {AppStateType} from './Redux/redux-store';
+import {ChatPage} from "./pages/chat/ChatPage";
 
 const App = React.memo(() => {
 
-  const appProps = useSelector<AppStateType>(state => state.App.initialized);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(InitializeApp());
-  }, [dispatch]);
+    const appProps = useSelector<AppStateType>(state => state.App.initialized);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(InitializeApp());
+    }, [dispatch]);
 
-  return (<>
-      <BrowserRouter>
-        <div className={s.pageWrapper}>
-          <HeaderContainer/>
-          <div className={s.content}>
-            <div className={s.contentContainer}>
-              <div className={s.box}>
-                <div className={s.navbar}>
-                  <NavBar/>
+    return (<>
+            <BrowserRouter>
+                <div className={s.pageWrapper}>
+                    <HeaderContainer/>
+                    <div className={s.content}>
+                        <div className={s.contentContainer}>
+                            <div className={s.box}>
+                                <div className={s.navbar}>
+                                    <NavBar/>
+                                </div>
+                                <div className={s.main}>
+                                    {!appProps ? <div className='appPreloader'><Preloader/></div> : null}
+                                    <Route path='/Dialogs'
+                                           render={() => <DialogsConnectContainer/>}/>
+                                    <Route path='/Profile/:userId?'
+                                           render={() => <ProfileContainer/>}/>
+                                    <Route path='/users'
+                                           render={() => <UsersHookContainer/>}/>
+                                    <Route path='/chat'
+                                           render={() => <ChatPage/>}/>
+                                    <Route path='/login'
+                                           render={() => <Login/>}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className={s.main}>
-                  {!appProps ? <div className='appPreloader'><Preloader/></div> : null}
-                  <Route path='/Dialogs'
-                         render={() => <DialogsConnectContainer/>}/>
-                  <Route path='/Profile/:userId?'
-                         render={() => <ProfileContainer/>}/>
-                  <Route path='/users'
-                         render={() => <UsersHookContainer/>}/>
-                  <Route path='/login'
-                         render={() => <Login/>}/>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </BrowserRouter>
-    </>
-  )
-    ;
+            </BrowserRouter>
+        </>
+    )
+        ;
 });
 
 export default App;

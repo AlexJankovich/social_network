@@ -21,23 +21,13 @@ const reducers = combineReducers({
 
 export type AppStateType = ReturnType<typeof reducers>
 
-// const store = createStore(reducers, applyMiddleware(thunkMiddleware));
-
-// const store = createStore(reducers, composeWithDevTools(
-//     applyMiddleware(thunkMiddleware)))
-
 const store = configureStore({
   reducer: reducers,
-  middleware:getDefaultMiddleware=>
-    getDefaultMiddleware()
-      .prepend(thunkMiddleware)
+  // middleware:getDefaultMiddleware=>
+  //   getDefaultMiddleware()
+  //     .prepend(thunkMiddleware)
 });
 
-
-// type ReturnedActionsTypes<T> = T extends { [key: string]: infer U } ? U : never;
-// export type UsersActionType = ReturnType<ReturnedActionsTypes<typeof actions>>
-
-export type InferActionTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
 
 //@ts-ignore
 window.store = store;
